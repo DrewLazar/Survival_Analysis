@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\input{notes_macros}
+\setlength\parindent{0pt}
+\setlength{\parskip}{\baselineskip}%
+\begin{document}
+\CPT{1}
+
+\idf{1.1} \textbf{Survival analysis} is a collection of statistical procedures for data analysis for which the outcome variable of interest is time, $T$, until an event occurs.
+
+\ir{1.1}
+\bn
+\im $T$ is a random variable with positive support. Examples are time until death, time until machine breaks, length of road travelled until have a flat tire, etc.
+\im There are extensions and variations of survival analysis including \textbf{recurrent events} and \textbf{competing risks}.
+\item Example of recurrent events - multiple hospitalizations. Example of competing risks - death on dialysis and receiving a kidney transplant.
+\en
+\CPT{3}
+
+\ith{3.1} Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
+\[ h(t;X) = h_0(t) \exp(\sum_i^p \hat{B}_iX_i) \].
+Let $LR_R$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
+\[ h(t;X) = h_0(t) \exp(\sum_i^q \hat{B}_iX_i) \]
+where $q<p$.
+Then for a ``large sample'' we have the following approximate distribution
+\[
+-2(LR_R - LR_F) \sim \chi^2(p-q)
+\]
+
+
+\end{document} 

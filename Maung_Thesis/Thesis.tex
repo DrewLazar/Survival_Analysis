@@ -1,0 +1,158 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb, amsmath, graphics,commath}
+\usepackage{graphicx,setspace,rotating,rotfloat}
+%Global Background must be put in preamble
+% Now we install the new template for the following frames:
+
+
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{verbatim}
+\usepackage{tensor}
+\usepackage{tikz}
+\usepackage[nottoc]{tocbibind}
+\usepackage{hyperref}
+\usepackage{listings}
+\lstset{
+    language=R,
+    basicstyle=\ttfamily
+}
+\usepackage[margin=1in]{geometry}
+\newcommand{\nnsection}[1]{\stepcounter{section} \pdfbookmark[1]{\thesection #1}{#1} \section*{#1}}
+
+
+\doublespace
+\begin{document}
+
+\title{Recursive Forecasting and Ordinal Statistical Models from Accelerometer Data }
+\date{}
+\maketitle{
+\begin{center}
+A THESIS
+\end{center}
+\begin{center}
+SUBMITTED TO THE GRADUATE SCHOOL
+\end{center}
+\begin{center}
+IN PARTIAL FULFILLMENT OF THE REQUIREMENTS
+\end{center}
+\begin{center}
+FOR THE DEGREE
+\end{center}
+\begin{center}
+MASTER OF SCIENCE
+\end{center}
+\begin{center}
+BY
+\end{center}
+\begin{center}
+FATIMAH ALAWAD
+\end{center}
+\begin{center}
+BALL STATE UNIVERSITY
+\end{center}
+\begin{center}
+MUNCIE, INDIANA
+\end{center}
+\begin{center}
+MAY 2021
+\end{center}
+}
+
+
+\pagebreak
+
+
+
+\tableofcontents
+
+\pagebreak
+
+\section{Acknowledgements}
+
+
+\section{Abstract}
+
+\section{Introduction}
+
+
+
+
+\section{Literature Review}
+
+
+
+
+\section{Discussion}
+
+
+\bibliographystyle{plain}
+\bibliography{Sources}
+
+\section{Appendix: R Code for Recursive Forecasting}
+\begin{lstlisting}
+#Resursive Forecasting Function.
+#Inputs: training set, testing set and np is number of periods
+#for recursive forecast. Outputs: predictions
+recursive_forecast = function(train,test,np,nvars){
+#Function for creating random forest models
+AL_rf = function(train){
+  # Random forest classifier with b available features.
+  b=ncol(train)-1; sb=sqrt(b)
+  AL.rf=randomForest(COS.Intensity~.,data=train,mtry=sb,importance=TRUE)
+}
+#needed parameters
+n=nrow(train);c=ncol(train);nt=nrow(test); train_lag=train
+#create a data frame, train_lag that will have the training set and
+#np lagging variables
+  y <- 1:np
+  for (val in y){
+    train_lag[[c+val]]<-Lag(train$COS.Intensity,val)
+  }
+#create a list of models from train_lag, trained with no lagging variables
+#- mylist[[1]] to np lagging variables - mylist[[np+1]]
+  #initialize list
+  rfmodel.train<-AL_rf(na.omit(train_lag %>% select(1:nvars)))
+  mylist<-list(rfmodel.train)
+  #create rest of list of models
+  y <- 1:np
+  for (val in y){
+  rfmodel.train<-AL_rf(na.omit(train_lag %>% select(1:(nvars+val))))
+  mylist[[val+1]]<-rfmodel.train
+  }
+#Create column where predictions from recursive forecast model
+#will go
+  Cos.Pred<-test$COS.Intensity
+#Create testing data with columns appended for lagging predictions
+  test_lag=test
+  y <- 1:np
+  for (val in y){
+    test_lag[[c+val]]<-test$COS.Intensity
+  }
+#Create first np+1 predictions in Cos.Pred
+  Cos.Pred[1]=predict(mylist[[1]],newdata=test_lag[1,1:nvars])
+  y<-1:np
+  for (val in y){
+    test_lag[val+1,(nvars+1):(nvars+val)]=rev(Cos.Pred[1:val])
+    testn=test_lag[val+1,1:(nvars+val)]
+    Cos.Pred[val+1]=predict(mylist[[val+1]],newdata=testn)
+  }
+#Create predictions np+2 to n in Cos.pred
+  y<-(np+1):(nt-1)
+  for (val in y)
+  {
+    test_lag[val+1,(nvars+1):(nvars+np)]=rev(Cos.Pred[(val-np+1):val])
+    testn=test_lag[val+1,1:(nvars+np)]
+    Cos.Pred[val+1]=predict(mylist[[np+1]],newdata=testn)
+  }
+  return(Cos.Pred)
+}
+preds=recursive_forecast(train,test,1,29)
+a=1-mean(preds ==test_ank$COS.Intensity)
+
+\end{lstlisting}
+
+
+\end{document}
+
+

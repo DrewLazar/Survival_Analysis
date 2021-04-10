@@ -1,0 +1,82 @@
+\documentclass[serif]{beamer}
+\usepackage{etex}
+\usetheme{AnnArbor}
+\usecolortheme{beaver}
+%\usecolortheme{dove}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\definecolor{beetle}{RGB}{196, 30, 58}
+
+\setbeamercolor{titlelike}{parent=structure,bg=beetle}
+
+ \usepackage{tikz}
+ \usetikzlibrary{patterns,snakes,plotmarks}
+ \usepackage{multirow}
+% \usetikzlibrary{shadows}
+\newcommand\at[2]{\left.#1\right|_{#2}}
+\usepackage{epstopdf}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{qtree}
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}}%
+\DeclareCaptionLabelSeparator{horse}{:\,\,} % change according to your needs
+\captionsetup{
+  labelsep = horse,
+  figureposition = bottom % used to get the correct vertical space between the figure and the caption
+}
+\begin{document}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{enumerate items}[square]
+\theoremstyle{definition}
+\newtheorem*{exs}{Examples}
+\newtheorem{ex}{Example}
+\newtheorem*{exc}{Exercise}
+%\usepackage{booktabs}
+\setlength{\parindent}{0pt}
+%\setbeameroption{show notes}
+ \setbeamerfont{note page}{size=\tiny}
+%\setbeamertemplate{note page}[plain]
+%\setbeameroption{show only notes}
+
+\title{Recursive Forecasting and Ordinal Statistical Models from Accelerometer Data}
+\author{\textbf{Fatimah Alawad}}
+\institute{\textbf{Ball State University}}
+\date{\today}
+
+% Print Title Page
+{ % Begin Group
+\usebackgroundtemplate{
+\tikz\node[opacity=0.3]
+{\includegraphics[height=5in,width=350pt]{unnamed.jpg}};}
+
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+} % End Group
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{block}{Introduction}
+\begin{itemize}
+\item Since the 1980’s, accelerometers used to estimate  physical activity
+\item Recently, researchers have used raw acceleration data
+\item Many types of modeling used predict activity level (regression, decision trees, neural networks, etc)
+\item My thesis uses random forest with recursive forecasting for improved predictive power
+\item Also, I consider ordinal nature of responses
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+        \frametitle{References}
+        \bibliographystyle{amsalpha}
+        \bibliography{Sources.bib}
+\end{frame}
+
+
+ \end{document}  
