@@ -3,7 +3,7 @@
 \usetheme{Antibes}
 \usepackage{amssymb,amsmath,amsthm}
 \usepackage{graphicx}
-\usepackage{caption} 
+\usepackage{caption}
 \usepackage{subfig}
 %\definecolor{cardinal}{rgb}{0.77, 0.12, 0.23}
 %\usecolortheme[named=cardinal]{structure}
@@ -46,9 +46,10 @@
 \begin{frame}
     \titlepage
 \end{frame}
+\section{Chapter 1} 
 \begin{frame}\frametitle{Types of Censoring}
 \bn
-\item \textbf{Right Censoring:} An observation is \textbf{right censored} if the survival time is longer than its observed value. Some examples: 
+\item \textbf{Right Censoring:} An observation is \textbf{right censored} if the survival time is longer than its observed value. Some examples:
 \bni
 \item A five year study is conducted on how long it takes for machines to break down. A particular machine is observed from the start of the study but breaks down \textbf{after the study ends}.
 \item Patients are followed for ten years after having a major heart attack. The response variable is time until death. A patient \textbf{withdraws} from the study after being followed for 2 years and moves to another country.
@@ -68,9 +69,9 @@
 \begin{frame}
 \begin{columns}
     \begin{column}{0.48\textwidth}
-        \includegraphics[width = \textwidth]{Ch1-RightCensor.JPG} 
+        \includegraphics[width = \textwidth]{Ch1-RightCensor.JPG}
     \end{column}
-    \hspace{-40pt} 
+    \hspace{-40pt}
     \begin{column}{0.48\textwidth}
          \includegraphics[width = \textwidth]{Ch1-IntervalCensor.JPG} \\
               \vspace{-20pt}
@@ -78,5 +79,11 @@
     \end{column}
 \end{columns}
 \end{frame}
+\section{Chapter 2} 
+\begin{frame}
+\begin{block}{Problem 2.1}
+Given the data below use R to create Kaplan-Kaplan Meirer curves. 
+\end{block}  
+\end{frame} 
 
 \end{document} 

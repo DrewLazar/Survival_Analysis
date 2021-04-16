@@ -26,3 +26,5 @@
 *.pdf
 *.bak
 *.sav
+*.synctex
+*.Rhistory
