@@ -174,10 +174,71 @@ Note: + denotes censored
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{Ways to represent (right censored) survival data (cont'd)}
+\begin{block}{Fourth way to represent data - Counting Process (CP) format}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_1.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_2.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Ways to represent (right censored) survival data (cont'd)}
+\begin{block}{Fourth way to represent data }
+\begin{itemize}
+\item This data is the the recurrence of bladder cancer tumors after transurethral surgical excision. 
+\item Covariates are tx (0 or 1), num and size. Only tx=0 is included here. 
+\item $i$ is the subject, $j$ is the number of the event for the subject.
+\item $d$ is censoring status, \textbf{start} is when event starts, \textbf{stop} is last time of observation of event. 
+\item For subject 6, two events are observed. 
+\begin{enumerate}[i.]
+\item The first tumor starts at time 0 and stops (excised) at time 6.
+\item The second tumor starts at time 6 and the observation is censored at time 10. 
+\end{enumerate}
+\end{itemize} 
+\end{block}
+\end{frame} 
+
+
 \section{Chapter 2}
 \begin{frame}
 \begin{block}{Problem 2.1}
 Given the data below use R to create Kaplan-Kaplan Meirer curves.
+\end{block}
+\end{frame}
+
+\section{Chapter 7}
+\begin{frame}
+\begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}
+\begin{align*}
+& S(t) = P(T>t) = \int_t^\infty f(u) du  \\
+& h(t) = \dfrac{-d[S(t)]/dt}{S(t)} \\
+& S(t) = \exp\left(-\int_0^t h(u)\right) \\
+& f(t) = h(t) S(t)
+\end{align*}
+$H(u)=\int_0^t h(u)$ is known as the \textbf{cumulative hazard function}.
+\end{block}
+\end{frame}
+\begin{frame}
+\begin{block}{Definition 7.1 - Three properties of survival analysis populations}
+Let $X$ and $X^*$ be any two different specifications of the covariates.
+\begin{enumerate}
+\item Proportional Hazards (PH)
+\[ h(t;X)/h(t;X^*) = \theta \text{ for all } t>0, \text{ constant } \theta > 0 \]
+\item Accelerated Failure Times (AFT)
+\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
+\]
+\item Proportional Odds (PO)
+\[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
+\]
+\end{enumerate}
 \end{block}
 \end{frame}
 
