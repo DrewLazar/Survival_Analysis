@@ -187,24 +187,24 @@ Note: + denotes censored
     \end{column}
 \end{columns}
 \end{block}
-\end{frame} 
+\end{frame}
 
 \begin{frame}
 \frametitle{Ways to represent (right censored) survival data (cont'd)}
 \begin{block}{Fourth way to represent data }
 \begin{itemize}
-\item This data is the the recurrence of bladder cancer tumors after transurethral surgical excision. 
-\item Covariates are tx (0 or 1), num and size. Only tx=0 is included here. 
+\item This data is the the recurrence of bladder cancer tumors after transurethral surgical excision.
+\item Covariates are tx (0 or 1), num and size. Only tx=0 is included here.
 \item $i$ is the subject, $j$ is the number of the event for the subject.
-\item $d$ is censoring status, \textbf{start} is when event starts, \textbf{stop} is last time of observation of event. 
-\item For subject 6, two events are observed. 
+\item $d$ is censoring status, \textbf{start} is when event starts, \textbf{stop} is last time of observation of event.
+\item For subject 6, two events are observed.
 \begin{enumerate}[i.]
 \item The first tumor starts at time 0 and stops (excised) at time 6.
-\item The second tumor starts at time 6 and the observation is censored at time 10. 
+\item The second tumor starts at time 6 and the observation is censored at time 10.
 \end{enumerate}
-\end{itemize} 
+\end{itemize}
 \end{block}
-\end{frame} 
+\end{frame}
 
 
 \section{Chapter 2}
@@ -239,6 +239,19 @@ Let $X$ and $X^*$ be any two different specifications of the covariates.
 \[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
 \]
 \end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Three popular parametric distributions}
+\begin{center}
+\begin{tabular}{ c c c | c }
+Distribution & $S(t)$ & $h(t)$ & Accommodates \\ \hline
+Exponential & $\exp(\lambda t)$ & $\lambda$ & PH, AFT \\
+Weibull  & $\exp(-\lambda t^p)$ & $\lambda p t^{p-1}$ & PH, AFT\\
+Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda t^p}$ & PO, AFT
+\end{tabular}
+\end{center}
 \end{block}
 \end{frame}
 

@@ -65,7 +65,7 @@ Now,
 & = \exp\left[\ln(S(t))\right] = S(t).
 \end{align*}
 
-\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way: 
+\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way:
 \begin{enumerate}[ ]
 \item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_0$ at the start of the study.
 \item The second column ($m_f$) gives the number of events that occur at each of the times.
@@ -81,21 +81,21 @@ This way of presenting data, helps us estimate probabilities, at each time $t_{f
 \]
 This will allow us in chapter 2 to estimate overall survival probabilities at times $t_{(f)}, f=1,\ldots,n$ and thus estimate survival curves as step functions.
 
-\idf{1.5} 
+\idf{1.5}
 \begin{enumerate}
-\item The \textbf{average observed survival time }(ignoring censoring) is denoted by $\bar{T}$. 
-\item The \textbf{average hazard rate} is the total number of failures divided by the total observed survival time. It is denoted by $\bar{h}$. 
+\item The \textbf{average observed survival time }(ignoring censoring) is denoted by $\bar{T}$.
+\item The \textbf{average hazard rate} is the total number of failures divided by the total observed survival time. It is denoted by $\bar{h}$.
 \end{enumerate}
- For group 1 in the leukemia data we have 
+ For group 1 in the leukemia data we have
 \[ \bar{T}_1 = \frac{6 + 6 + 6 + \ldots + 35}{21} \approx 17.1 \text { and } \bar{h}_1 \approx \frac{9}{6 + 6 + 6 + \ldots + 35} = .025
 \]
-For group 2 in the leukemia data we have 
+For group 2 in the leukemia data we have
 \[ \bar{T}_2 = \frac{1 + 1 + 1 + \ldots + 23}{21} \approx 8.6 \text { and } \bar{h}_2 = \frac{21}{1 + 1 + 1 + \ldots + 23} \approx .115
-\] 
+\]
 
-Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are crude overall measures. If there was no censoring in group 1 and censoring in group 2 then $\bar{T}_1$ and $\bar{T}_2$ don't change and can be misleading. Instead, we want to estimate survival probabilities at particular times and for certain levels of covariates. That will be the subject of the rest of the book. 
- 
- 
+Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are crude overall measures. If there was no censoring in group 1 and censoring in group 2 then $\bar{T}_1$ and $\bar{T}_2$ don't change and can be misleading. Instead, we want to estimate survival probabilities at particular times and for certain levels of covariates. That will be the subject of the rest of the book.
+
+
 
 
 
@@ -127,9 +127,10 @@ Then one you estimate lambda you can plot survival curves and get estimated surv
 So for $X=1$ you might have $\hat{\lambda=.5}$ and you can estimate
 \[ S(2;1) \approx \exp(-.5 2)) = \exp(-1) = 0.36787
 \]
-\NTS Draw smooth survival curve and step function for Cox-Proportional Hazard.
+\NTS \, Draw smooth survival curve and step function for Cox-Proportional Hazard.
 
-\ir{7.2} We saw Cox-Proportional Hazard Assumption (PH) with respect to the Cox-Propotional Hazard Model.
+\ir{7.2} We saw Proportional Hazards (PH) with respect to the Cox-Propotional Hazard Model.
+
 \iex{7.2} We illustrate the Accelerated Failure Time property with an example. Let our survival random variable be time to death of 60 years olds, and $X$ be smoking status (0=non-smoker, 1=smoker).
 Assume we have
 \[
@@ -137,12 +138,17 @@ S(t;0) = S((2/3)t,1) \text{ for all } t>0
 \]
 Let $T_0$ be the survival random variable for non-smokers and $T_1$ be the survival random variable for smokers.
 
-Then $S(7.5;0) = P(T_0>7.5) = P(T_1>5;1)$ and $S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)$.
+Then 
+\[ S(7.5;0) = P(T_0>7.5) = P(T_1>5;1) \]
+ and 
+\[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10) 
+\] 
 Note we have
 \[
 S((3/2)t;0) = S(t;1) \text{ for all } t>0
 \]
 and $T_1=(3/2)T_0$.
+
 \ir{7.3} In general, if we have the AT property for some $\gamma$ so that
 \[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
 \]
@@ -154,5 +160,17 @@ and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
 \gamma T_X = T_{X^*}
 \]
 
+\ir{7.4} ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. Example: We might have failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Note that we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$. 
+
+\ir{7.5} Exponential accommodates PH. Why? Let 
+\[
+\lambda=\exp(\beta_0 + \beta' X)
+\] where $\beta, X$ are both $p \times 1$.
+Then 
+\[ 
+\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
+\]
+
+ 
 
 \end{document} 
