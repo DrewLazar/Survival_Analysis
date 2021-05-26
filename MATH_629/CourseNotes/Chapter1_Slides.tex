@@ -255,4 +255,20 @@ Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda 
 \end{block}
 \end{frame}
 
+\begin{frame}
+\begin{block}{Example 7.2 - Exponential Distribution as PH Model} 
+\begin{enumerate}[ ]
+\item Remission data ($n=42$). One covariate treatment status (TR). 
+\item 21 patients given treatment (TR=1). 21 patients given placebo (TR=0). 
+\end{enumerate} 
+Assuming an exponential distribution we have
+\[ S(t;TR)= \exp(\beta_0 + \beta_1 TRT)
+\]
+Our hazard ratio is 
+\[
+\text{ HR(TR=0 vs. TR=1) } = \exp(\beta_1 \text{TR})
+\]
+ \end{block}
+ \end{frame} 
+
 \end{document} 
