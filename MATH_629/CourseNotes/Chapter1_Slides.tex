@@ -255,20 +255,35 @@ Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda 
 \end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Example 7.2 - Exponential Distribution as PH Model} 
+\begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model}
+\begin{block}{Remission Data} 
 \begin{enumerate}[ ]
-\item Remission data ($n=42$). One covariate treatment status (TR). 
-\item 21 patients given treatment (TR=1). 21 patients given placebo (TR=0). 
-\end{enumerate} 
-Assuming an exponential distribution we have
-\[ S(t;TR)= \exp(\beta_0 + \beta_1 TRT)
+\item Remission data ($n=42$). Covariate treatment status (TR).
+\item 21 given treatment (TR=1). 21 given placebo (TR=0).
+\end{enumerate}
+\end{block} 
+\begin{block}{As a PH model} 
+Assuming an exponential distribution, we parameterize 
+\[ h(t;TR)= \lambda = \exp(\beta_0 + \beta_1 TRT)
 \]
-Our hazard ratio is 
+We have hazard ratio
 \[
 \text{ HR(TR=0 vs. TR=1) } = \exp(\beta_1 \text{TR})
 \]
  \end{block}
- \end{frame} 
+ \end{frame}
+ 
+ \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
+
+\begin{block}{As a AFT model}
+Assuming an exponential distribution, we parameterize
+\[ \frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1 TRT)
+\]
+We have AF factor
+\[
+\text{ AF(TR=0 vs. TR=1) } = \exp(\alpha_1 \text{TR})
+\]
+ \end{block}
+ \end{frame}
 
 \end{document} 

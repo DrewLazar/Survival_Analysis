@@ -123,5 +123,19 @@ addicts.cp=survSplit(addicts,cut=addicts$survt[addicts$status==1],
 #Create a new variable dose times logof survival time
 addicts.cp$logtdose=addicts.cp$dose*log(addicts.cp$survt)
 #Create a time dependent CoxPH model with time dependent covariate logtdoes
-   
-
+#Print observations of addicts.cp
+addicts.cp[addicts.cp$id==1,]
+coxph(Surv(addicts.cp$start,addicts.cp$survt,addicts.cp$status)~prison+dose+clinic+logtdose+cluster(id),data=addicts.cp)
+#Create a time dependent CoxPH model with time dependent covariate using heaviside functions
+addicts.cp365=survSplit(addicts,cut=365,end='survt',event='status',start='start')
+addicts.cp365$hv1=addicts.cp365$clinic*(addicts.cp365$start<365)
+addicts.cp365$hv2=addicts.cp365$clinic*(addicts.cp365$start>=365)
+addicts.cp365=addicts.cp365[order(addicts.cp365$id,addicts.cp365$start),]
+Y365=Surv(addicts.cp365$start,addicts.cp365$survt,addicts.cp365$status)
+coxph(Y365~prison+dose+hv1+hv2+cluster(id),data=addicts.cp365,method='breslow')
+coxph(Y365~prison+dose+clinic+hv2+cluster(id),data=addicts.cp365,method='breslow')
+#Parametric models - test PH assumption of Weibull model 
+plot(survfit(Y~addicts$clinic),fun='cloglog',xlab='time in days using logarithmic scale',ylab='log-
+     log survival',main='log-log curves by clinic')
+#Fit an exponential model
+modpar1=survreg(Surv(addicts$survt,addicts$status)~prison+dose+clinic,data=addicts,dist="exponential")

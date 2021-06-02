@@ -28,3 +28,4 @@
 *.sav
 *.synctex
 *.Rhistory
+*.RData

@@ -171,43 +171,34 @@ Then
 \text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
 \]
 
-\ir{7.5} Exponential accommodates PH. Why? Let
-\[
-\lambda=\exp(\beta_0 + \beta' X)
-\] where $\beta, X$ are both $p \times 1$.
-Then
-\[
-\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
-\]
-
 \ir{7.6} Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
-\begin{align*} 
+\begin{align*}
 & q = S(t) = \exp(\lambda t) \\
 & \ln(q) = - \lambda t \\
 & t = \frac{1}{\lambda} (- \ln(q))
-\end{align*} 
+\end{align*}
 Let
 \[
-\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X) 
+\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
 \]
-Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus, 
+Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus,
 \[
 \gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
 \]
 
 \ir{7.7} Relationship between AF and HR for exponential model. We have
-\[ 
-\alpha = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\alpha} = \exp(\beta_0 + \beta_1'X) \\
+\[
+\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\beta_0 + \beta_1'X) \\
 \]
 Thus,
-\[ \ln(\alpha) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
-Thus, 
-\begin{align*} 
+\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
+Thus,
+\begin{align*}
 &\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
 &\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
-\end{align*} 
+\end{align*}
 
- 
+
 
 
 
