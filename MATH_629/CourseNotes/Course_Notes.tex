@@ -19,7 +19,7 @@
 
 \idf{1.2} \textbf{Censoring} is when you have some, but not all, information about the time until event for some or all of your observations. There are three types of censoring.
 
-We will only deal with right censored data in this course. This is the most common type of censoring.
+We will mostly deal with right censored data in this course. This is the most common type of censoring.
 
 
 \ir{1.2} We use the following notation
@@ -35,19 +35,19 @@ We will only deal with right censored data in this course. This is the most comm
 S(t) = P(T>t) \text{ for } t \in \mathbb{R}.
 \]
 
-Note: 1) The survival function always tends to 1 as t tends to infinity, i.e.,
+Note: 1) The survival function always tends to 0 as t tends to infinity, i.e.,
 \[
-\lim_{t\rightarrow\infty} S(t) = 1
+\lim_{t\rightarrow\infty} S(t) = 0 
 \]
-and 2) for positive random variable $T$ we have $S(t) = 0$ for $t \le 0$.
+and 2) for positive random variable $T$ we have $S(t) = 1$ for $t \le 0$.
 
-\NTS Draw a smooth survival curve and draw a step function which is often used to estimate one (see page 10).
+\NTS \, Draw a smooth survival curve and draw a step function which is often used to estimate one (see page 10).
 
 \idf{1.4} The \textbf{hazard function} is the instantaneous rate of change (i.e., the derivative) of the probability that the event will occur given that it has not occurred up to that time.
 \[
-h(t) = \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta | T \ge t)}{\Delta t}
+h(t) = \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t}
 \]
-Note: 1) The hazard function is a rate not a probability, 2) the hazard can be any number from 0 to infinity, i.e, $0\ge h(t) \ge infty$, 3) the hazard depends on the unit of measurement of time. For example, all other things being equal, if time is measured in seconds as opposed to minutes then the hazard is increased by a factor of 60.
+Note: 1) The hazard function is a rate not a probability, 2) the hazard can be any number from 0 to infinity, i.e, $0\ge h(t) \ge \infty$, 3) the hazard depends on the unit of measurement of time. For example, all other things being equal, if time is measured in seconds as opposed to minutes then the hazard is increased by a factor of 60.
 
 \ith{1.1} The hazard function and the survival function of a distribution have the following relationship
 
@@ -56,7 +56,7 @@ Note: 1) The hazard function is a rate not a probability, 2) the hazard can be a
 Proof:
 \begin{align*} h(t) & = \lim_{\Delta \rightarrow 0} \frac{P(t \le T \le t + \Delta)} {P(T \ge t) \Delta t} \\
 & = \frac{1}{S(t)} \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta)} {\Delta t} \\
-& = \frac{(d/dt)F(t)}{S(t)} = -\frac{(d/dt)S(t)}{S(t)}.
+& = \frac{(dF(t)/dt)}{S(t)} = -\frac{(d S(t)/dt)}{S(t)}.
 \end{align*}
 Now,
 \begin{align*}
@@ -65,9 +65,9 @@ Now,
 & = \exp\left[\ln(S(t))\right] = S(t).
 \end{align*}
 
-\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way:
+\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate Kaplan-Meirer survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way:
 \begin{enumerate}[ ]
-\item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_0$ at the start of the study.
+\item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_{(0)}$ at the start of the study.
 \item The second column ($m_f$) gives the number of events that occur at each of the times.
 \item The third column ($q_f$) gives the number of observations that were censored in time $[t_f,t_{f-1})$ for $f=2,\ldots,n$.
 \item The last column $R(t_f)$ gives the number ``at risk'' at each time. For example, at time $t_{(1)}=6$, $m_{1}=3$ had the event, $q_{1}=1$ was censored in $[t_{(1)}=6, t_{(2)}=7)$ and
@@ -76,7 +76,7 @@ Now,
     \]
      were ``at risk'' at time $t_{(2)}$.
 \end{enumerate}
-This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event) have the event given that they have not have ``survived'' up until, but not including, time $t_{f}$. For example, at $t_{(2)}$ we estimate this probability as
+This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event before time $t_{(f)}$) given that they have not have ``survived'' up until, but not including, time $t_{f}$. For example, at $t_{(2)}$ we estimate this probability as
 \[ \dfrac{R(2)-m_2}{R{(2)}} = \dfrac{17-1}{17} = \dfrac{16}{17}
 \]
 This will allow us in chapter 2 to estimate overall survival probabilities at times $t_{(f)}, f=1,\ldots,n$ and thus estimate survival curves as step functions.
@@ -94,6 +94,19 @@ For group 2 in the leukemia data we have
 \]
 
 Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are crude overall measures. If there was no censoring in group 1 and censoring in group 2 then $\bar{T}_1$ and $\bar{T}_2$ don't change and can be misleading. Instead, we want to estimate survival probabilities at particular times and for certain levels of covariates. That will be the subject of the rest of the book.
+
+
+\NTS \, Point out Kaplan Meirer survival curves. Point out little difference in treatments early on but that Group 1 treatment is more effective as time goes on. Also, point out that you can get another overall measure the \textbf{observed median time}. 
+
+\idf{1.6} An \textbf{exposure variable} is the variable that you are interested in establishing at least a correlative if not causative relationship with the survival variable. \textbf{Secondary variable} is another variable in the data set that can also have an effect on survival times. 
+
+\ir{1.3} `Untangling' the effect of exposure vs secondary variables on survival times can thus be difficult. In this regard, there are two issues to consider, confounding and 
+
+\idf{1.7} \textbf{Confounding } is the extent to which the effect of the change of an exposure variable on survival is caused by an accompanying change in a secondary variable. 
+
+\idf{1.8} \textbf{Interaction} is when the effect of the change in an exposure variable on survival probabilities depends on the level of a secondary variable. 
+
+
 
 
 

@@ -206,6 +206,53 @@ Note: + denotes censored
 \end{block}
 \end{frame}
 
+\begin{frame} 
+\frametitle{Kaplan Meier Estimates of Survival} 
+ \includegraphics[width =\textwidth, height=5.5cm]{Ch1_estsurv.JPG}
+ \end{frame} 
+
+\begin{frame} 
+\frametitle{Remission Data with LogWBC (Confounding Example)} 
+ \includegraphics[width =\textwidth, height=6.5cm]{Ch1-RemissionwLogwbc.JPG}
+ \end{frame}  
+ 
+\begin{frame}
+\frametitle{Confounding Example} 
+ \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Confound.JPG}
+ \end{frame} 
+
+\begin{frame} 
+\begin{block}{Remark 1.4 - Confounding} 
+\begin{itemize}
+\item We see the distribution of logWBC for the Treatment group and for the Placebo group. 
+\item The Placebo group tends to have higher logWBC with the mean logWBC for Treatment of 1.8 and the the mean logWBC for Placebo of 4.1. 
+\item Thus, if lower logWBC correlates with greater survival times, the effect of the treatment in creating greater survival times might be from this correlation rather than the effect of the treatment in itself. 
+\item In this case, the effect of treatment is \textbf{confounded} by the effect of treatment. 
+\item Confounding is dealt with by including secondary variables in semi-parametric models and parametric models.   
+\end{itemize}
+\end{block} 
+\end{frame} 
+
+
+
+\begin{frame}
+\frametitle{Interaction Example}
+ \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Interact.JPG}
+ \end{frame} 
+ 
+ 
+\begin{frame}
+\begin{block}{Remark 1.4 - Interaction}
+\begin{itemize}
+\item We see the affect of Treatment depends on the level of logWBC. 
+\item For high logWBC Treatment has a positive effect on survival probabilities. 
+\item For low logWBC Treatment does not have a significant effect on survival probabilities. 
+\item Interaction is dealt with by 1) partitioning data on different levels of the secondary variable or 2) by including interaction terms in semi-parametric and parametric models. 
+\end{itemize}
+\end{block}
+\end{frame}
+
+
 
 \section{Chapter 2}
 \begin{frame}
@@ -256,14 +303,14 @@ Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda 
 \end{frame}
 
 \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model}
-\begin{block}{Remission Data} 
+\begin{block}{Remission Data}
 \begin{enumerate}[ ]
 \item Remission data ($n=42$). Covariate treatment status (TR).
 \item 21 given treatment (TR=1). 21 given placebo (TR=0).
 \end{enumerate}
-\end{block} 
-\begin{block}{As a PH model} 
-Assuming an exponential distribution, we parameterize 
+\end{block}
+\begin{block}{As a PH model}
+Assuming an exponential distribution, we parameterize
 \[ h(t;TR)= \lambda = \exp(\beta_0 + \beta_1 TRT)
 \]
 We have hazard ratio
@@ -272,7 +319,7 @@ We have hazard ratio
 \]
  \end{block}
  \end{frame}
- 
+
  \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
 
 \begin{block}{As a AFT model}
@@ -285,5 +332,7 @@ We have AF factor
 \]
  \end{block}
  \end{frame}
+ 
+ 
 
 \end{document} 
