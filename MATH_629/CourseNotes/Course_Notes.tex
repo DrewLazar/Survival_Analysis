@@ -112,13 +112,30 @@ Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are
 5 year (group A): 40 censored out of 80. Of 40 left in risk set, 5/40 = 0.125 = 12.5\% had the event. By independent censoring, we assume .125*40 = 5 of censored also had the event. All together over 5 years, we assume 20 + 5 + 5 = 40 had the event. Thus, $P_B(\text{survive 5 years})= 60/100 = 0.60 \implies P_A(\text{fail 5 years}) = 0.40.$ \\
 
 3 year (group B): $P_A(\text{survive 3 years})= 60/100 = 0.60 \implies P_A(\text{fail 3 years}) = 0.40$ \\ \\
-5 year (group B): 10 censored out of 60. Of 50 left in risk set, 10/50 = 0.20 = 20\% had the event. By independent censoring, we assume .20*10 = 2 of censored also had the event. All together over 5 years, we assume 40 + 10 + 2 = 52 had the event. Thus, $P_B(\text{survive 5 years})= 48/100 = 0.48 \implies P_A(\text{fail 5 years}) = 0.52.$ \\
+5 year (group B): 10 censored out of 60. Of 50 left in risk set, 10/50 = 0.20 = 20\% had the event. By independent censoring, we assume .20*10 = 2 of censored also had the event. All together over 5 years, we assume 40 + 10 + 2 = 52 had the event. Thus, $P_B(\text{survive 5 years})= 48/100 = 0.48 \implies P_B(\text{fail 5 years}) = 0.52.$ \\
 
 
-3 year (All): $P(\text{survive 3 years})= 140/200 = 0.70 \implies P_A(\text{fail 3 years}) = 0.30$ \\ \\
-5 year (group B): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P_B(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P_A(\text{fail 5 years}) = 0.8\overline{333}$ \\
+3 year (All): $P(\text{survive 3 years})= 140/200 = 0.70 \implies P(\text{fail 3 years}) = 0.30$ \\ \\
+5 year (group B): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P(\text{fail 5 years}) = 0.8\overline{333}$. However, assuming independent censoring, we assume 92 had the event and  $P(\text{survive 5 years})= 8/100 = 0.08 \implies P(\text{fail 5 years}) = 0.92$. 
+
+
 
 \CPT{2}
+
+\idf{2.1} \textbf{Kaplan-Meirer Survival Curves } also known as \textbf{ product limit estimators }, are non-parametric estimates of survival curves. They are step functions with ``steps'' at event times in the sample data. 
+\NTS \, Draw step functions with steps at events times. 
+
+\ir{2.1} Recall, 
+
+\[
+S(t) = P(T>t)
+\] 
+
+There is no censoring in group 2 (placebo group). Thus, it is straightforward to estimate a survival curve. This straightforward estimation will be the same as the Kaplan-Meirer estimate. For group 2, deriving the Kaplan-Meirer estimate will be more involved. For group 2, (or any uncensored data) we just use the formula
+\[
+\hat{S}(t_{(f)}) = \frac{\# \text{surviving past} \, t_{(f)}}{n}  
+\] 
+where $n$ is the number of observations. 
 
 \CPT{3}
 
