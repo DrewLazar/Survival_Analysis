@@ -148,10 +148,10 @@ Consider the following data of times to remission of leukemia patients:
 \begin{table}
 \begin{center}
 \begin{tabular}{l l}
-Group 1 (n=21) treatment & Group 2 (n=22) placebo \\
+Group 1 (n=21) treatment & Group 2 (n=21) placebo \\
  6, 6, 6, 7, 10, 13, 16, 22, 23, & 1, 1, 2, 2, 3, 4, 4, 5, 5,  \\
- 6+, 19+, 20+, 25+, 32+,& 8, 8, 8, 8, 15, 17, 22, 23 \\
-  32+, 34+, 35+ &
+ 6+, 9+, 10+, 11+, 17+, 19+, & 8, 8, 8, 8, 11, 11, 12, 12, \\
+   20+, 25+, 32+, 32+, 34+, 35+ & 15, 17, 22, 23
 \end{tabular}
 \end{center}
 \end{table}
@@ -292,47 +292,47 @@ Consider a population with two groups - Group A and Group B.
 Assuming, independent censoring summarize the 3 and 5 year survival experiences of both groups.
 \end{frame}
 
-\begin{frame} 
-\frametitle{Assumptions about censoring (cont'd)} 
-\begin{block}{Example 1.1} 
+\begin{frame}
+\frametitle{Assumptions about censoring (cont'd)}
+\begin{block}{Example 1.1}
 Consider the entire population.
-\begin{center} 
-\textbf{All} 
+\begin{center}
+\textbf{All}
 \begin{tabular}{ c c c c }
  Time & \# at risk & \# events & \# survived \\ \hline
  0-3 yrs & 200 & 60 & 140 \\
  3–5 yrs &  90 & 15 & 75
 \end{tabular} \\
 50 left study at the end of 3 years.
-\end{center} 
-\end{block} 
-If we assume independent censoring, do we have random censoring? 
-\end{frame} 
+\end{center}
+\end{block}
+If we assume independent censoring, do we have random censoring?
+\end{frame}
 
-\begin{frame} 
-\frametitle{Assumptions about censoring (cont'd)} 
-\begin{block}{Remark 1.4 - Random vs. Independent Censoring} 
-\begin{itemize} 
-\item Random censoring is a stronger condition than independent censoring. 
-\item Independent censoring only applies to groups of interest and random censoring applies to every subgroup including the entire data set. 
+\begin{frame}
+\frametitle{Assumptions about censoring (cont'd)}
+\begin{block}{Remark 1.4 - Random vs. Independent Censoring}
+\begin{itemize}
+\item Random censoring is a stronger condition than independent censoring.
+\item Independent censoring only applies to groups of interest and random censoring applies to every subgroup including the entire data set.
 \item Independent censoring is random censoring conditional on each level of covariates.
-\item We only need and assume independent censoring for our covariates of interest. 
-\end{itemize} 
-\end{block} 
-\end{frame} 
+\item We only need and assume independent censoring for our covariates of interest.
+\end{itemize}
+\end{block}
+\end{frame}
 
 
-\begin{frame} 
-\frametitle{Assumptions about censoring (cont'd)} 
-\begin{block}{Remark 1.5 - Informative vs. NonInformative Censoring} 
-\begin{itemize} 
+\begin{frame}
+\frametitle{Assumptions about censoring (cont'd)}
+\begin{block}{Remark 1.5 - Informative vs. NonInformative Censoring}
+\begin{itemize}
 \item \textbf{ Non-informative censoring} occurs if the distribution of survival times ($T$) provides no
 information about the distribution of censorship times ($C$), and vice versa. Otherwise, the
 censoring is \textbf{informative}.
 \item Independent censoring commonly fails when there is a drug side-effect that causes patients to drop out. In this case, those in the treatment group are not being censored at ``random'' and if we assume independent censoring then we are overestimating the survival experience of the treatment group. We assume independent censoring in this course.
-\end{itemize} 
-\end{block} 
-\end{frame} 
+\end{itemize}
+\end{block}
+\end{frame}
 
 
 \section{Chapter 2}
@@ -346,8 +346,8 @@ Consider the following data (from chapter 1) of times to remission of leukemia p
 \begin{tabular}{l l}
 Group 1 (n=21) treatment & Group 2 (n=22) placebo \\
  6, 6, 6, 7, 10, 13, 16, 22, 23, & 1, 1, 2, 2, 3, 4, 4, 5, 5,  \\
- 6+, 19+, 20+, 25+, 32+,& 8, 8, 8, 8, 15, 17, 22, 23 \\
-  32+, 34+, 35+ &
+ 6+, 9+, 10+, 11+, 17+, 19+, & 8, 8, 8, 8, 11, 11, 12, 12, \\
+   20+, 25+, 32+, 32+, 34+, 35+ & 15, 17, 22, 23
 \end{tabular}
 \end{center}
 \end{table}
@@ -373,7 +373,7 @@ Note: + denotes censored
 
 \begin{frame}
 \frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
-\begin{block}{Kaplan-Meirer Estimate for Group 2}
+\begin{block}{Kaplan-Meirer Estimates for Group 2}
 \begin{columns}
     \begin{column}{0.48\textwidth}
         \includegraphics[width =\textwidth, height=5.5cm]{Ch2_KMGP2.JPG}
@@ -386,8 +386,32 @@ Note: + denotes censored
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\begin{block}{Problem 2.1 - Kaplan-Meirer Estimates for Group 1}
+         \includegraphics[width =\textwidth, height=5.5cm]{Ch1-leuk_data_a1.JPG}
+\end{block}
+Find the Kaplan-Meirer Estimates for Group 1 and plot the Kaplan-Meirer Curves for groups 1 and 2.
+\end{frame}
 
+\begin{frame}
+\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\begin{block}{Kaplan-Meirer Curves for Groups 1 and 2}
+         \includegraphics[width =\textwidth, height=5.5cm]{Ch2_KM_GR12.JPG}
+\end{block}
+\end{frame}
 
+\begin{frame}
+\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\begin{block}{Problem 2.2 - Kaplan-Meirer Estimates in R}
+\begin{enumerate}
+\item Find the KM Estimates for the entire remission data set in R
+\item Plot the KM curve for the entire remission data set in R 
+\item Find the KM Estimates for group 1 and group 2 in R
+\item For groups 1 and 2 and plot the KM Curves for Groups 1 and 2 in R
+\end{enumerate} 
+\end{block}
+\end{frame}
 
 \section{Chapter 7}
 \begin{frame}

@@ -6,7 +6,7 @@ load("addicts.rda")
 Y<-Surv(addicts$survt,addicts$status==1)
 #Create a model with intercept only and no partitioning 
 kmfit1=survfit(Y~1)
-#See your Kaplain Meirer survival curves 
+#See your Kaplan Meirer survival curves 
 summary(kmfit1)
 #summary(survfit(Surv(addicts$survt,addicts$status==1)~1))
 #way to get particular estimate at time or times
