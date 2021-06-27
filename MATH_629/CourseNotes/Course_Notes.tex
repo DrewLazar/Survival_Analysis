@@ -167,7 +167,38 @@ This is known as the  \textbf{Kaplan-Meirer} or \textbf{ product limit estimator
 \end{align*}
 
 \prbm{2.2}
-Open Remission\_make and MATH629\_code.R and follow the steps. 
+Open Remission\_make and MATH629\_code.R and follow the steps.
+
+\ir{2.3} 
+
+\begin{enumerate}
+\item If we have two large samples from two quantitative populations we can test whether the difference between the sample means is statistically significant. In that case, we can reject the null hypothesis that the population means are the same. Use the statistic
+\[
+\frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}} \sim t(n_1+n_2-2) 
+\]
+\item If we have large samples from two qualitative populations we can test whether levels of categorical variables are significantly dependent. We use the statistic
+\[
+  \sum_{j=1}^b \sum_{i=1}^a \frac{(X_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2((b-1)(a-1))
+  \]
+\item We can test whether the survival experiences of two group are statistically different using a chi-squared test. This is known as a \textbf{log-rank test}. 
+\end{enumerate} 
+
+\ir{2.4} If the survival experiences are the same, for all $f$, for both groups, you expect the proportion of failures to be approximately the observed number of failures. That is, you expect, 
+\[
+m_{if} \approx e_{if} 
+\] 
+for $i=1,2$ and all $f$. 
+Our LRS is
+\[
+\text{LRS} = LRS = \frac{(O_i - E_i)^2}{\text{Var}(O_i-E_i)} = \frac{(10.26)^2}{6.285} = 16.793
+\] 
+Since, $\chi^2_{0.05} = 3.841$ and $16.793>3.841$ we reject $H_0$. Alternatively, 
+p-value = $P(X > 16.793) =  0.000042.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>0.000042.$. 
+Note the alternative LRS is
+\[
+LRS = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} = (-10.26)^2/19.26 + (10.26)^2/10.74 = 15.276 
+\]
+which has p-value = $P(X > 15.276) =  .000093.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>.000093.$ using this statistic. 
 
 \CPT{3}
 

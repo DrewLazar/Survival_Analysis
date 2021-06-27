@@ -372,7 +372,7 @@ Note: + denotes censored
 
 
 \begin{frame}
-\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}
 \begin{block}{Kaplan-Meirer Estimates for Group 2}
 \begin{columns}
     \begin{column}{0.48\textwidth}
@@ -387,7 +387,7 @@ Note: + denotes censored
 \end{frame}
 
 \begin{frame}
-\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}
 \begin{block}{Problem 2.1 - Kaplan-Meirer Estimates for Group 1}
          \includegraphics[width =\textwidth, height=5.5cm]{Ch1-leuk_data_a1.JPG}
 \end{block}
@@ -395,23 +395,89 @@ Find the Kaplan-Meirer Estimates for Group 1 and plot the Kaplan-Meirer Curves f
 \end{frame}
 
 \begin{frame}
-\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}
 \begin{block}{Kaplan-Meirer Curves for Groups 1 and 2}
          \includegraphics[width =\textwidth, height=5.5cm]{Ch2_KM_GR12.JPG}
 \end{block}
 \end{frame}
 
 \begin{frame}
-\frametitle{\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}}
+\frametitle{Constructing Kaplan-Meirer Curves (cont'd)}
 \begin{block}{Problem 2.2 - Kaplan-Meirer Estimates in R}
 \begin{enumerate}
 \item Find the KM Estimates for the entire remission data set in R
-\item Plot the KM curve for the entire remission data set in R 
+\item Plot the KM curve for the entire remission data set in R
 \item Find the KM Estimates for group 1 and group 2 in R
 \item For groups 1 and 2 and plot the KM Curves for Groups 1 and 2 in R
-\end{enumerate} 
+\end{enumerate}
 \end{block}
 \end{frame}
+
+\begin{frame} 
+\frametitle{Log-Rank Tests for Survival Experiences} 
+\begin{block}{Log-Rank Tests for two groups} 
+\includegraphics[width =\textwidth, height=5.5cm]{CH2_LogRank.JPG}
+\end{block} 
+\end{frame} 
+
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for two groups}
+We can test whether the null hypothesis, $H_0$, that the survival experiences for these two groups is the same as follows.
+\begin{enumerate}
+\item Find the \textbf{expected cell counts}.
+\begin{align*}
+e_{1f} & = \left(\frac{n_{1f}}{n_{1f} + n_{2f}}\right)(m_{1f} + m_{2f}) \\
+e_{2f} & = \left(\frac{n_{2f}}{n_{2f} + n_{2f}}\right)(m_{1f} + m_{2f})
+\end{align*}
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for two groups (cont'd)}
+
+\begin{enumerate}
+ \setcounter{enumi}{1}
+\item Find the total number of observed minus expected failures
+\[
+O_i - E_i = \sum_{i=1}^k (m_{if} - e_{if}), \, i=1,2
+\]
+Where $k$ is total number of events. \\ 
+We must have $O_1 - E_1 = -(O_2- E_2)$.
+\end{enumerate}
+\end{block} 
+\end{frame}
+
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for two groups (cont'd)}
+ \begin{enumerate}
+  \setcounter{enumi}{2}
+\item Form the log rank statistic
+\[
+LRS = \frac{(O_i - E_i)^2}{\text{Var}(O_i-E_i)} \text{ for } i=1 \text{ or } i=2
+\]
+or alternative LRS
+\[
+LRS = \sum_i^{\text{\# groups}} \frac{(O_i - E_i)^2}{E_i}
+\]
+\item Reject $H_0$ iff $\text{LRS} > \chi^2_\alpha$ where $\alpha$ is the significance of test or
+\[
+\text{p-value} = P(X>LRS), \,  X \sim \chi^2(1) \text{ reject iff p-value} \le \alpha.  
+\] 
+
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame} 
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for two groups (cont'd) - Remission Data}
+\includegraphics[width =\textwidth, height=5.5cm]{CH2_ComputeLR}
+\end{block} 
+\end{frame} 
 
 \section{Chapter 7}
 \begin{frame}
