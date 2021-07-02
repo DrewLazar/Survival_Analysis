@@ -15,3 +15,5 @@ vets <-
     Prior.Therapy=V10,
     Status=V11
     )
+vets$Performance.Category<-cut(vets$Performance.status,c(-1,59,74,100),labels=c('1','2','3'))
+

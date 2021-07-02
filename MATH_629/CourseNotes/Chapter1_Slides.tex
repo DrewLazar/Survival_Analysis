@@ -46,293 +46,293 @@
 \begin{frame}
     \titlepage
 \end{frame}
-\section{Chapter 1}
-\begin{frame}\frametitle{Types of Censoring}
-\bn
-\item \textbf{Right Censoring:} An observation is \textbf{right censored} if the survival time is longer than its observed value. Some examples:
-\bni
-\item A five year study is conducted on how long it takes for machines to break down. A particular machine is observed from the start of the study but breaks down \textbf{after the study ends}.
-\item Patients are followed for ten years after having a major heart attack. The response variable is time until death. A patient \textbf{withdraws} from the study after being followed for 2 years and moves to another country.
-\item A study is done on smokers who have quit to see if they will resume smoking. Study participants are contacted by telephone. A participant changes his phone number, can not be reached and is \textbf{lost to follow-up}.
-\en
-\en
-\end{frame}
-\begin{frame} \frametitle{Types of Censoring cont'd}
-
-\bn \setcounter{enumi}{2}
-\item \textbf{Left Censoring:} An observation is \textbf{left censored} if the survival time is shorter than its observed value. For example, we following persons at risk until they become HIV positive.  For some patients we may not know the exact time becoming HIV, and therefore do not know exactly when the failure occurred.
-\item \textbf{Interval Censoring:} An observation is \textbf{interval censored} if the event is known to occur in some interval. For example, a study is done to see the time until children can count to ten. The children are observed every 2 months. A child can count to ten at a follow-up time but couldn't count to ten at the previous visit.
-\en
-\end{frame}
-
-
-\begin{frame}
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width = \textwidth]{Ch1-RightCensor.JPG}
-    \end{column}
-    \hspace{-40pt}
-    \begin{column}{0.48\textwidth}
-         \includegraphics[width = \textwidth]{Ch1-IntervalCensor.JPG} \\
-              \vspace{-20pt}
-         \includegraphics[width =\textwidth]{Ch1-LeftCensor.JPG}
-    \end{column}
-\end{columns}
-\end{frame}
-\begin{frame} \frametitle{Considerations about hazard rate}
-\begin{block}{Hazard rate is dependent on time}
-\begin{enumerate}
-\item The hazard rate is dependent on the unit of measurement of time. For example, say $S$ is time measured in seconds.
-\[
-h(s) = \lim_{\Delta s \to 0} \frac{P(S + \Delta s|S \ge s)}{\Delta s}
-\]
-
-If say, $T$ is time measure in minutes then
-\begin{align*}
-h(t) & = \lim_{\Delta t \to 0} \frac{P( + \Delta t|S \ge t)}{\Delta t} \\
-& = \lim_{\Delta s \to 0} \frac{P(T/60 + \Delta t/60| T/60 \ge t/60)}{ \Delta t/60} = 60 h(s)
-\end{align*}
-
-\end{enumerate}
-\end{block}
-\end{frame}
-
-\begin{frame}\frametitle{Considerations about hazard rate (cont'd)}
-\begin{block}{Other considerations about hazard rate}
-\begin{enumerate}
-  \setcounter{enumi}{1}
-\item Relative rates of hazard are the same at any particular time.  For example, at any particular time (in seconds),~$s$, let $h(s,0)$ be the hazard for men (sex=0) and $h(s,1)$ be the hazard for women (sex=1). Then with $t$ the time in minutes,
-    \[ \dfrac{h(t,0)}{h(t,1)} =  \dfrac{60 h(s,0)}{60 h(s,1)} = \dfrac{ h(s,0)}{ h(s,1)}
-    \]
-\item Can identify underlying distribution from hazard rate, for example, exponential has constant hazard, Weibull has proportional and monotonic hazard, lognormal has increasing than decreasing hazard, etc.
-\item Can recover survival function from hazard rate.
-\end{enumerate}
-\end{block}
-\end{frame}
-
-\begin{frame}\frametitle{Hazard Functions of Different Distributions}
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width = \textwidth]{Hazards1.JPG} \\
-           \includegraphics[width = \textwidth]{Hazards2.JPG}
-    \end{column}
-    \hspace{-10pt}
-    \begin{column}{0.48\textwidth}
-              \vspace{-20pt}
-         \includegraphics[width =\textwidth]{Hazards3.JPG}
-    \end{column}
-\end{columns}
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Ways to represent (right censored) survival data (cont'd)}
-\begin{block}{First way to represent data }
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_dat_a.JPG}
-    \end{column}
-    \hspace{-10pt}
-    \begin{column}{0.48\textwidth}
-         \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_dat_b.JPG}
-    \end{column}
-\end{columns}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ways to represent (right censored) survival data}
-Consider the following data of times to remission of leukemia patients:
-\begin{block}{Second way to represent data }
-\begin{table}
-\begin{center}
-\begin{tabular}{l l}
-Group 1 (n=21) treatment & Group 2 (n=21) placebo \\
- 6, 6, 6, 7, 10, 13, 16, 22, 23, & 1, 1, 2, 2, 3, 4, 4, 5, 5,  \\
- 6+, 9+, 10+, 11+, 17+, 19+, & 8, 8, 8, 8, 11, 11, 12, 12, \\
-   20+, 25+, 32+, 32+, 34+, 35+ & 15, 17, 22, 23
-\end{tabular}
-\end{center}
-\end{table}
-Note: + denotes censored
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ways to represent (right censored) survival data (cont'd)}
-\begin{block}{Third way to represent data }
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_data_a1.JPG}
-    \end{column}
-    \hspace{-10pt}
-    \begin{column}{0.48\textwidth}
-         \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_data_b1.JPG}
-    \end{column}
-\end{columns}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ways to represent (right censored) survival data (cont'd)}
-\begin{block}{Fourth way to represent data - Counting Process (CP) format}
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_1.JPG}
-    \end{column}
-    \hspace{-10pt}
-    \begin{column}{0.48\textwidth}
-         \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_2.JPG}
-    \end{column}
-\end{columns}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ways to represent (right censored) survival data (cont'd)}
-\begin{block}{Fourth way to represent data }
-\begin{itemize}
-\item This data is the the recurrence of bladder cancer tumors after transurethral surgical excision.
-\item Covariates are tx (0 or 1), num and size. Only tx=0 is included here.
-\item $i$ is the subject, $j$ is the number of the event for the subject.
-\item $d$ is censoring status, \textbf{start} is when event starts, \textbf{stop} is last time of observation of event.
-\item For subject 6, two events are observed.
-\begin{enumerate}[i.]
-\item The first tumor starts at time 0 and stops (excised) at time 6.
-\item The second tumor starts at time 6 and the observation is censored at time 10.
-\end{enumerate}
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Kaplan Meier Estimates of Survival}
- \includegraphics[width =\textwidth, height=5.5cm]{Ch1_estsurv.JPG}
- \end{frame}
-
-\begin{frame}
-\frametitle{Remission Data with LogWBC (Confounding Example)}
- \includegraphics[width =\textwidth, height=6.5cm]{Ch1-RemissionwLogwbc.JPG}
- \end{frame}
-
-\begin{frame}
-\frametitle{Confounding Example}
- \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Confound.JPG}
- \end{frame}
-
-\begin{frame}
-\begin{block}{Remark 1.4 - Confounding}
-\begin{itemize}
-\item We see the distribution of logWBC for the Treatment group and for the Placebo group.
-\item The Placebo group tends to have higher logWBC with the mean logWBC for Treatment of 1.8 and the the mean logWBC for Placebo of 4.1.
-\item Thus, if lower logWBC correlates with greater survival times, the effect of the treatment in creating greater survival times might be from this correlation rather than the effect of the treatment in itself.
-\item In this case, the effect of treatment is \textbf{confounded} by the effect of treatment.
-\item Confounding is dealt with by including secondary variables in semi-parametric models and parametric models.
-\end{itemize}
-\end{block}
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Interaction Example}
- \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Interact.JPG}
- \end{frame}
-
-
-\begin{frame}
-\begin{block}{Remark 1.4 - Interaction}
-\begin{itemize}
-\item We see the affect of Treatment depends on the level of logWBC.
-\item For high logWBC Treatment has a positive effect on survival probabilities.
-\item For low logWBC Treatment does not have a significant effect on survival probabilities.
-\item Interaction is dealt with by 1) partitioning data on different levels of the secondary variable or 2) by including interaction terms in semi-parametric and parametric models.
-\end{itemize}
-\end{block}
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Assumptions about (right) censoring}
-\begin{block}{Definition 1.9 - Random Censoring and Independent Censoring}
-\begin{itemize}
-\item \textbf{Random censoring} means that subjects who are censored at
-time $t$ are representative of all the study subjects who remained at risk at time $t$ with respect to their survival experience. Thus, the failure rate for subjects who are
-censored is assumed to be equal to the failure rate for subjects who remained in the risk set who are not censored.
-\item \textbf{Independent censoring} means within any subgroup of interest, the subjects who are censored at time $t$ should be representative of all the subjects in that subgroup who remained at risk at time $t$ with respect to their survival experience. Thus, censoring is independent provided that it is random within any subgroup of interest.
-\end{itemize}
-\end{block}
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Assumptions about censoring}
-\begin{block}{Example 1.1}
-Consider a population with two groups - Group A and Group B.
-\begin{center}
-\textbf{Group A}
-\begin{tabular}{ c c c c }
- Time & \# at risk & \# events & \# survived \\ \hline
- 0-3 yrs & 100 & 20 & 80 \\
- 3–5 yrs &  40 & 5 & 35
-\end{tabular} \\
-40 left study at the end of 3 years
-\end{center}
-\begin{center}
-\textbf{Group B}
-\begin{tabular}{ c c c c }
- Time & \# at risk & \# events & \# survived \\ \hline
- 0-3 yrs & 100 & 40 & 60 \\
- 3–5 yrs &  50 & 10 & 40
-\end{tabular} \\
-10 left study at the end of 3 years.
-\end{center}
-\end{block}
-Assuming, independent censoring summarize the 3 and 5 year survival experiences of both groups.
-\end{frame}
-
-\begin{frame}
-\frametitle{Assumptions about censoring (cont'd)}
-\begin{block}{Example 1.1}
-Consider the entire population.
-\begin{center}
-\textbf{All}
-\begin{tabular}{ c c c c }
- Time & \# at risk & \# events & \# survived \\ \hline
- 0-3 yrs & 200 & 60 & 140 \\
- 3–5 yrs &  90 & 15 & 75
-\end{tabular} \\
-50 left study at the end of 3 years.
-\end{center}
-\end{block}
-If we assume independent censoring, do we have random censoring?
-\end{frame}
-
-\begin{frame}
-\frametitle{Assumptions about censoring (cont'd)}
-\begin{block}{Remark 1.4 - Random vs. Independent Censoring}
-\begin{itemize}
-\item Random censoring is a stronger condition than independent censoring.
-\item Independent censoring only applies to groups of interest and random censoring applies to every subgroup including the entire data set.
-\item Independent censoring is random censoring conditional on each level of covariates.
-\item We only need and assume independent censoring for our covariates of interest.
-\end{itemize}
-\end{block}
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Assumptions about censoring (cont'd)}
-\begin{block}{Remark 1.5 - Informative vs. NonInformative Censoring}
-\begin{itemize}
-\item \textbf{ Non-informative censoring} occurs if the distribution of survival times ($T$) provides no
-information about the distribution of censorship times ($C$), and vice versa. Otherwise, the
-censoring is \textbf{informative}.
-\item Independent censoring commonly fails when there is a drug side-effect that causes patients to drop out. In this case, those in the treatment group are not being censored at ``random'' and if we assume independent censoring then we are overestimating the survival experience of the treatment group. We assume independent censoring in this course.
-\end{itemize}
-\end{block}
-\end{frame}
+%\section{Chapter 1}
+%\begin{frame}\frametitle{Types of Censoring}
+%\bn
+%\item \textbf{Right Censoring:} An observation is \textbf{right censored} if the survival time is longer than its observed value. Some examples:
+%\bni
+%\item A five year study is conducted on how long it takes for machines to break down. A particular machine is observed from the start of the study but breaks down \textbf{after the study ends}.
+%\item Patients are followed for ten years after having a major heart attack. The response variable is time until death. A patient \textbf{withdraws} from the study after being followed for 2 years and moves to another country.
+%\item A study is done on smokers who have quit to see if they will resume smoking. Study participants are contacted by telephone. A participant changes his phone number, can not be reached and is \textbf{lost to follow-up}.
+%\en
+%\en
+%\end{frame}
+%\begin{frame} \frametitle{Types of Censoring cont'd}
+%
+%\bn \setcounter{enumi}{2}
+%\item \textbf{Left Censoring:} An observation is \textbf{left censored} if the survival time is shorter than its observed value. For example, we following persons at risk until they become HIV positive.  For some patients we may not know the exact time becoming HIV, and therefore do not know exactly when the failure occurred.
+%\item \textbf{Interval Censoring:} An observation is \textbf{interval censored} if the event is known to occur in some interval. For example, a study is done to see the time until children can count to ten. The children are observed every 2 months. A child can count to ten at a follow-up time but couldn't count to ten at the previous visit.
+%\en
+%\end{frame}
+%
+%
+%\begin{frame}
+%\begin{columns}
+%    \begin{column}{0.48\textwidth}
+%        \includegraphics[width = \textwidth]{Ch1-RightCensor.JPG}
+%    \end{column}
+%    \hspace{-40pt}
+%    \begin{column}{0.48\textwidth}
+%         \includegraphics[width = \textwidth]{Ch1-IntervalCensor.JPG} \\
+%              \vspace{-20pt}
+%         \includegraphics[width =\textwidth]{Ch1-LeftCensor.JPG}
+%    \end{column}
+%\end{columns}
+%\end{frame}
+%\begin{frame} \frametitle{Considerations about hazard rate}
+%\begin{block}{Hazard rate is dependent on time}
+%\begin{enumerate}
+%\item The hazard rate is dependent on the unit of measurement of time. For example, say $S$ is time measured in seconds.
+%\[
+%h(s) = \lim_{\Delta s \to 0} \frac{P(S + \Delta s|S \ge s)}{\Delta s}
+%\]
+%
+%If say, $T$ is time measure in minutes then
+%\begin{align*}
+%h(t) & = \lim_{\Delta t \to 0} \frac{P( + \Delta t|S \ge t)}{\Delta t} \\
+%& = \lim_{\Delta s \to 0} \frac{P(T/60 + \Delta t/60| T/60 \ge t/60)}{ \Delta t/60} = 60 h(s)
+%\end{align*}
+%
+%\end{enumerate}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}\frametitle{Considerations about hazard rate (cont'd)}
+%\begin{block}{Other considerations about hazard rate}
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%\item Relative rates of hazard are the same at any particular time.  For example, at any particular time (in seconds),~$s$, let $h(s,0)$ be the hazard for men (sex=0) and $h(s,1)$ be the hazard for women (sex=1). Then with $t$ the time in minutes,
+%    \[ \dfrac{h(t,0)}{h(t,1)} =  \dfrac{60 h(s,0)}{60 h(s,1)} = \dfrac{ h(s,0)}{ h(s,1)}
+%    \]
+%\item Can identify underlying distribution from hazard rate, for example, exponential has constant hazard, Weibull has proportional and monotonic hazard, lognormal has increasing than decreasing hazard, etc.
+%\item Can recover survival function from hazard rate.
+%\end{enumerate}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}\frametitle{Hazard Functions of Different Distributions}
+%\begin{columns}
+%    \begin{column}{0.48\textwidth}
+%        \includegraphics[width = \textwidth]{Hazards1.JPG} \\
+%           \includegraphics[width = \textwidth]{Hazards2.JPG}
+%    \end{column}
+%    \hspace{-10pt}
+%    \begin{column}{0.48\textwidth}
+%              \vspace{-20pt}
+%         \includegraphics[width =\textwidth]{Hazards3.JPG}
+%    \end{column}
+%\end{columns}
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%\frametitle{Ways to represent (right censored) survival data (cont'd)}
+%\begin{block}{First way to represent data }
+%\begin{columns}
+%    \begin{column}{0.48\textwidth}
+%        \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_dat_a.JPG}
+%    \end{column}
+%    \hspace{-10pt}
+%    \begin{column}{0.48\textwidth}
+%         \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_dat_b.JPG}
+%    \end{column}
+%\end{columns}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Ways to represent (right censored) survival data}
+%Consider the following data of times to remission of leukemia patients:
+%\begin{block}{Second way to represent data }
+%\begin{table}
+%\begin{center}
+%\begin{tabular}{l l}
+%Group 1 (n=21) treatment & Group 2 (n=21) placebo \\
+% 6, 6, 6, 7, 10, 13, 16, 22, 23, & 1, 1, 2, 2, 3, 4, 4, 5, 5,  \\
+% 6+, 9+, 10+, 11+, 17+, 19+, & 8, 8, 8, 8, 11, 11, 12, 12, \\
+%   20+, 25+, 32+, 32+, 34+, 35+ & 15, 17, 22, 23
+%\end{tabular}
+%\end{center}
+%\end{table}
+%Note: + denotes censored
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Ways to represent (right censored) survival data (cont'd)}
+%\begin{block}{Third way to represent data }
+%\begin{columns}
+%    \begin{column}{0.48\textwidth}
+%        \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_data_a1.JPG}
+%    \end{column}
+%    \hspace{-10pt}
+%    \begin{column}{0.48\textwidth}
+%         \includegraphics[width =\textwidth, height=6cm]{Ch1-leuk_data_b1.JPG}
+%    \end{column}
+%\end{columns}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Ways to represent (right censored) survival data (cont'd)}
+%\begin{block}{Fourth way to represent data - Counting Process (CP) format}
+%\begin{columns}
+%    \begin{column}{0.48\textwidth}
+%        \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_1.JPG}
+%    \end{column}
+%    \hspace{-10pt}
+%    \begin{column}{0.48\textwidth}
+%         \includegraphics[width =\textwidth, height=5.5cm]{Ch1-CPFormat_2.JPG}
+%    \end{column}
+%\end{columns}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Ways to represent (right censored) survival data (cont'd)}
+%\begin{block}{Fourth way to represent data }
+%\begin{itemize}
+%\item This data is the the recurrence of bladder cancer tumors after transurethral surgical excision.
+%\item Covariates are tx (0 or 1), num and size. Only tx=0 is included here.
+%\item $i$ is the subject, $j$ is the number of the event for the subject.
+%\item $d$ is censoring status, \textbf{start} is when event starts, \textbf{stop} is last time of observation of event.
+%\item For subject 6, two events are observed.
+%\begin{enumerate}[i.]
+%\item The first tumor starts at time 0 and stops (excised) at time 6.
+%\item The second tumor starts at time 6 and the observation is censored at time 10.
+%\end{enumerate}
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Kaplan Meier Estimates of Survival}
+% \includegraphics[width =\textwidth, height=5.5cm]{Ch1_estsurv.JPG}
+% \end{frame}
+%
+%\begin{frame}
+%\frametitle{Remission Data with LogWBC (Confounding Example)}
+% \includegraphics[width =\textwidth, height=6.5cm]{Ch1-RemissionwLogwbc.JPG}
+% \end{frame}
+%
+%\begin{frame}
+%\frametitle{Confounding Example}
+% \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Confound.JPG}
+% \end{frame}
+%
+%\begin{frame}
+%\begin{block}{Remark 1.4 - Confounding}
+%\begin{itemize}
+%\item We see the distribution of logWBC for the Treatment group and for the Placebo group.
+%\item The Placebo group tends to have higher logWBC with the mean logWBC for Treatment of 1.8 and the the mean logWBC for Placebo of 4.1.
+%\item Thus, if lower logWBC correlates with greater survival times, the effect of the treatment in creating greater survival times might be from this correlation rather than the effect of the treatment in itself.
+%\item In this case, the effect of treatment is \textbf{confounded} by the effect of treatment.
+%\item Confounding is dealt with by including secondary variables in semi-parametric models and parametric models.
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%
+%
+%\begin{frame}
+%\frametitle{Interaction Example}
+% \includegraphics[width =\textwidth, height=6.5cm]{Ch1_Interact.JPG}
+% \end{frame}
+%
+%
+%\begin{frame}
+%\begin{block}{Remark 1.4 - Interaction}
+%\begin{itemize}
+%\item We see the affect of Treatment depends on the level of logWBC.
+%\item For high logWBC Treatment has a positive effect on survival probabilities.
+%\item For low logWBC Treatment does not have a significant effect on survival probabilities.
+%\item Interaction is dealt with by 1) partitioning data on different levels of the secondary variable or 2) by including interaction terms in semi-parametric and parametric models.
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%
+%
+%\begin{frame}
+%\frametitle{Assumptions about (right) censoring}
+%\begin{block}{Definition 1.9 - Random Censoring and Independent Censoring}
+%\begin{itemize}
+%\item \textbf{Random censoring} means that subjects who are censored at
+%time $t$ are representative of all the study subjects who remained at risk at time $t$ with respect to their survival experience. Thus, the failure rate for subjects who are
+%censored is assumed to be equal to the failure rate for subjects who remained in the risk set who are not censored.
+%\item \textbf{Independent censoring} means within any subgroup of interest, the subjects who are censored at time $t$ should be representative of all the subjects in that subgroup who remained at risk at time $t$ with respect to their survival experience. Thus, censoring is independent provided that it is random within any subgroup of interest.
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%\frametitle{Assumptions about censoring}
+%\begin{block}{Example 1.1}
+%Consider a population with two groups - Group A and Group B.
+%\begin{center}
+%\textbf{Group A}
+%\begin{tabular}{ c c c c }
+% Time & \# at risk & \# events & \# survived \\ \hline
+% 0-3 yrs & 100 & 20 & 80 \\
+% 3–5 yrs &  40 & 5 & 35
+%\end{tabular} \\
+%40 left study at the end of 3 years
+%\end{center}
+%\begin{center}
+%\textbf{Group B}
+%\begin{tabular}{ c c c c }
+% Time & \# at risk & \# events & \# survived \\ \hline
+% 0-3 yrs & 100 & 40 & 60 \\
+% 3–5 yrs &  50 & 10 & 40
+%\end{tabular} \\
+%10 left study at the end of 3 years.
+%\end{center}
+%\end{block}
+%Assuming, independent censoring summarize the 3 and 5 year survival experiences of both groups.
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Assumptions about censoring (cont'd)}
+%\begin{block}{Example 1.1}
+%Consider the entire population.
+%\begin{center}
+%\textbf{All}
+%\begin{tabular}{ c c c c }
+% Time & \# at risk & \# events & \# survived \\ \hline
+% 0-3 yrs & 200 & 60 & 140 \\
+% 3–5 yrs &  90 & 15 & 75
+%\end{tabular} \\
+%50 left study at the end of 3 years.
+%\end{center}
+%\end{block}
+%If we assume independent censoring, do we have random censoring?
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Assumptions about censoring (cont'd)}
+%\begin{block}{Remark 1.4 - Random vs. Independent Censoring}
+%\begin{itemize}
+%\item Random censoring is a stronger condition than independent censoring.
+%\item Independent censoring only applies to groups of interest and random censoring applies to every subgroup including the entire data set.
+%\item Independent censoring is random censoring conditional on each level of covariates.
+%\item We only need and assume independent censoring for our covariates of interest.
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%
+%
+%\begin{frame}
+%\frametitle{Assumptions about censoring (cont'd)}
+%\begin{block}{Remark 1.5 - Informative vs. NonInformative Censoring}
+%\begin{itemize}
+%\item \textbf{ Non-informative censoring} occurs if the distribution of survival times ($T$) provides no
+%information about the distribution of censorship times ($C$), and vice versa. Otherwise, the
+%censoring is \textbf{informative}.
+%\item Independent censoring commonly fails when there is a drug side-effect that causes patients to drop out. In this case, those in the treatment group are not being censored at ``random'' and if we assume independent censoring then we are overestimating the survival experience of the treatment group. We assume independent censoring in this course.
+%\end{itemize}
+%\end{block}
+%\end{frame}
 
 
 \section{Chapter 2}
@@ -413,12 +413,12 @@ Find the Kaplan-Meirer Estimates for Group 1 and plot the Kaplan-Meirer Curves f
 \end{block}
 \end{frame}
 
-\begin{frame} 
-\frametitle{Log-Rank Tests for Survival Experiences} 
-\begin{block}{Log-Rank Tests for two groups} 
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences}
+\begin{block}{Log-Rank Tests for two groups}
 \includegraphics[width =\textwidth, height=5.5cm]{CH2_LogRank.JPG}
-\end{block} 
-\end{frame} 
+\end{block}
+\end{frame}
 
 \begin{frame}
 \frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
@@ -444,10 +444,10 @@ e_{2f} & = \left(\frac{n_{2f}}{n_{2f} + n_{2f}}\right)(m_{1f} + m_{2f})
 \[
 O_i - E_i = \sum_{i=1}^k (m_{if} - e_{if}), \, i=1,2
 \]
-Where $k$ is total number of events. \\ 
+Where $k$ is total number of events. \\
 We must have $O_1 - E_1 = -(O_2- E_2)$.
 \end{enumerate}
-\end{block} 
+\end{block}
 \end{frame}
 
 \begin{frame}
@@ -459,97 +459,157 @@ We must have $O_1 - E_1 = -(O_2- E_2)$.
 \[
 LRS = \frac{(O_i - E_i)^2}{\text{Var}(O_i-E_i)} \text{ for } i=1 \text{ or } i=2
 \]
-or alternative LRS
+or approximate LRS
 \[
-LRS = \sum_i^{\text{\# groups}} \frac{(O_i - E_i)^2}{E_i}
+LRS = \sum_i^{2} \frac{(O_i - E_i)^2}{E_i}
 \]
-\item Reject $H_0$ iff $\text{LRS} > \chi^2_\alpha$ where $\alpha$ is the significance of test or
+\item Reject $H_0$ iff $\text{LRS} > \chi^2_{\alpha,1}$ where $\alpha$ is the significance of test or
 \[
-\text{p-value} = P(X>LRS), \,  X \sim \chi^2(1) \text{ reject iff p-value} \le \alpha.  
-\] 
-
+\text{p-value} = P(X>LRS), \,  X \sim \chi^2_1 \text{ reject iff p-value} \le \alpha.
+\]
 \end{enumerate}
 \end{block}
 \end{frame}
 
-\begin{frame} 
+\begin{frame}
 \frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
 \begin{block}{Log-Rank test for two groups (cont'd) - Remission Data}
 \includegraphics[width =\textwidth, height=5.5cm]{CH2_ComputeLR}
-\end{block} 
-\end{frame} 
-
-\section{Chapter 7}
-\begin{frame}
-\begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}
-\begin{align*}
-& S(t) = P(T>t) = \int_t^\infty f(u) du  \\
-& h(t) = \dfrac{-d[S(t)]/dt}{S(t)} \\
-& S(t) = \exp\left(-\int_0^t h(u)\right) \\
-& f(t) = h(t) S(t)
-\end{align*}
-$H(u)=\int_0^t h(u)$ is known as the \textbf{cumulative hazard function}.
 \end{block}
 \end{frame}
+
+
 \begin{frame}
-\begin{block}{Definition 7.1 - Three properties of survival analysis populations}
-Let $X$ and $X^*$ be any two different specifications of the covariates.
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for $G>2$ groups}
+The null hypothesis, $H_0$, is that the survival experiences for \textit{all} groups is the same.
 \begin{enumerate}
-\item Proportional Hazards (PH)
-\[ h(t;X)/h(t;X^*) = \theta \text{ for all } t>0, \text{ constant } \theta > 0 \]
-\item Accelerated Failure Times (AFT)
-\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
-\]
-\item Proportional Odds (PO)
-\[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
-\]
+\item Find the \textbf{expected cell counts}.
+\begin{align*}
+e_{if} & = \left(\frac{n_{if}}{n_{f}}\right)(m_{f}) \\
+n_{f} & = \sum_{i=1}^G n_{if}, \, m_f =  \sum_{i=1}^G m_{if}\\
+\end{align*}
+where $n_{if}=$\# at risk at $t_f$ for group $i$, \, $m_{if}=$\# of failures at $t_f$ for group $i$.
 \end{enumerate}
 \end{block}
 \end{frame}
 
 \begin{frame}
-\begin{block}{Three popular parametric distributions}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for $G>2$ groups}
+\begin{enumerate}
+ \setcounter{enumi}{1}
+\item Find the total number of observed minus expected failures
+\[
+O_i - E_i = \sum_{i=1}^k (m_{if} - e_{if}), \, i=1,2, \ldots, G.
+\]
+where $k$ is total number of events.
+\item Find approximate log-rank statistic
+\[
+LRS = \sum_i^{\text{\# groups}} \frac{(O_i - E_i)^2}{E_i}
+\]
+Exact LRS is given in Chapter 2 appendix.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Log-Rank test for $G>2$ groups}
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item Reject $H_0$ iff $\text{LRS} > \chi^2_{\alpha,G-1}$ where $\alpha$ is significance of test or
+\[
+\text{p-value} = P(X>LRS), \,  X \sim \chi^2_{G-1} \text{ reject iff p-value} \le \alpha.
+\]
+\end{enumerate}
+\end{block}
+\begin{block}{Vets data set}
+Vets.dat reports on survival times in days for 137 patients from the Veteran’s Administration Lung Cancer Trial:
 \begin{center}
-\begin{tabular}{ c c c | c }
-Distribution & $S(t)$ & $h(t)$ & Accommodates \\ \hline
-Exponential & $\exp(\lambda t)$ & $\lambda$ & PH, AFT \\
-Weibull  & $\exp(-\lambda t^p)$ & $\lambda p t^{p-1}$ & PH, AFT\\
-Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda t^p}$ & PO, AFT
-\end{tabular}
+\includegraphics[width =4.5cm, height=3.5cm]{CH2_Vets}
 \end{center}
 \end{block}
 \end{frame}
-
-\begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model}
-\begin{block}{Remission Data}
-\begin{enumerate}[ ]
-\item Remission data ($n=42$). Covariate treatment status (TR).
-\item 21 given treatment (TR=1). 21 given placebo (TR=0).
-\end{enumerate}
-\end{block}
-\begin{block}{As a PH model}
-Assuming an exponential distribution, we parameterize
-\[ h(t;TR)= \lambda = \exp(\beta_0 + \beta_1 TRT)
-\]
-We have hazard ratio
-\[
-\text{ HR(TR=0 vs. TR=1) } = \exp(\beta_1 \text{TR})
-\]
- \end{block}
- \end{frame}
-
- \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
-
-\begin{block}{As a AFT model}
-Assuming an exponential distribution, we parameterize
-\[ \frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1 TRT)
-\]
-We have AF factor
-\[
-\text{ AF(TR=0 vs. TR=1) } = \exp(\alpha_1 \text{TR})
-\]
- \end{block}
- \end{frame}
+\begin{frame}
+\frametitle{Log-Rank Tests for Survival Experiences (cont'd)}
+\begin{block}{Problem 2.3 - Log-Rank Tests in R}
+\begin{enumerate}
+\item In R conduct a Log-Rank test for the two groups in the Remission Data. What conclusion do you reach? 
+\item In R conduct partition the Vets.dat data set into three groups by Performance Status: Group 1: 0-59, Group 2: 60-74 and Group 3: 75-100. Create and plot KM estimates for these three groups and conduct an overall log-rank test to test if the survival experiences are the same. What conclusion do you reach? 
+\end{enumerate} 
+\end{frame} 
+%\section{Chapter 7}
+%\begin{frame}
+%\begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}
+%\begin{align*}
+%& S(t) = P(T>t) = \int_t^\infty f(u) du  \\
+%& h(t) = \dfrac{-d[S(t)]/dt}{S(t)} \\
+%& S(t) = \exp\left(-\int_0^t h(u)\right) \\
+%& f(t) = h(t) S(t)
+%\end{align*}
+%$H(u)=\int_0^t h(u)$ is known as the \textbf{cumulative hazard function}.
+%\end{block}
+%\end{frame}
+%\begin{frame}
+%\begin{block}{Definition 7.1 - Three properties of survival analysis populations}
+%Let $X$ and $X^*$ be any two different specifications of the covariates.
+%\begin{enumerate}
+%\item Proportional Hazards (PH)
+%\[ h(t;X)/h(t;X^*) = \theta \text{ for all } t>0, \text{ constant } \theta > 0 \]
+%\item Accelerated Failure Times (AFT)
+%\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
+%\]
+%\item Proportional Odds (PO)
+%\[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
+%\]
+%\end{enumerate}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%\begin{block}{Three popular parametric distributions}
+%\begin{center}
+%\begin{tabular}{ c c c | c }
+%Distribution & $S(t)$ & $h(t)$ & Accommodates \\ \hline
+%Exponential & $\exp(\lambda t)$ & $\lambda$ & PH, AFT \\
+%Weibull  & $\exp(-\lambda t^p)$ & $\lambda p t^{p-1}$ & PH, AFT\\
+%Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda t^p}$ & PO, AFT
+%\end{tabular}
+%\end{center}
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model}
+%\begin{block}{Remission Data}
+%\begin{enumerate}[ ]
+%\item Remission data ($n=42$). Covariate treatment status (TR).
+%\item 21 given treatment (TR=1). 21 given placebo (TR=0).
+%\end{enumerate}
+%\end{block}
+%\begin{block}{As a PH model}
+%Assuming an exponential distribution, we parameterize
+%\[ h(t;TR)= \lambda = \exp(\beta_0 + \beta_1 TRT)
+%\]
+%We have hazard ratio
+%\[
+%\text{ HR(TR=0 vs. TR=1) } = \exp(\beta_1 \text{TR})
+%\]
+% \end{block}
+% \end{frame}
+%
+% \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
+%
+%\begin{block}{As a AFT model}
+%Assuming an exponential distribution, we parameterize
+%\[ \frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1 TRT)
+%\]
+%We have AF factor
+%\[
+%\text{ AF(TR=0 vs. TR=1) } = \exp(\alpha_1 \text{TR})
+%\]
+% \end{block}
+% \end{frame}
 
 
 
