@@ -540,6 +540,54 @@ Vets.dat reports on survival times in days for 137 patients from the Veteran’s
 \end{enumerate}
 \end{block} 
 \end{frame}
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test}
+\begin{block}{Alternative Log-Rank Tests}
+The Wilcoxon, Tarone-Ware, Peto and Flemington-Harrington tests work by weighting observed - expected numbers of events. That is, they weight terms in the log rank test
+\[
+O_i - E_i = \sum_f (m_{if}-e_{if}) \text{ to get } \sum_f w(t_{(f)})(m_{if}-e_{if})
+\]
+and use test statistic
+\[
+\frac{\left(\sum_f w(t_{(f)}) (m_{if}-e_{if})\right)^2}{var(w(t_{(f)}) (m_{if}-e_{if}))}. 
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Alternative Log-Rank Tests (cont'd)}
+We look at the Flemington-Harrington test (with $q=0$). This test uses weights
+\[ w(t_{(f)}) = \hat{S}(t_{(f-1)})^p \text{ with } p \ge 0
+\]
+\begin{itemize}
+\item If $p=0$ then we recover the log rank test. 
+\item If $p>0$ as $\hat{S}(t_{(f-1)})^p $ is a decreasing (non-increasing) function of $f$, earlier times are going to weigh more heavily in determining differences than later times.  
+\item How differences are weighed can be determined by examining the function $x^p$ for various $p>0$. 
+\end{itemize} 
+\end{block}
+\end{frame} 
+
+\begin{frame} 
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Alternative Log-Rank Tests (cont'd)}
+In the Flemington-Harrington test, for $p=3$ the importance of earlier times falls off quickly and then flattens. For $p=0.15$ the importance of early times decreases slowly then falls off quickly at the end. 
+\begin{center}
+\includegraphics[width =4.5cm, height=3.5cm]{Ch2_Flemharringtonplot.JPG}
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Problem 2.4 - Alternative Log-Rank Tests (cont'd)}
+Conduct the Flemington-Harrington Test in R with $p=0, 0.15, 0.5$ and 3 to compare the Placebo vs. Treatment groups in the remission data. Considering the Kaplan-Meirer estimates below, what should happen to the Chi-Square statistic as $p$ increases?
+\end{block} 
+\begin{center} 
+         \includegraphics[width =5.0cm, height=4.0cm]{Ch2_KM_GR12.JPG}
+\end{center} 
+\end{frame} 
+
 \section{Chapter 7}
 \begin{frame}
 \begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}

@@ -37,9 +37,9 @@ survdiff(Y~Remission$TR)
 #set the vets data set as the default with the attach function 
 attach(vets)
 #Create a survival object for vets
-Y<-Surv(Survival.time,Status==1)
+W<-Surv(Survival.time,Status==1)
 #statify on Performance.category and get the KM estimates 
-kmvet.per=survfit(Y~Performance.Category)
+kmvet.per=survfit(W~Performance.Category)
 #See your KM estimates by Performance.Category
 summary(kmvet.per)
 #Plot the KM Estimates 
@@ -49,6 +49,13 @@ plot(kmvet.per,lty=c('solid','dashed','dotted'),col=c('black','grey','blue'),
 legend("topright",c("1","2","3"),lty=c("solid","dashed",'dotted'),
        col=c('black','grey','blue'))
 survdiff(Y~Performance.Category)
+#Problem 2.4
+#Flemington-Harrington for p=0, 0.15, 0.5, 3
+for (p in c(0,.15,0.5,3)){
+sd= survdiff(Y~Remission$TR,rho=p)
+print(paste("The value of p is:",p)); print(sd)
+}
+
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
