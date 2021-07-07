@@ -55,7 +55,8 @@ for (p in c(0,.15,0.5,3)){
 sd= survdiff(Y~Remission$TR,rho=p)
 print(paste("The value of p is:",p)); print(sd)
 }
-
+#Problem 2.5 
+survdiff(Surv(survt,status) ~ TR + strata(LogWBC.group),data=Remission)
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
