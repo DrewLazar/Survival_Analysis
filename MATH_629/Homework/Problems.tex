@@ -11,9 +11,157 @@
 \setlength{\parindent}{0in}
 \setlist[enumerate]{leftmargin=*}
 \begin{document}
-Given the following survival time data for $n = 15$ subjects,
+
+
+\section{Chapter 1}
+
+
+
+\textbf{Problem 1.}
+Given the following survival time data (in weeks) for $n = 15$ subjects,
 $$
-2, 2, 2+, 2+, 2+, 3, 3, 3, 3+, 3+
-$$
+2, 2, 2+, 2+, 2+, 3, 3, 3, 3+, 3+, 3+, 5, 5, 7, 7+
+$$ where $+$ denotes censored data, complete the following table:
+
+\begin{center}
+\begin{tabular}{ c c c c }
+ $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\ 
+ $0$ & $0$ & $0$ & $15$ persons survive $\geq 0$ weeks \\  
+ $2$ &?  &?  &? \\
+ $3$ &?  &?  &? \\    
+ $5$ &?  &?  &? \\
+ $7$ &?  &?  &?   
+\end{tabular}
+\end{center}
+
+Also, compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) using the raw data (ignoring the $+$ signs for $\overline{T}$). \\
+
+
+
+\textbf{Problem 2.}
+Survival times (in years) are given for two study groups, each with $25$ participants. Group 1 has no history of chronic disease (CHR $= 0$),and group 2 has a positive history of chronic disease (CHR $= 1$): \\
+
+Group 1 (CHR $= 0$): 11.3+, 6.4, 8.5, 13.7+, 10.1, 10.0, 5.7, 8.2, 2.0, 12.0, 9.9, 13.6+, 8.8, 2.2, 1.6, 10.2, 10.7, 11.1+, 5.3, 2.5, 10.6, 2.5, 5.7, 4.8, 2.7 \\
+
+Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.2, 6.9, 1.4, 3.0, 3.9, 3.5, 6.5, 9.9, 3.6, 5.2, 9.8, 6.8, 4.7, 3.9 \\
+
+\begin{itemize}
+	\item[(a)] Complete the following survival tables (\textit{see the table Examples of Section VI on Page 24 for reference}) for both Group 1 and Group 2: \\
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+ & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\ 
+ Group 1: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\  
+ & $1.6$ &1  &0  & $25$ persons survive $\geq 1.6$ weeks \\
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$  
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+ & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\ 
+ Group 2: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\  
+ & $1.2$ &2  &0  & $25$ persons survive $\geq 1.2$ weeks \\
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$   
+\end{tabular}
+\end{center}
+
+	\item[(b)] Using the data above (and/or using R) plot the estimated survival curves for both groups.
+	
+	\item[(c)] Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) for each group.
+	
+	\item[(d)] Based on these information, briefly explain which group has better survival possibilities.
+\end{itemize}
+
+
+
+
+\textbf{Problem 3.}
+Derive the survival ($S(t)$) and hazard ($h(t)$) functions for the following distributions:
+\begin{itemize}
+	\item[(a)] the continuous Weibull distribution, whose pdf is
+	$$
+	f(t) = \begin{cases} \frac{k}{\lambda} \Big(\frac{t}{\lambda}\Big)^{k - 1} e^{-(t/\lambda)^k}, &t \geq 0 \\
+		0, &t < 0
+		\end{cases}
+	$$ where $k, \lambda > 0$ are fixed constants. \\
+	\item[(b)] the continuous Gamma distribution, whose pdf is
+	$$
+	f(t) = \begin{cases} \frac{1}{\Gamma(k) \lambda^k} t^{k - 1} e^{t/\lambda}, &t \geq 0 \\
+		0, &t < 0
+		\end{cases}
+	$$ where $k, \lambda > 0$ are fixed constants. \\
+	\item[(c)] the discrete Geometric distribution, whose pmf is
+	$$
+	f(t) = \begin{cases} (1 - p)^{t - 1} p, &t = 1, 2, 3, \ldots \\
+		0, &\text{otherwise}
+		\end{cases}
+	$$ where $0 < p < 1$ is a fixed constant.
+\end{itemize}
+
+
+\clearpage
+
+
+\section{Chapter 2}
+
+
+\textbf{Problem 1.}
+Survival times (in years) are given for two study groups, each with $25$ participants. Group 1 has no history of chronic disease (CHR $= 0$),and group 2 has a positive history of chronic disease (CHR $= 1$): \\
+
+Group 1 (CHR $= 0$): 11.3+, 6.4, 8.5, 13.7+, 10.1, 10.0, 5.7, 8.2, 2.0, 12.0, 9.9, 13.6+, 8.8, 2.2, 1.6, 10.2, 10.7, 11.1+, 5.3, 2.5, 10.6, 2.5, 5.7, 4.8, 2.7 \\
+
+Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.2, 6.9, 1.4, 3.0, 3.9, 3.5, 6.5, 9.9, 3.6, 5.2, 9.8, 6.8, 4.7, 3.9 \\
+
+\begin{itemize}
+	\item[(a)] Complete the following tables of ordered failure times (\textit{see the table Examples of Section II on Pages 62-65 for reference}) for both Group 1 and Group 2:
+	
+\begin{center}
+\begin{tabular}{ c c c c c | c c c c c }
+ \multicolumn{5}{c}{Group 1} & \multicolumn{5}{c}{Group 2} \\
+ 
+ $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $S(t_{(f)})$   & $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $S(t_{(f)})$ \\
+ 
+ \hline
+ 
+ $0.0$ & $25$ & $0$ & $0$ & $1.00$    & $0.0$ & $25$ & $0$ & $0$ & $1.00$ \\
+ 
+ $1.6$ & $25$ & $1$ & $0$ & $0.96$    & $1.2$ & $25$ & $2$ & $0$ & $0.92$ \\
+ 
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+\end{tabular}
+\end{center}
+
+	\item[(b)] Based on your results in part (a), plot the KM curves for Groups 1 and 2 on the same graph. Comment on how these curves compare with each other.
+	
+	\item[(c)] Complete the following partially-filled table of ordered failure times to allow for the computation of expected and observed minus expected values at each ordered failure time. Note that your new table here should combine both groups of ordered failure times into one listing and should have the following format (\textit{see the table Examples of Section IV on Page 69 for reference}):
+	
+	\begin{center}
+\begin{tabular}{ c | c c | c c | c c | c c }
+ 
+ $t_{(f)}$ & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$   & $e_{1f}$ & $e_{2f}$ & $m_{1f} - e_{1f}$ & $m_{2f} - e_{2f}$ \\
+ 
+ \hline
+ 
+ $1.2$ & $0$ & $2$ & $25$ & $25$    & ? & ? & ? & ? \\
+ 
+ $1.4$ & $0$ & $1$ & $25$ & $23$    & ? & ? & ? & ? \\
+ 
+ $1.6$ & $1$ & $0$ & $25$ & $22$    & ? & ? & ? & ? \\
+ 
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+ 
+ \hline
+ 
+ Totals & $21$ & $25$ & &    & ? & ? & ? & ?
+\end{tabular}
+\end{center}
+
+	\item[(c)] Use the results in part (c) to compute the log–rank statistic. Use this statistic to carry out the log–rank test for these data. What is your null hypothesis and how is the test statistic distributed under this null hypothesis? What are your conclusions from the test?
+\end{itemize}
+
 \end{document} 
 
