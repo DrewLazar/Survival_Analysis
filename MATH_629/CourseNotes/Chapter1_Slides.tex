@@ -538,8 +538,109 @@ Vets.dat reports on survival times in days for 137 patients from the Veteran’s
 \item In R conduct a Log-Rank test for the two groups in the Remission Data. What conclusion do you reach?
 \item In R conduct partition the Vets.dat data set into three groups by Performance Status: Group 1: 0-59, Group 2: 60-74 and Group 3: 75-100. Create and plot KM estimates for these three groups and conduct an overall log-rank test to test if the survival experiences are the same. What conclusion do you reach?
 \end{enumerate}
+\end{block}
+\end{frame}
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test}
+\begin{block}{Alternative Log-Rank Tests}
+The Wilcoxon, Tarone-Ware, Peto and Flemington-Harrington tests work by weighting observed - expected numbers of events. That is, they weight terms in the log rank test
+\[
+O_i - E_i = \sum_f (m_{if}-e_{if}) \text{ to get } \sum_f w(t_{(f)})(m_{if}-e_{if})
+\]
+and use test statistic
+\[
+\frac{\left(\sum_f w(t_{(f)}) (m_{if}-e_{if})\right)^2}{var(w(t_{(f)}) (m_{if}-e_{if}))}.
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Alternative Log-Rank Tests (cont'd)}
+We look at the Flemington-Harrington test. This test uses weights
+\[ w(t_{(f)}) = (\hat{S}(t_{(f-1)}))^p (1-\hat{S}(t_{(f-1)}))^q \text{ with } p,q \ge 0.
+\]
+
+\begin{itemize}
+\item If $p=q=0$ then we recover the log rank test.
+\item If $q=0, p>0$ as $\hat{S}(t_{(f-1)})^p $ is a decreasing (non-increasing) function of $f$, earlier times are going to weigh more heavily in determining differences than later times.
+\item If $p=0, q>0$ as $(1-\hat{S}(t_{(f-1)})^q $ is an increasing (non-decreasing) function of $f$, earlier times are going to weigh less heavily in determining differences than later times.
+\item Given $q=0$ how differences are weighed can be determined by examining the function $x^p$ for various $p>0$.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Alternative Log-Rank Tests (cont'd)}
+Assume in the Flemington-Harrington test $q=0$. For $p=3$ the importance of earlier times falls off quickly and then flattens. For $p=0.15$ the importance of early times decreases slowly then falls off quickly at the end.
+\begin{center}
+\includegraphics[width =4.5cm, height=3.5cm]{Ch2_Flemharringtonplot.JPG}
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Problem 2.4 - Alternative Log-Rank Tests (cont'd)}
+Conduct the Flemington-Harrington Test in R with $q=0$ and $p=0, 0.15, 0.5$ and 3 to compare the Placebo vs. Treatment groups in the remission data. Considering the Kaplan-Meirer estimates below, what should happen to the Chi-Square statistic as $p$ increases?
+\end{block}
+\begin{center}
+         \includegraphics[width =5.0cm, height=4.0cm]{Ch2_KM_GR12.JPG}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{The stratified log rank test}
+If there is confounding, then the log rank test with respect to the exposure variable can be misleading. Instead, we can stratify on the confounding variable, compute observed and expected number of events at each time across strata.
+\[
+O_i-E_i = \sum_s \sum_f (m_{ifs} - e_{ifs})
+\]
+where $i=$ group, $f=$failure time, $s=$stratum.
+Then we compute test statistic
+\[ \sum_{i=1}^{G-1} \frac{O_i-E_i}{var(O_i-E_i)}
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{The stratified log rank test - Remission Data}
+LogWbc is a possible confounder.
+\begin{center}
+\includegraphics[width =4.5cm, height=5cm]{Ch1-RemissionwLogwbc.JPG}
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{The stratified log rank test - Remission Data}
+We statify on LogWbc with low (1) - 1.45 to 2.30, \\ med (2) - 2.31 to 3.00, high (3) 3.01 to 5.00 and compute:
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5.5cm]{strat_lr1.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5.5cm]{strat_lr2.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
+\begin{block}{Problem 2.5: The stratified log rank test - Remission Data}
+\begin{enumerate}
+\item Confirm the computations in the previous slide in the first strata (1.50-2.30) of LogWBC. 
+\item Compute the stratified log rank statistic in R. 
+\item Make a conclusion about your test and find a $p$-value. 
+\end{enumerate} 
 \end{block} 
 \end{frame}
+
 \section{Chapter 7}
 \begin{frame}
 \begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}

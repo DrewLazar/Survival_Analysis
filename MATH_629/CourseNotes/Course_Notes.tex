@@ -200,6 +200,26 @@ LRS = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} = (-10.26)^2/19.26 +
 \]
 which has p-value = $P(X > 15.276) =  .000093.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>.000093.$ using this statistic.
 
+\ir{2.5}
+The weights you choose depend in which part of the survival study you are most interested in examining differences in the survival experiences.
+
+\prbm{2.5}
+\begin{center}
+\begin{tabular}{ c c c c c c c c}
+\multicolumn{2}{c}{\textbf{Strata 1}} & \multicolumn{2}{c}{\# failures} & \multicolumn{2}{c}{\# risk set} & \multicolumn{2}{c}{\# expected} \\ 
+ $t_{f}$ & & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$ & $e_{1f}$ & $e_{2f}$ \\ \hline 
+0 & & 0 & 0  & 7 & 4 & 0 & 0 \\
+11 & & 0 & 1 & 7 & 4 & 7/11 & 4/11 \\
+12 & & 0 & 1 & 7 & 3 & 7/10 & 3/10 \\
+15 & & 0 & 1 & 7 & 2 & 7/9 & 2/9 \\
+23 & & 0 & 1 & 4 & 1 & 4/5 & 1/5 \\ \hline 
+ &&  $m_{1 \cdot 1}=0$&$m_{2 \cdot 1}=4$ & & & $e_{1 \cdot 1} = 2.914$ & $e_{2 \cdot 1}=1.086$ 
+\end{tabular}
+\end{center}
+
+\ir{2.6} 
+A problem with the stratified log rank test is you might get few observations in each strata. This might affect the validity of your test because using a Chi squared test depends on a large sample. Note you can do weighted stratified log rank tests. You can account for confounding in a semi-parametric or parametric model instead by including the confounder in the model - we will see this next chapter. 
+
 \CPT{3}
 
 \ith{3.1} Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
