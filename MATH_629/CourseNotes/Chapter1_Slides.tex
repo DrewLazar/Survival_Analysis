@@ -634,12 +634,54 @@ We statify on LogWbc with low (1) - 1.45 to 2.30, \\ med (2) - 2.31 to 3.00, hig
 \frametitle{Variations and Extensions of the Log-Rank Test (cont'd)}
 \begin{block}{Problem 2.5: The stratified log rank test - Remission Data}
 \begin{enumerate}
-\item Confirm the computations in the previous slide in the first strata (1.50-2.30) of LogWBC. 
-\item Compute the stratified log rank statistic in R. 
-\item Make a conclusion about your test and find a $p$-value. 
-\end{enumerate} 
-\end{block} 
+\item Confirm the computations in the previous slide in the first strata (1.50-2.30) of LogWBC.
+\item Compute the stratified log rank statistic in R.
+\item Make a conclusion about your test and find a $p$-value.
+\end{enumerate}
+\end{block}
 \end{frame}
+
+\begin{frame}
+\frametitle{Confidence Intervals about KM estimates}
+\begin{block}{Greenwood's formula for SE of estimated survival probabilities}
+A 100$(1-\alpha)\%$ CI for the estimated KM survival estimates: 
+\[
+\hat{S}_{KM}(t) \pm z_{\alpha/2}\text{SE}({S}_{KM}(t))
+\]
+where $\text{SE}(\hat{S}_{KM}(t)) = \sqrt{\hat{Var}[\hat{S}_{KM}(t)]}.$
+\textbf{By Greenwood's formula}
+\[
+\hat{Var}[\hat{S}_{KM}(t)] = (\hat{S}_{KM}(t))^2 \sum_{f:t_{(f)} \le t}\left[\frac{m_f}{n_f(n_f-m_f)}\right]
+\] 
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Confidence Intervals about KM estimates}
+\begin{block}{Greenwood's formula for SE of estimated survival probabilities (cont'd)}
+\textbf{Greenwood's formula} applied to treatment group in the Remission data
+\begin{center} 
+   \includegraphics[width =6cm, height=4cm]{Ch2_Greenwoods.JPG}
+\end{center} 
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Confidence Intervals about KM estimates}
+\begin{block}{Problem 2.6 - Greenwood's formula to Remission data}
+\begin{enumerate}
+\item Use the table on the previous slide to get $95\%$ CI for $\hat{S}_{KM}(6), \hat{S}_{KM}(7)$ and $\hat{S}_{KM}(10)$.
+\item Obtain the confidence intervals for all event times in the treatment and placebo groups in R.
+\item Plot the confidence bands about the Kaplan-Meirer curves for the treatment and placebo groups in R.
+\end{enumerate}
+\end{block}
+\end{frame} 
+
+
+
+\end{block}
+\end{frame}
+
 
 \section{Chapter 7}
 \begin{frame}

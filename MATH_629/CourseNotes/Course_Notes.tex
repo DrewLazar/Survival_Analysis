@@ -206,19 +206,31 @@ The weights you choose depend in which part of the survival study you are most i
 \prbm{2.5}
 \begin{center}
 \begin{tabular}{ c c c c c c c c}
-\multicolumn{2}{c}{\textbf{Strata 1}} & \multicolumn{2}{c}{\# failures} & \multicolumn{2}{c}{\# risk set} & \multicolumn{2}{c}{\# expected} \\ 
- $t_{f}$ & & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$ & $e_{1f}$ & $e_{2f}$ \\ \hline 
+\multicolumn{2}{c}{\textbf{Strata 1}} & \multicolumn{2}{c}{\# failures} & \multicolumn{2}{c}{\# risk set} & \multicolumn{2}{c}{\# expected} \\
+ $t_{f}$ & & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$ & $e_{1f}$ & $e_{2f}$ \\ \hline
 0 & & 0 & 0  & 7 & 4 & 0 & 0 \\
 11 & & 0 & 1 & 7 & 4 & 7/11 & 4/11 \\
 12 & & 0 & 1 & 7 & 3 & 7/10 & 3/10 \\
 15 & & 0 & 1 & 7 & 2 & 7/9 & 2/9 \\
-23 & & 0 & 1 & 4 & 1 & 4/5 & 1/5 \\ \hline 
- &&  $m_{1 \cdot 1}=0$&$m_{2 \cdot 1}=4$ & & & $e_{1 \cdot 1} = 2.914$ & $e_{2 \cdot 1}=1.086$ 
+23 & & 0 & 1 & 4 & 1 & 4/5 & 1/5 \\ \hline
+ &&  $m_{1 \cdot 1}=0$&$m_{2 \cdot 1}=4$ & & & $e_{1 \cdot 1} = 2.914$ & $e_{2 \cdot 1}=1.086$
 \end{tabular}
 \end{center}
 
-\ir{2.6} 
-A problem with the stratified log rank test is you might get few observations in each strata. This might affect the validity of your test because using a Chi squared test depends on a large sample. Note you can do weighted stratified log rank tests. You can account for confounding in a semi-parametric or parametric model instead by including the confounder in the model - we will see this next chapter. 
+\ir{2.6}
+A problem with the stratified log rank test is you might get few observations in each strata. This might affect the validity of your test because using a Chi squared test depends on a large sample. Note you can do weighted stratified log rank tests. You can account for confounding in a semi-parametric or parametric model instead by including the confounder in the model - we will see this next chapter.
+
+\prbm{2.6}
+$\alpha=.05$ and $z_{\alpha/2}=1.96$. \\
+
+CI for 6 weeks: $0.857 \pm 1.96 \sqrt{(.857)^2(0.0079)}$ which gives $(.708,1.006)$ or $(.708,1)$. \\
+
+For 7 weeks: 
+\[ \frac{m_2}{m_2(n_2-m_2)} = 0.0037
+\]
+$\hat{S}_{KM}(7) = (0.807)^2(0.0079+0.0037)=(0.807)^2(0.016) = 0.0076 $. \\
+CI for 7 weeks: $0.807 \pm 1.96 \sqrt{0.0076}$ which gives $(0.6361, 0.9779)$.  
+
 
 \CPT{3}
 

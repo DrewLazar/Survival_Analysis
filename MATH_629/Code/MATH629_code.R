@@ -28,7 +28,7 @@ summary(kmfit2)
 #Plot the KM Estimates 
 windows(width=10, height=8)
 plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'),
-     xlab="survival time in weeks",ylab="survival probabilities")
+     xlab="survival time in weeks",ylab="survival probabilities",conf.int=.95)
 legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
        col=c('black','grey'))
 #PROBLEM 2.3
@@ -57,6 +57,10 @@ print(paste("The value of p is:",p)); print(sd)
 }
 #Problem 2.5 
 survdiff(Surv(survt,status) ~ TR + strata(LogWBC.group),data=Remission)
+#Problem 2.6
+#"plain is Greenwood" 
+kmfit2=survfit(Y~Remission$TR,conf.type="plain")
+plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'), xlab="survival time in weeks",ylab="survival probabilities",conf.int=.95)
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
