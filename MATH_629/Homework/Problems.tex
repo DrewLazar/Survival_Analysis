@@ -160,8 +160,50 @@ Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.
 \end{tabular}
 \end{center}
 
-	\item[(c)] Use the results in part (c) to compute the log–rank statistic. Use this statistic to carry out the log–rank test for these data. What is your null hypothesis and how is the test statistic distributed under this null hypothesis? What are your conclusions from the test?
+	\item[(d)] Use the results in part (c) to compute the log–rank statistic. Use this statistic to carry out the log–rank test for these data. What is your null hypothesis and how is the test statistic distributed under this null hypothesis? What are your conclusions from the test?
 \end{itemize}
+
+
+
+\clearpage
+
+
+\section{Chapter 3}
+
+
+
+\textbf{Problem 1.}
+In a study, involving alcoholics, one research question concerned evaluating the relationship of intensity of addiction treatment to mortality status. A Cox proportional hazards model was fit to describe the relationship of a measure of the intensity of addiction treatment to time until death. The intensity of addiction treatment was denoted as IAT, and took on integer values between 0 (no addiction treatment) to 5 (most intensive addiction treatment). Variables to be considered for control in the analysis as either potential confounders or potential effect modifiers were AGE (treated continuously), RACE (0,1), SEX (0,1), and TSA (Time Since Addiction, treated continuously). \\
+
+\begin{itemize}
+	\item[(a)] State an initial PH model that can be used to assess the relationship of interest, which considers the potential confounding and interaction effects of the AGE, RACE, SEX, and TSA (assume no higher than two-factor  products  involving  IAT with  AGE, RACE, SEX, and TSA).
+
+	\item[(b)] For your model in part a, give an expression for the hazard ratio that compares a person with IAT = 3 to a person with IAT = 1 and the same values of the covariates being controlled.
+	
+	\item[(c)] Describe how you would test for interaction using your model in part 1a. In particular, state the null hypothesis, the general form of your test statistic, with its distribution and degrees of freedom under the null hypothesis.
+
+	\item[(d)] For the (interaction) model described in Part a, what is the formula for the 95\% CI for the HR that compares a person with IAT = 3 to a person with IAT = 1 and the same values of the covariates being controlled?
+\end{itemize}
+
+
+
+\textbf{Problem 2.}
+Consider a hypothetical 2-year study to investigate the effect of a passive smoking intervention program on the incidence of upper respiratory infection (URI) in young pre-teen children. The study design involves the random allocation of one of two intervention packages (A, B) to all children in a certain county. These children are followed for 2 years to determine whether or not URI develops. The variables of interest for using a survival analysis on these data are: \\
+
+$T =$ time (in weeks) until URI is detected or time until censored. $s =$ censorship status (1 if URI detected, 0 if censored). $PS =$ passive smoking index of family. $a =$ age of the child. $I =$ intervention status (0 if A, 1 if B).
+
+\begin{itemize}
+	\item[(a)] State the Cox PH model that would describe the relationship between intervention package and survival time, controlling for $PS$ and $a$ as confounders and effect modifiers. In defining your model, use only two factor product terms involving exposure (i.e., intervention) variables multiplied by control variables in your model.
+
+	\item[(b)] Assuming that the Cox PH model is appropriate, give a formula for the hazard ratio that compares a child in intervention group A with a child in intervention group B, adjusting for $PS$, $a$, and assuming interaction effects.
+	
+	\item[(c)] Assuming that the PH model in part a is appropriate, describe how you would carry out a chunk test for interaction; i.e., state the null hypothesis, describe the test statistic and give the distribution of the test statistic and its degrees of freedom under the null hypothesis
+
+	\item[(d)] Assuming no interaction effects, how would you test whether packages A and B are equally effective, after controlling for $PS$ and $a$ in a Cox PH model without interaction terms (i.e., state the two models being compared, the null hypothesis, the test statistic, and the distribution of the test statistic under the null hypothesis).
+	
+	\item[(e)] For the no-interaction model considered in parts c and d, give an expression for the estimated survival curves for the effect of intervention A adjusted for $PS$, and $a$.
+\end{itemize}
+
 
 \end{document} 
 
