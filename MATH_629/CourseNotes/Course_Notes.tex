@@ -6,235 +6,258 @@
 \setlength\parindent{0pt}
 \setlength{\parskip}{\baselineskip}%
 \begin{document}
-\CPT{1}
-
-\idf{1.1} \textbf{Survival analysis} is a collection of statistical procedures for data analysis for which the outcome variable of interest is time, $T$, until an event occurs.
-
-\ir{1.1}
-\bn
-\im $T$ is a random variable with positive support. Examples are time until death, time until machine breaks, length of road travelled until have a flat tire, etc. We will use the phrases ``time until event'' and ``survival time'' interchangeably.
-\im There are extensions and variations of survival analysis including \textbf{recurrent events} and \textbf{competing risks}.
-\im Example of recurrent events - multiple hospitalizations. Example of competing risks - death on dialysis and receiving a kidney transplant.
-\en
-
-\idf{1.2} \textbf{Censoring} is when you have some, but not all, information about the time until event for some or all of your observations. There are three types of censoring.
-
-We will mostly deal with right censored data in this course. This is the most common type of censoring.
-
-
-\ir{1.2} We use the following notation
-\bn
-\item $T$ is the population random variable that represents time until event.
-\item $t$ is the observed value of $T$.
-\item $d$ is 0 or 1. If $d=0$ there is censoring and if $d=1$ an event (failure) occurred. $\delta$ is often used instead of $d$.
-\en
-
-\idf{1.3} The \textbf{survival function} gives the probability that the event will occur after a time $t$. That is,
-
-\[
-S(t) = P(T>t) \text{ for } t \in \mathbb{R}.
-\]
-
-Note: 1) The survival function always tends to 0 as t tends to infinity, i.e.,
-\[
-\lim_{t\rightarrow\infty} S(t) = 0
-\]
-and 2) for positive random variable $T$ we have $S(t) = 1$ for $t \le 0$.
-
-\NTS \, Draw a smooth survival curve and draw a step function which is often used to estimate one (see page 10).
-
-\idf{1.4} The \textbf{hazard function} is the instantaneous rate of change (i.e., the derivative) of the probability that the event will occur given that it has not occurred up to that time.
-\[
-h(t) = \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t}
-\]
-Note: 1) The hazard function is a rate not a probability, 2) the hazard can be any number from 0 to infinity, i.e, $0\ge h(t) \ge \infty$, 3) the hazard depends on the unit of measurement of time. For example, all other things being equal, if time is measured in seconds as opposed to minutes then the hazard is increased by a factor of 60.
-
-\ith{1.1} The hazard function and the survival function of a distribution have the following relationship
-
-\[ S(t) = \exp\left[-\int_0^t h(u) du\right] \text{ and } h(t) = -\frac{d S(t)/dt}{S(t)}
-\]
-Proof:
-\begin{align*} h(t) & = \lim_{\Delta \rightarrow 0} \frac{P(t \le T \le t + \Delta)} {P(T \ge t) \Delta t} \\
-& = \frac{1}{S(t)} \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta)} {\Delta t} \\
-& = \frac{(dF(t)/dt)}{S(t)} = -\frac{(d S(t)/dt)}{S(t)}.
-\end{align*}
-Now,
-\begin{align*}
-\exp\left[-\int_0^t h(u) du\right] & = \exp\left[-\int_0^t \left(-\frac{dS(u)/du}{S(u)} \right)du\right] \\
-&= \exp\left[\ln (S(u)) |_0^t \right] = \exp\left[\ln(S(t)) - \ln(S(0))\right] \\
-& = \exp\left[\ln(S(t))\right] = S(t).
-\end{align*}
-
-\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate Kaplan-Meirer survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way:
-\begin{enumerate}[ ]
-\item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_{(0)}$ at the start of the study.
-\item The second column ($m_f$) gives the number of events that occur at each of the times.
-\item The third column ($q_f$) gives the number of observations that were censored in time $[t_f,t_{f-1})$ for $f=2,\ldots,n$.
-\item The last column $R(t_f)$ gives the number ``at risk'' at each time. For example, at time $t_{(1)}=6$, $m_{1}=3$ had the event, $q_{1}=1$ was censored in $[t_{(1)}=6, t_{(2)}=7)$ and
-    \[
-    R(2)=R(1)-m_{(1)}-q_{(1)}=21-3-1=17
-    \]
-     were ``at risk'' at time $t_{(2)}$.
-\end{enumerate}
-This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event before and including time $t_{(f)}$) given that they have ``survived'' at least until time $t_{(f)}$ (i.e. not have the event before time $t_{(f)}$)  For example, at $t_{(2)}$ we estimate this probability as
-\[ \widehat{P(T>t_{(f)}| T \ge t_{(f)})} =  \dfrac{R(2)-m_2}{R{(2)}} = \dfrac{17-1}{17} = \dfrac{16}{17}
-\]
-This will allow us in chapter 2 to estimate overall survival probabilities at times $t_{(f)}, f=1,\ldots,n$ and thus estimate survival curves as step functions.
-
-\idf{1.5}
-\begin{enumerate}
-\item The \textbf{average observed survival time }(ignoring censoring) is denoted by $\bar{T}$.
-\item The \textbf{average hazard rate} is the total number of failures divided by the total observed survival time. It is denoted by $\bar{h}$.
-\end{enumerate}
- For group 1 in the leukemia data we have
-\[ \bar{T}_1 = \frac{6 + 6 + 6 + \ldots + 35}{21} \approx 17.1 \text { and } \bar{h}_1 \approx \frac{9}{6 + 6 + 6 + \ldots + 35} = .025
-\]
-For group 2 in the leukemia data we have
-\[ \bar{T}_2 = \frac{1 + 1 + 1 + \ldots + 23}{21} \approx 8.6 \text { and } \bar{h}_2 = \frac{21}{1 + 1 + 1 + \ldots + 23} \approx .115
-\]
-
-Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are crude overall measures. If there was no censoring in group 1 and censoring in group 2 then $\bar{T}_1$ and $\bar{T}_2$ don't change and can be misleading. Instead, we want to estimate survival probabilities at particular times and for certain levels of covariates. That will be the subject of the rest of the book.
-
-
-\NTS \, Point out Kaplan Meirer survival curves. Point out little difference in treatments early on but that Group 1 treatment is more effective as time goes on. Also, point out that you can get another overall measure the \textbf{observed median time}.
-
-\idf{1.6} An \textbf{exposure variable} is the variable that you are interested in establishing at least a correlative if not causative relationship with the survival variable. \textbf{Secondary variable} is another variable in the data set that can also have an effect on survival times.
-
-\ir{1.3} `Untangling' the effect of exposure vs secondary variables on survival times can thus be difficult. In this regard, there are two issues to consider, confounding and
-
-\idf{1.7} \textbf{Confounding } is the extent to which the effect of the change of an exposure variable on survival is caused by an accompanying change in a secondary variable.
-
-\idf{1.8} \textbf{Interaction} is when the effect of the change in an exposure variable on survival probabilities depends on the level of a secondary variable.
-
-
-\iex{1.1} \\
-3 year (group A): $P_A(\text{survive 3 years})= 80/100 = 0.80 \implies P_A(\text{fail 3 years}) = 0.20$ \\ \\
-5 year (group A): 40 censored out of 80. Of 40 left in risk set, 5/40 = 0.125 = 12.5\% had the event. By independent censoring, we assume .125*40 = 5 of censored also had the event. All together over 5 years, we assume 20 + 5 + 5 = 40 had the event. Thus, $P_B(\text{survive 5 years})= 60/100 = 0.60 \implies P_A(\text{fail 5 years}) = 0.40.$ \\
-
-3 year (group B): $P_A(\text{survive 3 years})= 60/100 = 0.60 \implies P_A(\text{fail 3 years}) = 0.40$ \\ \\
-5 year (group B): 10 censored out of 60. Of 50 left in risk set, 10/50 = 0.20 = 20\% had the event. By independent censoring, we assume .20*10 = 2 of censored also had the event. All together over 5 years, we assume 40 + 10 + 2 = 52 had the event. Thus, $P_B(\text{survive 5 years})= 48/100 = 0.48 \implies P_B(\text{fail 5 years}) = 0.52.$ \\
-
-
-3 year (All): $P(\text{survive 3 years})= 140/200 = 0.70 \implies P(\text{fail 3 years}) = 0.30$ \\ \\
-5 year (group B): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P(\text{fail 5 years}) = 0.8\overline{333}$. However, assuming independent censoring, we assume 92 had the event and  $P(\text{survive 5 years})= 8/100 = 0.08 \implies P(\text{fail 5 years}) = 0.92$.
-
-
-
-\CPT{2}
-
-\idf{2.1} \textbf{Kaplan-Meirer Survival Curves } also known as \textbf{ product limit estimators }, are non-parametric estimates of survival curves. They are step functions with ``steps'' at event times in the sample data.
-\NTS \, Draw step functions with steps at events times.
-
-\ir{2.1} Recall,
-
-\[
-S(t) = P(T>t)
-\]
-
-There is no censoring in group 2 (placebo group). Thus, it is straightforward to estimate a survival curve. This straightforward estimation will be the same as the Kaplan-Meirer estimate. For group 2, deriving the Kaplan-Meirer estimate will be more involved. For group 2, (or any uncensored data) we just use the formula
-\[
-\hat{S}(t_{(f)}) = \frac{\# \text{surviving past} \, t_{(f)}}{n}
-\]
-where $n$ is the number of observations.
-
-\ir{2.2} Recall the formula that for any two events, $A$ and $B$ we have
-\[
-P(A \cap B) = P(A|B)P(B)
-\]
-We have $S(0) = S(t_{(1)}) = 1$.
-Now let $t_{f}>0$.
-\begin{align*}
-S(t_{(f)}) & = P(T > t_{(f)}) = P(T>t_{(f)} \cap T \ge t_{(f)}) \\
-& = P(T>t_{(f)} | T \ge t_{(f)}) P(T \ge t_{(f)}) = P(T>t_{(f)} | T \ge t_{(f)}) P(T > t_{(f-1)})  \\
-& = P(T>t_{(f)} | T \ge t_{(f)}) S(t_{(f-1)})
-\end{align*}
-Thus, for $t_{f}>0$ we find estimate  $\hat{S}(t_{(f)})$, recursively, using remark 1.2, as
-\[
- \hat{S}(t_{(f)}) = \widehat{P(T>t_{(f)} | T \ge t_{(f)})} \hat{S}(t_{(f-1)}) = \Pi_{i=1}^f \hat{P(T>t_{(i)}|T \ge t_{(i)})}
- \]
-This is known as the  \textbf{Kaplan-Meirer} or \textbf{ product limit estimator } of the survival curve.
-
-\prbm{2.1}
-\begin{align*}
-&\hat{S}(0)=1 \\
-&\hat{S}(6)=\hat{P(T>6)|T \ge 6)} \hat{S}(0) = (18/21)*1 \approx 0.8571 \\
-&\hat{S}(7)=\hat{P(T>7)|T \ge 7)} \hat{S}(6) = (16/17)*(18/21) = (96/119) \approx 0.8067 \\
-&\hat{S}(10)=\hat{P(T>10)|T \ge 10)} \hat{S}(7) = (14/15)*(96/119) = (64/85) \approx 0.7529 \\
-&\hat{S}(13)=\hat{P(T>13)|T \ge 13)} \hat{S}(10) = (11/12)*(64/85) = (176/255) \approx 0.6902 \\
-&\hat{S}(16)= \hat{P(T>16)|T \ge 16)} \hat{S}(13) = (10/11)*(176/255) = (32/51) \approx 0.6275 \\
-&\hat{S}(22)= \hat{P(T>22)|T \ge 22)} \hat{S}(16) = (6/7)*(32/51) = (64/119) \approx 0.5378 \\
-&\hat{S}(23)= \hat{P(T>23)|T \ge 23)} \hat{S}(22) = (5/6)*(64/119) = (160/357) \approx 0.4482 \
-\end{align*}
-
-\prbm{2.2}
-Open Remission\_make and MATH629\_code.R and follow the steps.
-
-\ir{2.3}
-
-\begin{enumerate}
-\item If we have two large samples from two quantitative populations we can test whether the difference between the sample means is statistically significant. In that case, we can reject the null hypothesis that the population means are the same. Use the statistic
-\[
-\frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}} \sim t(n_1+n_2-2)
-\]
-\item If we have large samples from two qualitative populations we can test whether levels of categorical variables are significantly dependent. We use the statistic
-\[
-  \sum_{j=1}^b \sum_{i=1}^a \frac{(X_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2((b-1)(a-1))
-  \]
-\item We can test whether the survival experiences of two group are statistically different using a chi-squared test. This is known as a \textbf{log-rank test}.
-\end{enumerate}
-
-\ir{2.4} If the survival experiences are the same, for all $f$, for both groups, you expect the proportion of failures to be approximately the observed number of failures. That is, you expect,
-\[
-m_{if} \approx e_{if}
-\]
-for $i=1,2$ and all $f$.
-Our LRS is
-\[
-\text{LRS} = LRS = \frac{(O_i - E_i)^2}{\text{Var}(O_i-E_i)} = \frac{(10.26)^2}{6.285} = 16.793
-\]
-Since, $\chi^2_{0.05} = 3.841$ and $16.793>3.841$ we reject $H_0$. Alternatively,
-p-value = $P(X > 16.793) =  0.000042.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>0.000042.$.
-Note the approximate LRS is
-\[
-LRS = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} = (-10.26)^2/19.26 + (10.26)^2/10.74 = 15.276
-\]
-which has p-value = $P(X > 15.276) =  .000093.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>.000093.$ using this statistic.
-
-\ir{2.5}
-The weights you choose depend in which part of the survival study you are most interested in examining differences in the survival experiences.
-
-\prbm{2.5}
-\begin{center}
-\begin{tabular}{ c c c c c c c c}
-\multicolumn{2}{c}{\textbf{Strata 1}} & \multicolumn{2}{c}{\# failures} & \multicolumn{2}{c}{\# risk set} & \multicolumn{2}{c}{\# expected} \\
- $t_{f}$ & & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$ & $e_{1f}$ & $e_{2f}$ \\ \hline
-0 & & 0 & 0  & 7 & 4 & 0 & 0 \\
-11 & & 0 & 1 & 7 & 4 & 7/11 & 4/11 \\
-12 & & 0 & 1 & 7 & 3 & 7/10 & 3/10 \\
-15 & & 0 & 1 & 7 & 2 & 7/9 & 2/9 \\
-23 & & 0 & 1 & 4 & 1 & 4/5 & 1/5 \\ \hline
- &&  $m_{1 \cdot 1}=0$&$m_{2 \cdot 1}=4$ & & & $e_{1 \cdot 1} = 2.914$ & $e_{2 \cdot 1}=1.086$
-\end{tabular}
-\end{center}
-
-\ir{2.6}
-A problem with the stratified log rank test is you might get few observations in each strata. This might affect the validity of your test because using a Chi squared test depends on a large sample. Note you can do weighted stratified log rank tests. You can account for confounding in a semi-parametric or parametric model instead by including the confounder in the model - we will see this next chapter.
-
-\prbm{2.6}
-$\alpha=.05$ and $z_{\alpha/2}=1.96$. \\
-
-CI for 6 weeks: $0.857 \pm 1.96 \sqrt{(.857)^2(0.0079)}$ which gives $(.708,1.006)$ or $(.708,1)$. \\
-
-For 7 weeks: 
-\[ \frac{m_2}{m_2(n_2-m_2)} = 0.0037
-\]
-$\hat{S}_{KM}(7) = (0.807)^2(0.0079+0.0037)=(0.807)^2(0.016) = 0.0076 $. \\
-CI for 7 weeks: $0.807 \pm 1.96 \sqrt{0.0076}$ which gives $(0.6361, 0.9779)$.  
-
+%\CPT{1}
+%
+%\idf{1.1} \textbf{Survival analysis} is a collection of statistical procedures for data analysis for which the outcome variable of interest is time, $T$, until an event occurs.
+%
+%\ir{1.1}
+%\bn
+%\im $T$ is a random variable with positive support. Examples are time until death, time until machine breaks, length of road travelled until have a flat tire, etc. We will use the phrases ``time until event'' and ``survival time'' interchangeably.
+%\im There are extensions and variations of survival analysis including \textbf{recurrent events} and \textbf{competing risks}.
+%\im Example of recurrent events - multiple hospitalizations. Example of competing risks - death on dialysis and receiving a kidney transplant.
+%\en
+%
+%\idf{1.2} \textbf{Censoring} is when you have some, but not all, information about the time until event for some or all of your observations. There are three types of censoring.
+%
+%We will mostly deal with right censored data in this course. This is the most common type of censoring.
+%
+%
+%\ir{1.2} We use the following notation
+%\bn
+%\item $T$ is the population random variable that represents time until event.
+%\item $t$ is the observed value of $T$.
+%\item $d$ is 0 or 1. If $d=0$ there is censoring and if $d=1$ an event (failure) occurred. $\delta$ is often used instead of $d$.
+%\en
+%
+%\idf{1.3} The \textbf{survival function} gives the probability that the event will occur after a time $t$. That is,
+%
+%\[
+%S(t) = P(T>t) \text{ for } t \in \mathbb{R}.
+%\]
+%
+%Note: 1) The survival function always tends to 0 as t tends to infinity, i.e.,
+%\[
+%\lim_{t\rightarrow\infty} S(t) = 0
+%\]
+%and 2) for positive random variable $T$ we have $S(t) = 1$ for $t \le 0$.
+%
+%\NTS \, Draw a smooth survival curve and draw a step function which is often used to estimate one (see page 10).
+%
+%\idf{1.4} The \textbf{hazard function} is the instantaneous rate of change (i.e., the derivative) of the probability that the event will occur given that it has not occurred up to that time.
+%\[
+%h(t) = \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t}
+%\]
+%Note: 1) The hazard function is a rate not a probability, 2) the hazard can be any number from 0 to infinity, i.e, $0\ge h(t) \ge \infty$, 3) the hazard depends on the unit of measurement of time. For example, all other things being equal, if time is measured in seconds as opposed to minutes then the hazard is increased by a factor of 60.
+%
+%\ith{1.1} The hazard function and the survival function of a distribution have the following relationship
+%
+%\[ S(t) = \exp\left[-\int_0^t h(u) du\right] \text{ and } h(t) = -\frac{d S(t)/dt}{S(t)}
+%\]
+%Proof:
+%\begin{align*} h(t) & = \lim_{\Delta \rightarrow 0} \frac{P(t \le T \le t + \Delta)} {P(T \ge t) \Delta t} \\
+%& = \frac{1}{S(t)} \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta)} {\Delta t} \\
+%& = \frac{(dF(t)/dt)}{S(t)} = -\frac{(d S(t)/dt)}{S(t)}.
+%\end{align*}
+%Now,
+%\begin{align*}
+%\exp\left[-\int_0^t h(u) du\right] & = \exp\left[-\int_0^t \left(-\frac{dS(u)/du}{S(u)} \right)du\right] \\
+%&= \exp\left[\ln (S(u)) |_0^t \right] = \exp\left[\ln(S(t)) - \ln(S(0))\right] \\
+%& = \exp\left[\ln(S(t))\right] = S(t).
+%\end{align*}
+%
+%\ir{1.2} The first way of representing the data is how we will store our data in a data frame in R. The second way is a ``survival object'' that we create in R from the data frame. From the third way we will be able to estimate Kaplan-Meirer survival curves from each of our groups (RX=0 and RX=1). The fourth way is a generalization of the first way that allows for age at follow up (rather than time), time-dependent variables and recurrent events. Consider the third way:
+%\begin{enumerate}[ ]
+%\item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_{(0)}$ at the start of the study.
+%\item The second column ($m_f$) gives the number of events that occur at each of the times.
+%\item The third column ($q_f$) gives the number of observations that were censored in time $[t_f,t_{f-1})$ for $f=2,\ldots,n$.
+%\item The last column $R(t_f)$ gives the number ``at risk'' at each time. For example, at time $t_{(1)}=6$, $m_{1}=3$ had the event, $q_{1}=1$ was censored in $[t_{(1)}=6, t_{(2)}=7)$ and
+%    \[
+%    R(2)=R(1)-m_{(1)}-q_{(1)}=21-3-1=17
+%    \]
+%     were ``at risk'' at time $t_{(2)}$.
+%\end{enumerate}
+%This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event before and including time $t_{(f)}$) given that they have ``survived'' at least until time $t_{(f)}$ (i.e. not have the event before time $t_{(f)}$)  For example, at $t_{(2)}$ we estimate this probability as
+%\[ \widehat{P(T>t_{(f)}| T \ge t_{(f)})} =  \dfrac{R(2)-m_2}{R{(2)}} = \dfrac{17-1}{17} = \dfrac{16}{17}
+%\]
+%This will allow us in chapter 2 to estimate overall survival probabilities at times $t_{(f)}, f=1,\ldots,n$ and thus estimate survival curves as step functions.
+%
+%\idf{1.5}
+%\begin{enumerate}
+%\item The \textbf{average observed survival time }(ignoring censoring) is denoted by $\bar{T}$.
+%\item The \textbf{average hazard rate} is the total number of failures divided by the total observed survival time. It is denoted by $\bar{h}$.
+%\end{enumerate}
+% For group 1 in the leukemia data we have
+%\[ \bar{T}_1 = \frac{6 + 6 + 6 + \ldots + 35}{21} \approx 17.1 \text { and } \bar{h}_1 \approx \frac{9}{6 + 6 + 6 + \ldots + 35} = .025
+%\]
+%For group 2 in the leukemia data we have
+%\[ \bar{T}_2 = \frac{1 + 1 + 1 + \ldots + 23}{21} \approx 8.6 \text { and } \bar{h}_2 = \frac{21}{1 + 1 + 1 + \ldots + 23} \approx .115
+%\]
+%
+%Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are crude overall measures. If there was no censoring in group 1 and censoring in group 2 then $\bar{T}_1$ and $\bar{T}_2$ don't change and can be misleading. Instead, we want to estimate survival probabilities at particular times and for certain levels of covariates. That will be the subject of the rest of the book.
+%
+%
+%\NTS \, Point out Kaplan Meirer survival curves. Point out little difference in treatments early on but that Group 1 treatment is more effective as time goes on. Also, point out that you can get another overall measure the \textbf{observed median time}.
+%
+%\idf{1.6} An \textbf{exposure variable} is the variable that you are interested in establishing at least a correlative if not causative relationship with the survival variable. \textbf{Secondary variable} is another variable in the data set that can also have an effect on survival times.
+%
+%\ir{1.3} `Untangling' the effect of exposure vs secondary variables on survival times can thus be difficult. In this regard, there are two issues to consider, confounding and
+%
+%\idf{1.7} \textbf{Confounding } is the extent to which the effect of the change of an exposure variable on survival is caused by an accompanying change in a secondary variable.
+%
+%\idf{1.8} \textbf{Interaction} is when the effect of the change in an exposure variable on survival probabilities depends on the level of a secondary variable.
+%
+%
+%\iex{1.1} \\
+%3 year (group A): $P_A(\text{survive 3 years})= 80/100 = 0.80 \implies P_A(\text{fail 3 years}) = 0.20$ \\ \\
+%5 year (group A): 40 censored out of 80. Of 40 left in risk set, 5/40 = 0.125 = 12.5\% had the event. By independent censoring, we assume .125*40 = 5 of censored also had the event. All together over 5 years, we assume 20 + 5 + 5 = 40 had the event. Thus, $P_B(\text{survive 5 years})= 60/100 = 0.60 \implies P_A(\text{fail 5 years}) = 0.40.$ \\
+%
+%3 year (group B): $P_A(\text{survive 3 years})= 60/100 = 0.60 \implies P_A(\text{fail 3 years}) = 0.40$ \\ \\
+%5 year (group B): 10 censored out of 60. Of 50 left in risk set, 10/50 = 0.20 = 20\% had the event. By independent censoring, we assume .20*10 = 2 of censored also had the event. All together over 5 years, we assume 40 + 10 + 2 = 52 had the event. Thus, $P_B(\text{survive 5 years})= 48/100 = 0.48 \implies P_B(\text{fail 5 years}) = 0.52.$ \\
+%
+%
+%3 year (All): $P(\text{survive 3 years})= 140/200 = 0.70 \implies P(\text{fail 3 years}) = 0.30$ \\ \\
+%5 year (group B): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P(\text{fail 5 years}) = 0.8\overline{333}$. However, assuming independent censoring, we assume 92 had the event and  $P(\text{survive 5 years})= 8/100 = 0.08 \implies P(\text{fail 5 years}) = 0.92$.
+%
+%
+%
+%\CPT{2}
+%
+%\idf{2.1} \textbf{Kaplan-Meirer Survival Curves } also known as \textbf{ product limit estimators }, are non-parametric estimates of survival curves. They are step functions with ``steps'' at event times in the sample data.
+%\NTS \, Draw step functions with steps at events times.
+%
+%\ir{2.1} Recall,
+%
+%\[
+%S(t) = P(T>t)
+%\]
+%
+%There is no censoring in group 2 (placebo group). Thus, it is straightforward to estimate a survival curve. This straightforward estimation will be the same as the Kaplan-Meirer estimate. For group 2, deriving the Kaplan-Meirer estimate will be more involved. For group 2, (or any uncensored data) we just use the formula
+%\[
+%\hat{S}(t_{(f)}) = \frac{\# \text{surviving past} \, t_{(f)}}{n}
+%\]
+%where $n$ is the number of observations.
+%
+%\ir{2.2} Recall the formula that for any two events, $A$ and $B$ we have
+%\[
+%P(A \cap B) = P(A|B)P(B)
+%\]
+%We have $S(0) = S(t_{(1)}) = 1$.
+%Now let $t_{f}>0$.
+%\begin{align*}
+%S(t_{(f)}) & = P(T > t_{(f)}) = P(T>t_{(f)} \cap T \ge t_{(f)}) \\
+%& = P(T>t_{(f)} | T \ge t_{(f)}) P(T \ge t_{(f)}) = P(T>t_{(f)} | T \ge t_{(f)}) P(T > t_{(f-1)})  \\
+%& = P(T>t_{(f)} | T \ge t_{(f)}) S(t_{(f-1)})
+%\end{align*}
+%Thus, for $t_{f}>0$ we find estimate  $\hat{S}(t_{(f)})$, recursively, using remark 1.2, as
+%\[
+% \hat{S}(t_{(f)}) = \widehat{P(T>t_{(f)} | T \ge t_{(f)})} \hat{S}(t_{(f-1)}) = \Pi_{i=1}^f \hat{P(T>t_{(i)}|T \ge t_{(i)})}
+% \]
+%This is known as the  \textbf{Kaplan-Meirer} or \textbf{ product limit estimator } of the survival curve.
+%
+%\prbm{2.1}
+%\begin{align*}
+%&\hat{S}(0)=1 \\
+%&\hat{S}(6)=\hat{P(T>6)|T \ge 6)} \hat{S}(0) = (18/21)*1 \approx 0.8571 \\
+%&\hat{S}(7)=\hat{P(T>7)|T \ge 7)} \hat{S}(6) = (16/17)*(18/21) = (96/119) \approx 0.8067 \\
+%&\hat{S}(10)=\hat{P(T>10)|T \ge 10)} \hat{S}(7) = (14/15)*(96/119) = (64/85) \approx 0.7529 \\
+%&\hat{S}(13)=\hat{P(T>13)|T \ge 13)} \hat{S}(10) = (11/12)*(64/85) = (176/255) \approx 0.6902 \\
+%&\hat{S}(16)= \hat{P(T>16)|T \ge 16)} \hat{S}(13) = (10/11)*(176/255) = (32/51) \approx 0.6275 \\
+%&\hat{S}(22)= \hat{P(T>22)|T \ge 22)} \hat{S}(16) = (6/7)*(32/51) = (64/119) \approx 0.5378 \\
+%&\hat{S}(23)= \hat{P(T>23)|T \ge 23)} \hat{S}(22) = (5/6)*(64/119) = (160/357) \approx 0.4482 \
+%\end{align*}
+%
+%\prbm{2.2}
+%Open Remission\_make and MATH629\_code.R and follow the steps.
+%
+%\ir{2.3}
+%
+%\begin{enumerate}
+%\item If we have two large samples from two quantitative populations we can test whether the difference between the sample means is statistically significant. In that case, we can reject the null hypothesis that the population means are the same. Use the statistic
+%\[
+%\frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}} \sim t(n_1+n_2-2)
+%\]
+%\item If we have large samples from two qualitative populations we can test whether levels of categorical variables are significantly dependent. We use the statistic
+%\[
+%  \sum_{j=1}^b \sum_{i=1}^a \frac{(X_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2((b-1)(a-1))
+%  \]
+%\item We can test whether the survival experiences of two group are statistically different using a chi-squared test. This is known as a \textbf{log-rank test}.
+%\end{enumerate}
+%
+%\ir{2.4} If the survival experiences are the same, for all $f$, for both groups, you expect the proportion of failures to be approximately the observed number of failures. That is, you expect,
+%\[
+%m_{if} \approx e_{if}
+%\]
+%for $i=1,2$ and all $f$.
+%Our LRS is
+%\[
+%\text{LRS} = LRS = \frac{(O_i - E_i)^2}{\text{Var}(O_i-E_i)} = \frac{(10.26)^2}{6.285} = 16.793
+%\]
+%Since, $\chi^2_{0.05} = 3.841$ and $16.793>3.841$ we reject $H_0$. Alternatively,
+%p-value = $P(X > 16.793) =  0.000042.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>0.000042.$.
+%Note the approximate LRS is
+%\[
+%LRS = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} = (-10.26)^2/19.26 + (10.26)^2/10.74 = 15.276
+%\]
+%which has p-value = $P(X > 15.276) =  .000093.$ where $X \sim \chi^2(1)$. Thus, we reject $H_0$ for any $\alpha>.000093.$ using this statistic.
+%
+%\ir{2.5}
+%The weights you choose depend in which part of the survival study you are most interested in examining differences in the survival experiences.
+%
+%\prbm{2.5}
+%\begin{center}
+%\begin{tabular}{ c c c c c c c c}
+%\multicolumn{2}{c}{\textbf{Strata 1}} & \multicolumn{2}{c}{\# failures} & \multicolumn{2}{c}{\# risk set} & \multicolumn{2}{c}{\# expected} \\
+% $t_{f}$ & & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$ & $e_{1f}$ & $e_{2f}$ \\ \hline
+%0 & & 0 & 0  & 7 & 4 & 0 & 0 \\
+%11 & & 0 & 1 & 7 & 4 & 7/11 & 4/11 \\
+%12 & & 0 & 1 & 7 & 3 & 7/10 & 3/10 \\
+%15 & & 0 & 1 & 7 & 2 & 7/9 & 2/9 \\
+%23 & & 0 & 1 & 4 & 1 & 4/5 & 1/5 \\ \hline
+% &&  $m_{1 \cdot 1}=0$&$m_{2 \cdot 1}=4$ & & & $e_{1 \cdot 1} = 2.914$ & $e_{2 \cdot 1}=1.086$
+%\end{tabular}
+%\end{center}
+%
+%\ir{2.6}
+%A problem with the stratified log rank test is you might get few observations in each strata. This might affect the validity of your test because using a Chi squared test depends on a large sample. Note you can do weighted stratified log rank tests. You can account for confounding in a semi-parametric or parametric model instead by including the confounder in the model - we will see this next chapter.
+%
+%\prbm{2.6}
+%$\alpha=.05$ and $z_{\alpha/2}=1.96$. \\
+%
+%CI for 6 weeks: $0.857 \pm 1.96 \sqrt{(.857)^2(0.0079)}$ which gives $(.708,1.006)$ or $(.708,1)$. \\
+%
+%For 7 weeks:
+%\[ \frac{m_2}{m_2(n_2-m_2)} = 0.0037
+%\]
+%$\hat{S}_{KM}(7) = (0.807)^2(0.0079+0.0037)=(0.807)^2(0.016) = 0.0076 $. \\
+%CI for 7 weeks: $0.807 \pm 1.96 \sqrt{0.0076}$ which gives $(0.6361, 0.9779)$.
+%
+%\ir{2.7}
+%In the book they use the inequality
+%\[
+%(\hat{S}_{KM}(t) - 0.5)^2 < \chi^2_{1,\alpha}\hat{var}[\hat{S}_{KM}(M)]
+%\]
+%instead. \\
+%It doesn't always work as the interval might contain 0 and might not have an upper bound.
+%A crude way to compare survival experiences is to compare estimated medians. If the CI overlap you might say (very roughly) that the survival experiences are the same.
 
 \CPT{3}
 
-\ith{3.1} Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
+\idf{3.1} If for any two specifications of covariates $\mathbf{X}$ and $\mathbf{X}^*$, and for any $t>0$ we have 
+\[
+\frac{h(t,\mathbf{X})}{h(t,\mathbf{X}^*)} = \theta \text{ for some constant } \theta > 0. 
+\]
+then our population satisfies the \textbf{proportional hazards assumption}.  
+
+\ith{3.1} If a population satisfies the Cox PH assumption then it satisfies the proportional hazards assumption. \\
+Assume the Cox PH assumption is satisfied then 
+\[
+\frac{h(t,X)}{h(t,X^*)}=\exp(\beta'(X-X^*)) = \exp\left(\sum_{i=1}^p  \beta_i(X_i-X_i^*)\right) 
+\] 
+
+\ir{3.2} 
+\NTS \, Show 2.,  3. Time-independent: sex, race, age at start of study, smoking status at start of study. Can change, of course. With time-independent covariate you are accounting for the effect at the beginning of the study only.
+
+\ith{3.2} Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
 \[ h(t;X) = h_0(t) \exp(\sum_i^p \hat{B}_iX_i) \].
 Let $LR_R$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
 \[ h(t;X) = h_0(t) \exp(\sum_i^q \hat{B}_iX_i) \]
@@ -245,89 +268,90 @@ Then for a ``large sample'' we have the following approximate distribution
 \]
 
 
-\CPT{7}
-\ir{7.1}
-A \textbf{parametric survival model} is one is which the distribution is fully specified except the parameters. The Cox-Proportional Hazards model is \textbf{semi-parametric} because the baseline hazard is not fully specified. Parametric models assume the data follows a particular distribution and requires more assumptions for suitable estimation. Semi-parametric or non-parametric models require less assumptions (and thus are more robust) but yield less information.
 
-\iex{7.1} The populations that you are modeling approximately follow the exponential distribution so that you assume
-\[
-S(t;X) = \exp(-\lambda t)
-\]
-where $\lambda$ depends on $X$.
-Then one you estimate lambda you can plot survival curves and get estimated survival probabilities at any time.
-So for $X=1$ you might have $\hat{\lambda=.5}$ and you can estimate
-\[ S(2;1) \approx \exp(-.5 2)) = \exp(-1) = 0.36787
-\]
-\NTS \, Draw smooth survival curve and step function for Cox-Proportional Hazard.
-
-\ir{7.2} We saw Proportional Hazards (PH) with respect to the Cox-Propotional Hazard Model.
-
-\iex{7.2} We illustrate the Accelerated Failure Time property with an example. Let our survival random variable be time to death of 60 years olds, and $X$ be smoking status (0=non-smoker, 1=smoker).
-Assume we have
-\[
-S(t;0) = S((2/3)t,1) \text{ for all } t>0
-\]
-Let $T_0$ be the survival random variable for non-smokers and $T_1$ be the survival random variable for smokers.
-
-Then
-\[ S(7.5;0) = P(T_0>7.5) = P(T_1>5;1) \]
- and
-\[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)
-\]
-Note we have
-\[
-S((3/2)t;0) = S(t;1) \text{ for all } t>0
-\]
-and $T_1=(3/2)T_0$.
-
-\ir{7.3} In general, if we have the AT property for some $\gamma$ so that
-\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
-\]
-then
- \[ S((1/\gamma)t;X) =  S( t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0.
-\]
-and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
-\[
-\gamma T_X = T_{X^*}
-\]
-
-\ir{7.4} ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. Example: We might have failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Note that we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
-
-\ir{7.5} Exponential accommodates PH. Why? Let
-\[
-\lambda=\exp(\beta_0 + \beta' X)
-\] where $\beta, X$ are both $p \times 1$.
-Then
-\[
-\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
-\]
-
-\ir{7.6} Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
-\begin{align*}
-& q = S(t) = \exp(\lambda t) \\
-& \ln(q) = - \lambda t \\
-& t = \frac{1}{\lambda} (- \ln(q))
-\end{align*}
-Let
-\[
-\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
-\]
-Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus,
-\[
-\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
-\]
-
-\ir{7.7} Relationship between AF and HR for exponential model. We have
-\[
-\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\beta_0 + \beta_1'X) \\
-\]
-Thus,
-\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
-Thus,
-\begin{align*}
-&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
-&\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
-\end{align*}
+%\CPT{7}
+%\ir{7.1}
+%A \textbf{parametric survival model} is one is which the distribution is fully specified except the parameters. The Cox-Proportional Hazards model is \textbf{semi-parametric} because the baseline hazard is not fully specified. Parametric models assume the data follows a particular distribution and requires more assumptions for suitable estimation. Semi-parametric or non-parametric models require less assumptions (and thus are more robust) but yield less information.
+%
+%\iex{7.1} The populations that you are modeling approximately follow the exponential distribution so that you assume
+%\[
+%S(t;X) = \exp(-\lambda t)
+%\]
+%where $\lambda$ depends on $X$.
+%Then one you estimate lambda you can plot survival curves and get estimated survival probabilities at any time.
+%So for $X=1$ you might have $\hat{\lambda=.5}$ and you can estimate
+%\[ S(2;1) \approx \exp(-.5 2)) = \exp(-1) = 0.36787
+%\]
+%\NTS \, Draw smooth survival curve and step function for Cox-Proportional Hazard.
+%
+%\ir{7.2} We saw Proportional Hazards (PH) with respect to the Cox-Propotional Hazard Model.
+%
+%\iex{7.2} We illustrate the Accelerated Failure Time property with an example. Let our survival random variable be time to death of 60 years olds, and $X$ be smoking status (0=non-smoker, 1=smoker).
+%Assume we have
+%\[
+%S(t;0) = S((2/3)t,1) \text{ for all } t>0
+%\]
+%Let $T_0$ be the survival random variable for non-smokers and $T_1$ be the survival random variable for smokers.
+%
+%Then
+%\[ S(7.5;0) = P(T_0>7.5) = P(T_1>5;1) \]
+% and
+%\[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)
+%\]
+%Note we have
+%\[
+%S((3/2)t;0) = S(t;1) \text{ for all } t>0
+%\]
+%and $T_1=(3/2)T_0$.
+%
+%\ir{7.3} In general, if we have the AT property for some $\gamma$ so that
+%\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
+%\]
+%then
+% \[ S((1/\gamma)t;X) =  S( t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0.
+%\]
+%and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
+%\[
+%\gamma T_X = T_{X^*}
+%\]
+%
+%\ir{7.4} ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. Example: We might have failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Note that we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+%
+%\ir{7.5} Exponential accommodates PH. Why? Let
+%\[
+%\lambda=\exp(\beta_0 + \beta' X)
+%\] where $\beta, X$ are both $p \times 1$.
+%Then
+%\[
+%\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
+%\]
+%
+%\ir{7.6} Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
+%\begin{align*}
+%& q = S(t) = \exp(\lambda t) \\
+%& \ln(q) = - \lambda t \\
+%& t = \frac{1}{\lambda} (- \ln(q))
+%\end{align*}
+%Let
+%\[
+%\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
+%\]
+%Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus,
+%\[
+%\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
+%\]
+%
+%\ir{7.7} Relationship between AF and HR for exponential model. We have
+%\[
+%\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\beta_0 + \beta_1'X) \\
+%\]
+%Thus,
+%\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
+%Thus,
+%\begin{align*}
+%&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
+%&\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
+%\end{align*}
 
 
 

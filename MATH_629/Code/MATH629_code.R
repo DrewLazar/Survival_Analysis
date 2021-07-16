@@ -61,6 +61,26 @@ survdiff(Surv(survt,status) ~ TR + strata(LogWBC.group),data=Remission)
 #"plain is Greenwood" 
 kmfit2=survfit(Y~Remission$TR,conf.type="plain")
 plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'), xlab="survival time in weeks",ylab="survival probabilities",conf.int=.95)
+#Problem 2.7 
+kmfit2=survfit(Y~Remission$TR)
+summary(kmfit2)
+#For TR=1 our inequality works for times 4,5 and 8.
+#For time t_4=4 
+0.5-1.96*0.1029<0.6667
+0.5+1.96*0.1029>0.6677
+#For time t_5=5
+0.5-1.96*0.1080<0.5714 
+0.5+1.96*0.1080>0.5714 
+#For time t_6=8
+0.5-1.96*0.1060<0.3810 
+0.5+1.96*0.1060>0.3810
+#For time t_7=11
+0.5-1.96*0.0986<0.2857
+0.5+1.96*0.0986>0.2857
+#We get CI (4,12) as our confidence interval. We use the code below
+#to get it directly in R
+#Simply comparing medians the survival experience for the treatment group
+#is better
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
