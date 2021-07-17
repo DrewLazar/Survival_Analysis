@@ -81,6 +81,18 @@ summary(kmfit2)
 #to get it directly in R
 #Simply comparing medians the survival experience for the treatment group
 #is better
+#Chapter 3 
+#Problem 3.1
+#model 1 - just TR
+Coxph.Rem.m1=coxph(Y~TR,data=Remission)
+summary(Coxph.Rem.m1)
+Coxph.Rem.m1$loglik
+#model 2 - TR and logWBC
+Coxph.Rem.m2=coxph(Y~TR+logWBC,data=Remission)
+summary(Cox.Rem.m2)
+#model 3 - TR, logWBC and interaction 
+Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
+summary(Cox.Rem.m2)
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)

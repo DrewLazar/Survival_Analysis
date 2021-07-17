@@ -703,30 +703,58 @@
 
 \section{Chapter 3}
 
-\begin{frame} 
-\frametitle{The Cox Proportional Hazard Model} 
-\begin{block}{Definition 3.1 - Form of the Cox Proportional Hazard (PH) Model} 
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model}
+\begin{block}{Definition 3.1 - Form of the Cox Proportional Hazard (PH) Model}
 Let $h$ be the hazard function of a survival population. If the Cox PH assumption is satisfied then
 \[
-h(t,\mathbf(X)) = h_0(t)\exp(\sum_{i=1}^p \beta_i X_i) = h_0(t)\exp(\beta' X) 
+h(t,\mathbf(X)) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i X_i\right) = h_0(t)\exp(\beta X')
 \]
 for some fixed parameters $\beta=(\beta_1,\ldots,\beta_p)$, for any $t>0$ of interest and for any covariates specified as $X=(X_1,\ldots,X_p)$. The function $h_0(t)$ is known as the \textbf{baseline hazard function}.
-\end{block} 
-\end{frame}  
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.1 - Implications of Cox PH assumption}
+\begin{enumerate}
+\item The proportional hazards assumption is satisfied (see Theorem 3.1)
+\item Provided there is not interaction with another covariate, the effect on the hazard ratio of a unit increase in a covariate $X_i$ is $\exp(\beta_i)$.
+\item The covariates should be \textbf{time-independent} else the PH assumption will not be met.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame} 
+\frametitle{The Cox Proportional Hazard Model, cont'd} 
+\begin{block}{Remark 3.2 - Interaction terms}
+\begin{enumerate} 
+\item We defined interaction in \idf{1.8} as ``when the effect of the change in a variable on survival probabilities depends on the level of a secondary variable''.
+\item One way we can account for interaction between two covariates ($X_i$ and $X_j$) in a semi- or fully parametric model is by including an interaction term $\alpha X_1X_2$. 
+\item Assuming $\beta X_i$ in the model and no other interaction terms besides $\beta_k X_i X_j$ in the model, the effect of a unit increase of $X_i$ on the hazard rate in a Cox PH model is
+\[
+\exp(\beta_1 + \beta_2 X_2)
+\]
+which depends on $X_2$ (hence the interaction). 
+\end{enumerate}
+\end{block}
+\end{frame} 
 
 \begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd} 
-\begin{block}{Remark 3.1 - Implications of Cox PH assumption}
+\begin{block}{Problem 3.1 - Cox PH Model for the Remission Data} 
 \begin{enumerate}
-\item The proportional hazards assumption is satisfied (see Theorem 3.1) 
-\item The effect on the hazard ratio of a unit increase in a covariate $X_i$ is $\exp(\beta_i)$. 
-\item The covariates should be \textbf{time-independent} else the PH assumption will not be met. 
-\end{enumerate}
-\end{block} 
+\item In R, build three Cox PH models for the Remission data:
+\begin{enumerate}[i] 
+\item A model that just accounts for treatment status (TR)
+\item A model that accounts for TR and logWBC 
+\item A model that accounts for interaction between TR and logWBC
+\end{enumerate} 
+\item Interpret the coefficients of the models, find confidence intervals for the coefficients and changes in HR and test the significance of the coefficients.
+\item Choose the "most appropriate" model based on your last answer. 
+\end{enumerate} 
+\end{block}
 \end{frame} 
-
-
-
 
 %\section{Chapter 7}
 %\begin{frame}

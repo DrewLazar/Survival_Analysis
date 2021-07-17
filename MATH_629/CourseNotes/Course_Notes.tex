@@ -102,9 +102,9 @@
 %
 %\ir{1.3} `Untangling' the effect of exposure vs secondary variables on survival times can thus be difficult. In this regard, there are two issues to consider, confounding and
 %
-%\idf{1.7} \textbf{Confounding } is the extent to which the effect of the change of an exposure variable on survival is caused by an accompanying change in a secondary variable.
+%\idf{1.7} \textbf{Confounding } is the extent to which the effect of the change of a variable (often the exposure variable) on survival is caused by an accompanying change in a secondary variable.
 %
-%\idf{1.8} \textbf{Interaction} is when the effect of the change in an exposure variable on survival probabilities depends on the level of a secondary variable.
+%\idf{1.8} \textbf{Interaction} is when the effect of the change in a variable (often the exposure variable) on survival probabilities depends on the level of a secondary variable.
 %
 %
 %\iex{1.1} \\
@@ -242,19 +242,19 @@
 
 \CPT{3}
 
-\idf{3.1} If for any two specifications of covariates $\mathbf{X}$ and $\mathbf{X}^*$, and for any $t>0$ we have 
+\idf{3.1} If for any two specifications of covariates $\mathbf{X}$ and $\mathbf{X}^*$, and for any $t>0$ we have
 \[
-\frac{h(t,\mathbf{X})}{h(t,\mathbf{X}^*)} = \theta \text{ for some constant } \theta > 0. 
+\frac{h(t,\mathbf{X})}{h(t,\mathbf{X}^*)} = \theta \text{ for some constant } \theta > 0.
 \]
-then our population satisfies the \textbf{proportional hazards assumption}.  
+then our population satisfies the \textbf{proportional hazards assumption}.
 
 \ith{3.1} If a population satisfies the Cox PH assumption then it satisfies the proportional hazards assumption. \\
-Assume the Cox PH assumption is satisfied then 
+Assume the Cox PH assumption is satisfied then
 \[
-\frac{h(t,X)}{h(t,X^*)}=\exp(\beta'(X-X^*)) = \exp\left(\sum_{i=1}^p  \beta_i(X_i-X_i^*)\right) 
-\] 
+\frac{h(t,X)}{h(t,X^*)}=\exp(\beta'(X-X^*)) = \exp\left(\sum_{i=1}^p  \beta_i(X_i-X_i^*)\right)
+\]
 
-\ir{3.2} 
+\ir{3.2}
 \NTS \, Show 2.,  3. Time-independent: sex, race, age at start of study, smoking status at start of study. Can change, of course. With time-independent covariate you are accounting for the effect at the beginning of the study only.
 
 \ith{3.2} Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
