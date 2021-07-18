@@ -756,28 +756,29 @@ which depends on $X_2$ (hence the interaction).
 \end{block}
 \end{frame}
 
-\begin{frame} 
+\begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd}
 \begin{block}{Remark 3.1 - Model Selection and Parsimony}
-Why not include the interaction term? Even though the interaction effect is ``small'' won't this give us a better idea of the effect of treatment for different levels of LogWBC? Not necessarily, because 
-\begin{enumerate} 
-\item The p-value is so small the estimated effect could solely be by chance. 
-\item Including non-significant parameters can \textbf{``overfit''} your model, i.e., your model is too specific to the sample which you used to estimate your parameters and won't generalize. 
-\end{enumerate} 
+Why not include the interaction term? Even though the interaction effect is ``small'' won't this give us a better idea of the effect of treatment for different levels of LogWBC? Not necessarily, because
+\begin{enumerate}
+\item The p-value is so small the estimated effect could solely be by chance.
+\item Including non-significant parameters can \textbf{``overfit''} your model, i.e., your model is too specific to the sample which you used to estimate your parameters and won't generalize.
+\end{enumerate}
 You want an accurate yet \textbf{parsimonious} models.
-\end{block} 
-\end{frame} 
+\end{block}
+\end{frame}
 
 \begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd}
 \begin{block}{Remark 3.2 - Confounding and the Cox PH model}
-\begin{itemize} 
-\item  Why is the estimated effect of TR on the hazard ratio different from model 1 to model 2? Isn't there one such effect?  
-\item The effect is different because model 2 accounts for logWBC in the model and for confounding.  Model 1 does not account for confounding. 
+\begin{itemize}
+\item  Why is the estimated effect of TR on the hazard ratio different from model 1 to model 2? Isn't there one such effect?
+\item The effect is different because model 2 accounts for logWBC in the model and for confounding.  Model 1 does not account for confounding.
 \item Note that in model 2 the effect of treatment is independent of logWBC (as there is not significant interaction) and does not depend on time (the PH assumption).
-\end{itemize} 
+\end{itemize}
 \end{block}
-\end{frame} 
+\end{frame}
+
 
 %\section{Chapter 7}
 %\begin{frame}
