@@ -87,12 +87,15 @@ summary(kmfit2)
 Coxph.Rem.m1=coxph(Y~TR,data=Remission)
 summary(Coxph.Rem.m1)
 Coxph.Rem.m1$loglik
+2*(1-pnorm(3.812)) #pvalue 
 #model 2 - TR and logWBC
 Coxph.Rem.m2=coxph(Y~TR+logWBC,data=Remission)
-summary(Cox.Rem.m2)
+summary(Coxph.Rem.m2)
+Coxph.Rem.m2$loglik
 #model 3 - TR, logWBC and interaction 
 Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
-summary(Cox.Rem.m2)
+summary(Coxph.Rem.m3)
+Coxph.Rem.m3$loglik
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
