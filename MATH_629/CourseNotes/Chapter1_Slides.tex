@@ -730,10 +730,10 @@ for some fixed parameters $\beta=(\beta_1,\ldots,\beta_p)$, for any $t>0$ of int
 \begin{block}{Remark 3.2 - Interaction terms}
 \begin{enumerate}
 \item We defined interaction in \idf{1.8} as ``when the effect of the change in a variable on survival probabilities depends on the level of a secondary variable''.
-\item One way we can account for interaction between two covariates ($X_i$ and $X_j$) in a semi- or fully parametric model is by including an interaction term $\alpha X_1X_2$.
-\item Assuming $\beta X_i$ in the model and no other interaction terms besides $\beta_k X_i X_j$ in the model, the effect of a unit increase of $X_i$ on the hazard rate in a Cox PH model is
+\item One way we can account for interaction between two covariates ($X_i$ and $X_j$  with $i \neq j$) in a semi- or fully parametric model is by including an interaction term $\alpha X_iX_j$.
+\item Assuming $\beta X_i$ in the model and no other interaction terms besides $\beta_j X_i X_j$ are in the model, the effect of a unit increase of $X_i$ on the hazard rate in a Cox PH model is
 \[
-\exp(\beta_1 + \beta_2 X_2)
+\exp(\beta_i + \beta_j X_j)
 \]
 which depends on $X_2$ (hence the interaction).
 \end{enumerate}
@@ -755,6 +755,18 @@ which depends on $X_2$ (hence the interaction).
 \end{enumerate}
 \end{block}
 \end{frame}
+
+\begin{frame} 
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Cox PH Model for the Remission Data - HR Interval Estimation} 
+
+
+
+
+
+
+
+
 
 \begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd}
@@ -779,8 +791,22 @@ You want an accurate yet \textbf{parsimonious} models.
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.2 - Confounding and the Cox PH model}
+\begin{itemize}
+\item  Why is the estimated effect of TR on the hazard ratio different from model 1 to model 2? Isn't there one such effect?
+\item The effect is different because model 2 accounts for logWBC in the model and for confounding.  Model 1 does not account for confounding.
+\item Note that in model 2 the effect of treatment is independent of logWBC (as there is not significant interaction) and does not depend on time (the PH assumption).
+\end{itemize}
+\end{block}
+\end{frame}
 
-\begin{frame} 
+
+
+
+
+\begin{frame}
  Let $LR_F$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
 \[ h(t;X) = h_0(t) \exp(\sum_i^p \hat{B}_iX_i) \].
 Let $LR_R$ be the value of the log-likelihood for a fitted Cox-Proportional Hazard model
@@ -790,7 +816,7 @@ Then for a ``large sample'' we have the following approximate distribution
 \[
 -2(LR_R - LR_F) \sim \chi^2(p-q)
 \]
-\end{frame} 
+\end{frame}
 %\section{Chapter 7}
 %\begin{frame}
 %\begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}

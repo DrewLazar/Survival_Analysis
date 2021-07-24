@@ -291,7 +291,51 @@ If we include the interaction term then the approximate effect of treatment depe
 \[\exp(\hat{\beta_1}+ \hat{\beta}_3 \text{logWBC} = \exp(2.3749 - 0.3175\text{logWBC}) \]
 
 Note the interaction coefficient has a large p-value of 0.546 and is \textit{not significant } for any $\alpha > 0.546$. \\
-Thus, we might exclude the interaction term and decide our ``best'' model is model 2. This is assuming that our COX PH assumption are met.
+Thus, we might exclude the interaction term and decide our ``best'' model is model 2. This is assuming that our COX PH assumption is met (in chapter 4 we will consider this). \\
+
+\ir{3.3}
+Large sample C.I.'s for $\hat{HR}$. \\
+
+Assume we have the term $X_i\beta_i$ in our Cox PH model. A ``large sample'' C.I. for a parameter $\beta$ is:
+\[
+\hat{\beta} \pm z_{\alpha/2} SE(\hat{\beta})
+\]
+Thus, without interaction $\hat{HR} = \exp(\hat{\beta}_i)$ and a ``large sample'' C.I. for $HR$ is
+\[
+\exp(\hat{\beta_i} \pm z_{\alpha/2} SE(\hat{\beta}_i))
+\]
+What if we had interaction? Then
+\[
+\hat{HR} = \exp(\hat{\beta}_i + \sum \hat{\beta_j}X_j)
+\]
+where $X_j's (j \neq i)$ are all the covariates that $X_i$ interacts with. What is the CI for $HR = \ell = \beta_i + \sum \beta_jX_j$ when we have interaction?
+\[
+\hat{ell} = \exp(\hat{\beta}_i + \sum \hat{\beta}_jX_j)
+\]
+and the $100(1-\alpha)\%$ CI for $\ell$ is
+\[
+\hat{\ell} \pm z_{\alpha/2} SE(\hat{\ell})
+\]
+Assume we have one $X_j$ (for simplicity).
+Then
+\begin{align*}
+& SE(\hat{\ell}) = \sqrt{var(\ell)} = \sqrt{cov(\hat{\ell},\hat{\ell})} \\
+&\sqrt{cov(\hat{\beta}_i+ \hat{\beta}_jX_j,\hat{\beta}_i+ \hat{\beta}_j)X_j} = \\
+&\sqrt{var(\hat{\beta}_i) + 2X_iX_j cov(\hat{\beta}_i,\hat{\beta}_j) + X_j^2 var{\hat{\beta}_j}}
+\end{align*}
+
+Then a $100(1-\alpha)\%$ CI for $HR$ is 
+\[
+\exp(\hat{\ell} \pm z_{\alpha/2} SE(\hat{\ell}))
+\]
+Example for Remission Data - Hazard ratio using mean of logWBC under interaction with TR. 
+\[
+\hat{HR} = \exp(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3)
+\]
+and $95\%$ C.I. for $\hat{HR}$ is
+\[
+\exp\left(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3 \pm 1.96 \sqrt{var(\hat{\beta}_1)+2\overline{logWBC}cov(\hat{\beta}_1,\hat{\beta}_3)+\overline{logWBC}^2var(\hat{\beta}_3)}\right)
+\]
 
 
 

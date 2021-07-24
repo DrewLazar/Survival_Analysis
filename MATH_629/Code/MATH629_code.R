@@ -96,6 +96,12 @@ Coxph.Rem.m2$loglik
 Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
 summary(Coxph.Rem.m3)
 Coxph.Rem.m3$loglik
+#95% Confidence Interval for HR in model 3 (assuming interaction) 
+#setting logWBC = 2.930238
+mean(Remission$logWBC)
+vcov(Coxph.Rem.m3)
+exp(2.3749-0.3175*2.930238+1.96*sqrt((2.9086116+2*(2.930238)*(-0.8687027)+2.930238^2*0.2764537)))
+exp(2.3749-0.3175*2.930238- 1.96*sqrt((2.9086116+2*2.930238*(-0.8687027)+2.930238^2*0.2764537)))
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
