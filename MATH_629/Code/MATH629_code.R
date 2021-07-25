@@ -102,6 +102,17 @@ mean(Remission$logWBC)
 vcov(Coxph.Rem.m3)
 exp(2.3749-0.3175*2.930238+1.96*sqrt((2.9086116+2*(2.930238)*(-0.8687027)+2.930238^2*0.2764537)))
 exp(2.3749-0.3175*2.930238- 1.96*sqrt((2.9086116+2*2.930238*(-0.8687027)+2.930238^2*0.2764537)))
+#Problem 3.2
+windows(width=10, height=8)
+pattern1=data.frame(TR=0,logWBC=2.930238)
+summary(survfit(Coxph.Rem.m2,newdata=pattern1))
+plot(survfit(Coxph.Rem.m2,newdata=pattern1),conf.int=F,main="Adjusted survival for TR=0 vs TR=1, mean(logWBC)")
+pattern2=data.frame(TR=1,logWBC=2.930238)
+summary(survfit(Coxph.Rem.m2,newdata=pattern2))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.m2,newdata=pattern2),conf.int=F,lty='dashed')
+legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
+       col=c('black','grey'))
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)

@@ -324,11 +324,11 @@ Then
 &\sqrt{var(\hat{\beta}_i) + 2X_iX_j cov(\hat{\beta}_i,\hat{\beta}_j) + X_j^2 var{\hat{\beta}_j}}
 \end{align*}
 
-Then a $100(1-\alpha)\%$ CI for $HR$ is 
+Then a $100(1-\alpha)\%$ CI for $HR$ is
 \[
 \exp(\hat{\ell} \pm z_{\alpha/2} SE(\hat{\ell}))
 \]
-Example for Remission Data - Hazard ratio using mean of logWBC under interaction with TR. 
+Example for Remission Data - Hazard ratio using mean of logWBC under interaction with TR.
 \[
 \hat{HR} = \exp(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3)
 \]
@@ -336,6 +336,27 @@ and $95\%$ C.I. for $\hat{HR}$ is
 \[
 \exp\left(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3 \pm 1.96 \sqrt{var(\hat{\beta}_1)+2\overline{logWBC}cov(\hat{\beta}_1,\hat{\beta}_3)+\overline{logWBC}^2var(\hat{\beta}_3)}\right)
 \]
+
+\ith{3.1}
+Proof: 
+By \ith{1.1} we have the relation
+\[
+S(t;X) = e^{\int_0^t h(u;X)du} 
+\]
+Thus, in this case we have
+\begin{align*} 
+S(t;X) & =  e^{\int_0^t h(u;X)du} = e^{\int_0^t h_0(u)e^{X\beta'}du} \\
+& = (e^{\int_0^t h_0(u)du})^{e^{X\beta'}} = S_0(t)^{e^{X\beta'}}
+\end{align*} 
+
+
+\it{3.4} 
+Now once we have estimates, $\hat{\beta}$ we have
+\[
+\hat{S}(t,X) = \hat{S}_0(t)^{e^{X(\hat{\beta})'}}
+\]
+But how do we get $\hat{S}_0(t)$? We let the computer do it, with a Kaplan-Meirer like process (but more difficult) we are not going to examine this estimation in this class. 
+
 
 
 

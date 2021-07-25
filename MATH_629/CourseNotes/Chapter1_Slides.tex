@@ -756,18 +756,6 @@ which depends on $X_2$ (hence the interaction).
 \end{block}
 \end{frame}
 
-\begin{frame} 
-\frametitle{The Cox Proportional Hazard Model, cont'd}
-\begin{block}{Cox PH Model for the Remission Data - HR Interval Estimation} 
-
-
-
-
-
-
-
-
-
 \begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd}
 \begin{block}{Remark 3.1 - Model Selection and Parsimony}
@@ -803,7 +791,28 @@ You want an accurate yet \textbf{parsimonious} models.
 \end{frame}
 
 
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Theorem 3.1 - Form of Survival Curves given Cox PH model}
+If we have a Cox PH model, i.e.,
+\[
+h(t;X) = h_0(t)\exp{\sum_i^n X_i \beta_i} = h_0(t) \exp(X \beta')
+\]
+then 
+\[
+S(t;X) = S_0(t)^{exp(X\beta')}
+\]
+where $S_0(t) = S(t;\mathbf{0})$ is the \textbf{baseline survival function}. 
+\end{block} 
+\end{frame} 
 
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Problem 3.1 - Adjusted Cox Survival Curves}
+In R, plot adjusted Cox PH survival curves for TR=0 vs TR=1 using $\overline{\text{logWBC}}$ for logWBC. 
+\end{block} 
+\end{frame}  
 
 
 \begin{frame}
