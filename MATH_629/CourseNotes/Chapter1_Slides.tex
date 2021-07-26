@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subfig}
+\input{notes_macros}
 %\definecolor{cardinal}{rgb}{0.77, 0.12, 0.23}
 %\usecolortheme[named=cardinal]{structure}
 %\setbeamercolor{block title}{bg=cardinal,fg=black}
@@ -30,7 +31,6 @@
 \newtheorem*{exs}{Examples}
 \newtheorem{ex}{Example}
 \newtheorem*{exc}{Exercise}
-\input{notes_macros.tex}
 %\usepackage{booktabs}
 \setlength{\parindent}{0pt}
 %\setbeameroption{show notes}
@@ -798,21 +798,53 @@ If we have a Cox PH model, i.e.,
 \[
 h(t;X) = h_0(t)\exp{\sum_i^n X_i \beta_i} = h_0(t) \exp(X \beta')
 \]
-then 
+then
 \[
 S(t;X) = S_0(t)^{exp(X\beta')}
 \]
-where $S_0(t) = S(t;\mathbf{0})$ is the \textbf{baseline survival function}. 
-\end{block} 
-\end{frame} 
+where $S_0(t) = S(t;\mathbf{0})$ is the \textbf{baseline survival function}.
+\end{block}
+\end{frame}
 
 
 \begin{frame}
 \frametitle{The Cox Proportional Hazard Model, cont'd}
 \begin{block}{Problem 3.1 - Adjusted Cox Survival Curves}
-In R, plot adjusted Cox PH survival curves for TR=0 vs TR=1 using $\overline{\text{logWBC}}$ for logWBC. 
-\end{block} 
-\end{frame}  
+In R, plot adjusted Cox PH survival curves for TR=0 vs TR=1 using $\overline{\text{logWBC}}$ for logWBC.
+\end{block}
+\end{frame}
+
+\begin{frame} 
+\frametitle{Maximum Likelihood Estimation} 
+\begin{block}{\iex{3.1} - MLE of Bernoulli Distribution}  
+Let $X$ have the pmf
+\[
+f(x;p) =   p^x (1-p)^{1-x}, x=0,1 \text{ and } 0<p<1
+\]
+If $x_1,\ldots,x_n$ are observations from a random sample then
+\begin{align*} 
+L(p) & =  \prod_{i=1}^n f(x_i;p) = p^{x_1}(1-p)^{1-x_1} \cdots p^{x_n}(1-p)^{1-x_n} \\
+& = p^{\sum x_i} (1-p)^{n-\sum x_i}
+\end{align*} 
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\begin{block}{\iex{3.1} - MLE of Bernoulli Distribution (cont'd)}
+Thus we have,
+\[
+\ell(p) = \ln[L(p)] = \sum x_i \ln(p) +[n-\sum x_i] \ln(1-p) 
+\] 
+which gives score equation
+\[
+\frac{d}{dp}[\ell(p)]= \frac{\sum x_i}{p} - \frac{n-\sum x_i}{1-p} = 0
+\]
+Solving gives $\hat{p} = \sum x_i/n = \bar{x}$. 
+\end{block}
+\end{frame}
+
 
 
 \begin{frame}

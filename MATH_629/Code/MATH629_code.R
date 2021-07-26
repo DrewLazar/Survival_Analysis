@@ -113,6 +113,7 @@ par(new=TRUE)
 plot(survfit(Coxph.Rem.m2,newdata=pattern2),conf.int=F,lty='dashed')
 legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
        col=c('black','grey'))
+
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
