@@ -338,24 +338,55 @@ and $95\%$ C.I. for $\hat{HR}$ is
 \]
 
 \ith{3.1}
-Proof: 
+Proof:
 By \ith{1.1} we have the relation
 \[
-S(t;X) = e^{\int_0^t h(u;X)du} 
+S(t;X) = e^{\int_0^t h(u;X)du}
 \]
 Thus, in this case we have
-\begin{align*} 
+\begin{align*}
 S(t;X) & =  e^{\int_0^t h(u;X)du} = e^{\int_0^t h_0(u)e^{X\beta'}du} \\
 & = (e^{\int_0^t h_0(u)du})^{e^{X\beta'}} = S_0(t)^{e^{X\beta'}}
-\end{align*} 
+\end{align*}
 
 
-\it{3.4} 
+\it{3.4}
 Now once we have estimates, $\hat{\beta}$ we have
 \[
 \hat{S}(t,X) = \hat{S}_0(t)^{e^{X(\hat{\beta})'}}
 \]
-But how do we get $\hat{S}_0(t)$? We let the computer do it, with a Kaplan-Meirer like process (but more difficult) we are not going to examine this estimation in this class. 
+But how do we get $\hat{S}_0(t)$? We let the computer do it, with a Kaplan-Meirer like process (but more difficult) we are not going to examine this estimation in this class.
+
+
+\ir{3.4}
+Assume a random variable $X$ has a probability distribution $f(x;\beta_1,\ldots,\beta_p)$ that depends on parameters $\beta_1,\ldots,\beta_p$. If we then observe a sample from $X$, $x_1,\ldots,x_n$. Then the likelihood function is
+\[
+(*) L(\beta_1,\ldots,\beta_n) = g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n)
+\]
+where $g$ the joint probability of the sample $X_1,\ldots,X_n$.
+
+If $X_1,\ldots,X_n$ is a random sample then $g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n) = f(x_1;\beta_1,\ldots,\beta_p) \cdots  f(x_n;\beta_1,\ldots,\beta_p)$.
+
+The values of $\beta_1,\ldots,\beta_n$ that maximize (*) with respect to given observations are known as maximimum likelihood estimates (MLE's) and are denoted $\hat{beta}_1,\ldots,\hat{beta}_n$, respectively.
+
+Because $0<L(\beta_1,\ldots,\beta_n) \leq 1$ we can take it's natural log
+\[
+\ell(\beta_1,\ldots,\beta_n) = \ln[L(\beta_1,\ldots,\beta_n)]
+\]
+and because $\ln$ is a strictly increasing function we can maximize $L$ by maximizing $\ell$. $\ell(\beta_1,\ldots,\beta_n)$ is known as a log-likelihood function.
+
+If $X$ is discrete then
+\[
+L(\beta_1,\ldots,\beta_n) = g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n) = P(X_1=x_1 \cup X_2=x_2 \ldots \cup X_n = x_n;\beta_1,\ldots,\beta_n)
+\]
+so by maximizing $L$ we are finding the parameters that are most likely to have produced the observations $x_1,\ldots,x_n$.
+To maximize $\ell$ we typically solve the \textbf{score equations}
+\begin{align*} 
+\frac{\partial \ell}{\partial \beta_1}=0 \\
+\ldots \\
+\frac{\partial \ell}{\partial \beta_p}=0
+\end{align*} 
+
 
 
 
