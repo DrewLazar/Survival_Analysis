@@ -113,7 +113,16 @@ par(new=TRUE)
 plot(survfit(Coxph.Rem.m2,newdata=pattern2),conf.int=F,lty='dashed')
 legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
        col=c('black','grey'))
-
+#Example 3.2
+f <- function(b) -exp(b)/(3*exp(2*b)+4*exp(b)+1)
+x <- seq(-1,10,0.01)
+windows(width=10, height=8)
+plot(x, f(x))   
+optimize(f, lower = -1, upper = 0)
+time<-c(2,3,5,8);status<-c(1,0,1,1);Coupon<-c(1,1,0,1)
+Sales=data.frame(Coupon,status,time)
+S<-Surv(Sales$time,Sales$status==1)
+coxph(S~Coupon,data=Sales)
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)

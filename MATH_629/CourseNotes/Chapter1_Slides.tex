@@ -814,37 +814,83 @@ In R, plot adjusted Cox PH survival curves for TR=0 vs TR=1 using $\overline{\te
 \end{block}
 \end{frame}
 
-\begin{frame} 
-\frametitle{Maximum Likelihood Estimation} 
-\begin{block}{\iex{3.1} - MLE of Bernoulli Distribution}  
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\begin{block}{\iex{3.1} - MLE of Bernoulli Distribution}
 Let $X$ have the pmf
 \[
 f(x;p) =   p^x (1-p)^{1-x}, x=0,1 \text{ and } 0<p<1
 \]
 If $x_1,\ldots,x_n$ are observations from a random sample then
-\begin{align*} 
+\begin{align*}
 L(p) & =  \prod_{i=1}^n f(x_i;p) = p^{x_1}(1-p)^{1-x_1} \cdots p^{x_n}(1-p)^{1-x_n} \\
 & = p^{\sum x_i} (1-p)^{n-\sum x_i}
-\end{align*} 
+\end{align*}
 \end{block}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Maximum Likelihood Estimation}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
 \begin{block}{\iex{3.1} - MLE of Bernoulli Distribution (cont'd)}
 Thus we have,
 \[
-\ell(p) = \ln[L(p)] = \sum x_i \ln(p) +[n-\sum x_i] \ln(1-p) 
-\] 
+\ell(p) = \ln[L(p)] = \sum x_i \ln(p) +[n-\sum x_i] \ln(1-p)
+\]
 which gives score equation
 \[
 \frac{d}{dp}[\ell(p)]= \frac{\sum x_i}{p} - \frac{n-\sum x_i}{1-p} = 0
 \]
-Solving gives $\hat{p} = \sum x_i/n = \bar{x}$. 
+Solving gives $\hat{p} = \sum x_i/n = \bar{x}$.
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Partial Maximum Likelihood Estimation of the Cox PH Model} 
+\begin{enumerate}
+\item In a parametric model, the distribution of responses is fully determined by the values of parameters to be estimated. Consider the exponential distribution
+\[
+h(t;\lambda) = \lambda \implies S(t;\lambda) = \exp(\lambda t) f(t;\lambda) = \lambda \exp(-\lambda t)
+\]
+\item A Cox PH model, however, is semi-parametric and parameters don't fully specify the distribution
+\[
+h(t,X;\beta) = h_0(t)\exp(X'\beta) \implies S(t,X;\beta)= S_0(t)^{\exp(X'\beta)} 
+\]
+To estimate the parameters, in a Cox PH model we use Partial Maximum Likelihood Estimation in which we use relative hazards to specify probabilities given observed survival times. 
+\end{enumerate}  
+\end{block}
+\end{frame} 
+
+\begin{frame} 
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Partial MLE of the Cox PH Model (cont'd) - Motivating Example} 
+Consider a lottery in which tickers are chosen at random. All tickets of winning holders removed from pool after holder wins. Four tickets are chosen at random in a sequence. If
+Barry ($B$) holds 3 tickets, Gary ($G$) holds 4, Susan ($S$) holds 2 tickets and John ($J$) holds 1 ticket then what is the probability of the following sequence of winners: Bary, Garry, Susan, John? 
+\begin{align*} 
+& P(G_1 \cap B_2 \cap J_3 \cap S_4) = \\
+& P(B_1)P(G_2|B_1)P(J_3|B_1 \cap G_2)P(S_4|B_1 \cap G_2 \cap J_3) = \\
+& \left(\frac{3}{10}\right) \left(\frac{4}{7}\right) \left(\frac{1}{3}\right) \left(\frac{2}{2}\right) = \frac{2}{35}
+\end{align*} 
+\end{block}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Partial MLE of the Cox PH Model (cont'd) - \iex 3.2}
+Consider the following survival data about Bary, Garry, Susan and John. 
+\begin{center}
+\begin{tabular}{ c c c c } \hline
+ Name & Time & Status & Coupon \\ \hline 
+Bary & 2 & 1 & 1 \\
+ Garry & 3 & 0 & 1 \\
+Susan & 5 & 1 & 0 \\
+  John & 8 & 1 & 1 \\
+\end{tabular}
+\end{center}
+\end{block}
+Assuming the Cox PH model, how can we form a (partial) likelihood function from this data? We then want to maximize the likelihood to estimate $\beta$ with $\hat{\beta}$.   
+\end{frame} 
 
 
 \begin{frame}
@@ -858,6 +904,8 @@ Then for a ``large sample'' we have the following approximate distribution
 -2(LR_R - LR_F) \sim \chi^2(p-q)
 \]
 \end{frame}
+
+
 %\section{Chapter 7}
 %\begin{frame}
 %\begin{block}{Relationships between $S(t), h(t)$ and $f(t)$}
