@@ -123,6 +123,38 @@ time<-c(2,3,5,8);status<-c(1,0,1,1);Coupon<-c(1,1,0,1)
 Sales=data.frame(Coupon,status,time)
 S<-Surv(Sales$time,Sales$status==1)
 coxph(S~Coupon,data=Sales)
+#Problem 3.2 
+#From problem 3.1 
+#model 1 - just TR
+Coxph.Rem.m1=coxph(Y~TR,data=Remission)
+summary(Coxph.Rem.m1)
+Coxph.Rem.m1$loglik
+2*(1-pnorm(3.812)) #pvalue 
+#model 2 - TR and logWBC
+Coxph.Rem.m2=coxph(Y~TR+logWBC,data=Remission)
+summary(Coxph.Rem.m2)
+Coxph.Rem.m2$loglik
+#model 3 - TR, logWBC and interaction 
+Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
+summary(Coxph.Rem.m3)
+Coxph.Rem.m3$loglik
+#constant main effect model
+Coxph.Rem.me=coxph(Y~1,data=Remission)
+summary(Coxph.Rem.me)
+Coxph.Rem.me$loglik
+#Test for just beta1=0
+#Chi-squared statistic, critical value, and p-value
+CSstat=-2*(-93.18427-(-85.00842))
+CV=qchisq(.95,df=1)
+pvalue1=pchisq(CSstat,df = 1,lower.tail = FALSE)
+#Test for beta1=0 with logWBC in the model
+CSstat=-2*(-85.00842-(-69.82810))
+CV=qchisq(.95,df=1)
+pvalue2=pchisq(CSstat,df = 1,lower.tail = FALSE)
+#Test for beta3=0 (interaction) with TR and logWBC in the model
+CSstat=-2*(-69.82810-(-69.64839))
+CV=qchisq(.95,df=1)
+pvalue3=pchisq(CSstat,df = 1,lower.tail = FALSE)
 #Chapter 7
 attach(Remission)
 Y=Surv(survt,status)
