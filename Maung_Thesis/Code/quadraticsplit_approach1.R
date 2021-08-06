@@ -43,7 +43,8 @@ rot2d = function(theta) {
 }
 
 stdquadpure2d = function(yi, yj, a) {
-  (yi[2] >= a*yi[1]^2) && (yj[2] >= a*yj[1]^2)
+  ((yi[2] >= a*yi[1]^2) && (yj[2] >= a*yj[1]^2)) ||
+  ((yi[2] < a*yi[1]^2) && (yj[2] < a*yj[1]^2))  
 }
 
 objfunc2d = function(data, pommatrix, cvec, a, theta) {
@@ -57,8 +58,8 @@ objfunc2d = function(data, pommatrix, cvec, a, theta) {
       xi = data[i,]
       xj = data[j,]
       
-      yi = t(rot2d(theta))*(xi - cvec)
-      yj = t(rot2d(theta))*(xj - cvec)
+      yi = t(rot2d(theta))%*%t(xi - cvec)
+      yj = t(rot2d(theta))%*%t(xj - cvec)
       
       if (stdquadpure2d(yi, yj, a)) {
         if (pommatrix[i,j] == "pure") {
@@ -84,7 +85,7 @@ objfunc2d_Remission = function(par) {
   a = par[3]
   theta = par[4]
   
-  objfunc2d(RemissionCov, Remissionpom, cvec, a, theta)
+  -objfunc2d(RemissionCov, Remissionpom, cvec, a, theta)
 }
 
 # fails to optimize!!!
@@ -92,3 +93,13 @@ testoptim = function() {
   par = c(0, 0, 0, 0)
   optim(par, objfunc2d_Remission)
 }
+
+#objective test
+pommatrix = matrix("neither",4,4)
+pommatrix[1,2]="pure";pommatrix[1,3]="mixed";pommatrix[1,4]="pure"
+pommatrix[2,4]="neither";pommatrix[3,4]="pure";pommatrix[2,3]="mixed"
+data=cbind(c(.5,.75,-.5,2),c(1,1,1,0))
+a=1;theta=0; cvec=c(1,0)
+objfunc2d(data, pommatrix, cvec, a, theta)
+
+stdquadpure2d(data[1,],data[2,],1)
