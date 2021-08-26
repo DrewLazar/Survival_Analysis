@@ -1,0 +1,150 @@
+\documentclass[12pt]{article}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset  -.85in
+\usepackage[english]{babel}
+\usepackage{hhline}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\bf MATH 629 \ \ Online \ \ CRN 33243 
+}
+\end{center}
+
+\setlength{\unitlength}{1in}
+
+\begin{picture}(6,.1)
+\put(0,0) {\line(1,0){6.25}}
+\end{picture}
+
+
+
+\renewcommand{\arraystretch}{2}
+
+\vskip.25in
+\noindent\textbf{Instructor:} Dr. Drew Lazar \vskip.05in
+
+\textit{Office:} RB 434 \textit{Phone:} 765-285-8672  \textit{Email:} dmlazar@bsu.edu \newline
+\indent \textit{Zoom meeting room:} \url{https://zoom.us/join} \textit{zoomID: }6086878877 \newline
+\indent \textit{Office Hours:} Mon 1:00-2:00 pm, F 11:00 -12:00 am or by appointment \newline
+
+\noindent\textbf{Book:}  \textit{Survival Analysis: A Self-Learning Text, Third Edition (Statistics for Biology and Health)}, David G. Kleinbaum and Mitchel Klein, Springer 2012. \newline
+
+\noindent\textbf{Software:} \textit{R and RStudio} We will make extensive use of R software. I will use RStudio for an R environment in class. R can be downloaded here \url{https://www.r-project.org/} and RStudio can be downloaded here \url{https://www.rstudio.com/}.
+  
+%\vspace{5pt}
+%\includegraphics[scale=.25]{cover}
+%\vspace{5pt}
+\vskip.15in
+\noindent\textbf{Prerequisites:}  MATH 621 or permission of the department chairperson.
+
+\vskip.15in
+\noindent\textbf{Course Objectives:} Introduction to Survival Analysis and Time-to-Event data.
+
+ \vskip.15in
+\noindent
+
+ \vskip.15in \noindent\textbf{Course Content:} I plan to cover Chapters 1 through 9 of the textbook.
+\begin{enumerate}
+\item Introduction to Survival Analysis 
+
+\noindent Types of censoring, Survival function, Hazard function, Layout of survival data.
+
+\item Kaplan-Meirer Survival Curves 
+
+\noindent Computing Kaplan-Meirer estimates, $95\$$ CI's about KM curves, log-rank tests.
+
+\item Cox Proportional Hazards Model 
+
+\noindent Form of Cox PH model, Meaning of PH assumption, Adjusted survival curves, Age as time scale, Evaluation of Cox PH assumption, Goodness-of-fit tests, Stratified Cox procedure, Extension of Cox PH model, Time-dependent variables. 
+
+\item Parametric Survival Models
+
+\noindent Common parametric models (exponential, Weibull, log-logistic),  accelerated failure time models (AFT), frailty models. 
+
+\item Recurrent Event Analysis, Competing Risks
+
+\noindent Counting process approach, Stratified Cox PH for correlated data, independence assumption of competing risks, sensitivity analysis, CIC and CPC curves, Lunn-McNeill method. 
+
+\end{enumerate}
+
+\vskip.15in
+\noindent \textbf{Homework}: Homework will be assigned from sections of the book that we cover in class. You are expected to do all the assigned and suggested problems. Understanding their solutions is crucial to your success in this course. Late homework will not be accepted.
+
+\vskip.15in
+\noindent\textbf{In-class Exams}:  There will be two midterms exams and an online quiz. The first exam will be held on October 8\textsuperscript{th} and the second held on November 12\textsuperscript{th}. The exams and quiz will use the Respondus LockDown Browser and Monitor.
+
+\vskip.15in
+\noindent\textbf{Final Exam}:  The final will be two hours and will cover material from the entire course. It will be held on December 16-17\textsuperscript{th}.
+
+\vspace*{.15in}
+\noindent\textbf{Final Grade:} Your grade will be determined as follows:
+
+\vspace*{.15in}
+\begin{tabular}{| p{2.15cm}|c|}
+\hline
+Task & Points \\
+\hline
+HW \& Quiz & 240 \\ [-2ex]
+Midterms & 300 \\ [-2ex]
+Final & 200 \\ \hhline{|=|=|}
+Total & 740 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c||c|c||c|c|}
+\hline
+
+Percent & Grade & Percent & Grade & Percent & Grade  \\ \hline \hline
+$\geq$ 92 & A & [80,83) & B - & [67,70) & D+ \\ \hline
+[90,92) & A- & [75,80) & C+ & [65,67) & D \\ \hline
+[87,90) & B+  & [72,75) & C & [62,65) & D- \\ \hline
+[83,87)&  B & [70,72) & C - & $<$ 62 & E \\ \hline
+\end{tabular}
+
+\vskip.15in
+
+\noindent\textbf{Academic Honesty}:  Ball State's Academic Ethics Policy is given here:
+\url{https://www.bsu.edu/about/administrativeoffices/vice-provost/student-services/academic-integrity}. Violating this policy can lead to disciplinary action up to and including expulsion from the university. Ball State's Code of Student Rights and Responsibilities is given here: \url{https://www.bsu.edu/about/administrativeoffices/student-conduct/policiesandprocedures/studentcode}.
+
+\vskip.15in
+\noindent\textbf{Course Withdrawal}:
+The course withdrawal period ends Wednesday, October 27, 2021.  Before this date, students can elect to receive a “W” for the course by completing and submitting the proper form. The instructor’s permission is not required.  For details, see \url{https://www.bsu.edu/about/administrativeoffices/registrar/registration-activities/withdraw-from-classes} as well as Degree Requirements and Time Limits in the current Undergraduate Catalog OR Withdrawal Procedures in the current graduate catalog.
+
+\vskip.15in
+\noindent\textbf{COVID Policies}:
+Ball State University requires that students wear face masks while inside campus buildings, including in classrooms and laboratories. Face masks are required in this class as social distancing cannot be maintained at all times. If you are unable to wear a face mask, please contact the Office of Disability Services to request an accommodation. Please visit the following three links:   \href{https://www.bsu.edu/about/administrativeoffices/emergency-preparedness/pandemicfluprep/coronavirus}{Covid-19 Quick Links},   \href{https://www.bsu.edu/about/administrativeoffices/emergency-preparedness/pandemicfluprep/coronavirus/plans-resources/return-to-campus-plan-for-students}{Return to Campus Plan for Students}, and \href{https://www.bsu.edu/about/administrativeoffices/emergency-preparedness/pandemicfluprep/coronavirus/cardinals-care-pledge}{Cardinals Care Pledge}.
+
+\vskip.15in
+\noindent\textbf{Diversity Statement}: Ball State University aspires to be a university that attracts and retains a diverse faculty, staff, and student body. We are committed to ensuring that all members of the community are welcome, through valuing the various experiences and worldviews represented at Ball State and among those we serve. We promote a culture of respect and civil discourse as expressed in our Beneficence Pledge \href{https://www.bsu.edu/about/administrativeoffices/student-conduct/policiesandprocedures/beneficence}{Beneficence Pledge} and through university resources found at \url{http://bsu.edu/campuslife/multiculturalcenter}.
+
+\vskip.15in
+\noindent\textbf{Disability Statement}: If you need course adaptations or accommodations because of a disability, please contact me as soon as possible. Ball State's Disability Services office coordinates services for students with disabilities; documentation needs to be on file in that office before any accommodations can be provided. Disability Services can be contacted at 765-285-5293 or dsd@bsu.edu.
+
+\newpage 
+\vskip.15in
+\noindent\textbf{Important Dates}:
+\begin{center} \begin{minipage}{5in}
+\begin{flushleft}
+Exam 1 \dotfill October 8\textsuperscript{th}\\
+Withdrawal Deadline \dotfill October 27\textsuperscript{th}\\
+Exam 2 \dotfill November 12\textsuperscript{th}\\
+Final \dotfill December 16-17\textsuperscript{th}
+
+\end{flushleft}
+\end{minipage}
+\end{center}
+
+
+
+\end{document} 
