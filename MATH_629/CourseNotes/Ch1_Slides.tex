@@ -82,11 +82,11 @@
 \begin{frame} \frametitle{Considerations about hazard rate}
 \begin{block}{Hazard rate is dependent on time}
 \begin{enumerate}
-\item The hazard rate is dependent on the unit of measurement of time. For example, say $S$ is time measured in seconds and $T$ is time measure in minutes. Then 
+\item The hazard rate is dependent on the unit of measurement of time. For example, say $S$ is time measured in seconds and $T$ is time measure in minutes. Then
 \begin{align*}
 h(t) & = \lim_{\Delta t \to 0} \frac{P( t \leq T < t+ \Delta t|T \ge t)}{\Delta t} \\
  & = \lim_{\Delta s \to 0} \frac{P( s \leq S < s + \Delta s |S \ge s)}{\Delta (s/60)} \\
- &  = 60h(s) 
+ &  = 60h(s)
 \end{align*}
 \end{enumerate}
 \end{block}
@@ -284,7 +284,7 @@ Consider a population with two groups - Group A and Group B.
 10 left study at the end of 3 years.
 \end{center}
 \end{block}
-Assuming, independent censoring summarize the 3 and 5 year survival experiences of both groups.
+Assuming independent censoring summarize the 3 and 5 year survival experiences of both groups.
 \end{frame}
 
 \begin{frame}
@@ -321,7 +321,7 @@ If we assume independent censoring, do we have random censoring?
 \frametitle{Assumptions about censoring (cont'd)}
 \begin{block}{Remark 1.5 - Informative vs. NonInformative Censoring}
 \begin{itemize}
-\item \textbf{ Non-informative censoring} occurs if the distribution of survival times ($T$) provides no
+\item \textbf{Non-informative censoring} occurs if the distribution of survival times ($T$) provides no
 information about the distribution of censorship times ($C$), and vice versa. Otherwise, the
 censoring is \textbf{informative}.
 \item Independent censoring commonly fails when there is a drug side-effect that causes patients to drop out. In this case, those in the treatment group are not being censored at ``random'' and if we assume independent censoring then we are overestimating the survival experience of the treatment group. We assume independent censoring in this course.

@@ -69,15 +69,15 @@ Now,
 \begin{enumerate}[ ]
 \item The leftmost column $(t_{(f)})$ gives all of the times at which the event occurs for $f=1,\ldots,n$ plus $t_{(0)}$ at the start of the study.
 \item The second column ($m_f$) gives the number of events that occur at each of the times.
-\item The third column ($q_f$) gives the number of observations that were censored in time $[t_f,t_{f-1})$ for $f=2,\ldots,n$.
+\item The third column ($q_f$) gives the number of observations that were censored in time $[t_f,t_{f+1})$ for $f=0,\ldots,n$.
 \item The last column $R(t_f)$ gives the number ``at risk'' at each time. For example, at time $t_{(1)}=6$, $m_{1}=3$ had the event, $q_{1}=1$ was censored in $[t_{(1)}=6, t_{(2)}=7)$ and
     \[
     R(2)=R(1)-m_{(1)}-q_{(1)}=21-3-1=17
     \]
      were ``at risk'' at time $t_{(2)}=7$.
 \end{enumerate}
-This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event before and including time $t_{(f)}$) given that they have ``survived'' at least until time $t_{(f)}$ (i.e. not have the event before time $t_{(f)}$)  For example, at $t_{(2)}$ we estimate this probability as
-\[ \widehat{P(T>t_{(f)}| T \ge t_{(f)})} =  \dfrac{R(2)-m_2}{R{(2)}} = \dfrac{17-1}{17} = \dfrac{16}{17}
+This way of presenting data, helps us estimate probabilities, at each time $t_{f}$ that a subject will ``survive'' beyond time $t_{(f)}$ (i.e. not have the event before and including time $t_{(f)}$) given that they have ``survived'' at least until time $t_{(f)}$ (i.e. not had the event before time $t_{(f)}$)  For example, at $t_{(2)}$ we estimate this probability as
+\[ \widehat{P(T>t_{(2)}| T \ge t_{(2)})} =  \dfrac{R(2)-m_2}{R{(2)}} = \dfrac{17-1}{17} = \dfrac{16}{17}
 \]
 This will allow us in chapter 2 to estimate overall survival probabilities at times $t_{(f)}, f=1,\ldots,n$ and thus estimate survival curves as step functions.
 
@@ -116,7 +116,7 @@ Note for group 2, without censoring we have $\bar{h}_2 = 1/\bar{T}_2$. These are
 
 
 3 year (All): $P(\text{survive 3 years})= 140/200 = 0.70 \implies P(\text{fail 3 years}) = 0.30$ \\ \\
-5 year (group B): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P(\text{fail 5 years}) = 0.8\overline{333}$. However, assuming independent censoring, we assume 92 had the event and  $P(\text{survive 5 years})= 8/100 = 0.08 \implies P(\text{fail 5 years}) = 0.92$.
+5 year (All): 50 censored out of 140. Of 90 left in risk set, $15/90 = 0.1\overline{666} = 16.\overline{666}\%$ had the event. By random censoring, we assume $(15/90)*50 = 8.\overline{333}$ of censored also had the event. All together over 5 years, we assume $60 + 15 + 8.\overline{333} = 83.\overline{333}$ had the event. Thus, $P(\text{survive 5 years})= 16.\overline{666}/100 = 0.1\overline{666} \implies P(\text{fail 5 years}) = 0.8\overline{333}$. However, assuming independent censoring, we assume 92 had the event and  $P(\text{survive 5 years})= 8/100 = 0.08 \implies P(\text{fail 5 years}) = 0.92$.
 
-\end{document}    
+\end{document}
 
