@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+%\input{hw_macros.tex}
+
+\setlength{\topmargin}{-.75in} \addtolength{\textheight}{2.00in}
+\setlength{\oddsidemargin}{.00in} \addtolength{\textwidth}{.75in}
+
+\usepackage{amsmath,color,amssymb,graphicx,esdiff}
+\usepackage[shortlabels]{enumitem}
+\pagestyle{empty}
+
+\setlength{\parindent}{0in}
+\setlist[enumerate]{leftmargin=*}
+\begin{document}
+
+{\sc {\bf {\large Homework 1 (more problems to be added)}}
+            \hfill {MTH 629, Fall 2021}}
+\bigskip
+
+{\bf Due Wed. Sept. 15\textsuperscript{th} (tentative) by 11:59 pm on Canvas}
+
+\section{Chapter 1}
+
+\textbf{Problem 1.}
+Given the following survival time data (in weeks) for $n = 15$ subjects,
+$$
+1+, 2, 2, 2+, 2+, 3, 3, 3, 3+, 4+, 4+, 5, 5, 7, 8+
+$$ where $+$ denotes right censored data, complete the following table:
+
+\begin{center}
+\begin{tabular}{ c c c c }
+ $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\
+ $0$ & $?$ & $?$ & $15$ \\
+ $2$ &?  &?  &? \\
+ $3$ &?  &?  &? \\
+ $5$ &?  &?  &? \\
+ $7$ &?  &?  &?
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item Fill in the missing entries in the table.
+\item Use the table to estimate the following five probabilities
+\[
+P(T>t_{(f)}|T \ge t_{(f)}) \text{ for } t=0,2,4,5,7.
+\]
+\item Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$).
+\end{enumerate}
+
+
+\textbf{Problem 2.}
+Consider the comparison of the following survival curves for groups $A, B$ and $C$.
+\begin{center}
+ \includegraphics[width = \textwidth]{Chpt1_surv}
+ \end{center}
+\begin{enumerate}
+\item Which group has the worst survival prognosis before time $t^*$?
+\item Which group has a best survival prognosis after time $t^*$?
+\item Which group has the longest median survival time?
+\end{enumerate}
+
+\textbf{Problem 3.}
+Survival times (in years) are given for two study groups, each with $25$ participants. Group 1 has no history of chronic disease (CHR $= 0$), and group 2 has a positive history of chronic disease (CHR $= 1$): \\
+
+Group 1 (CHR $= 0$): 11.3+, 6.4, 8.5, 13.7+, 10.1, 10.0, 5.7, 8.2, 2.0, 12.0, 9.9, 13.6+, 8.8, 2.2, 1.6, 10.2, 10.7, 11.1+, 5.3, 2.5, 10.6, 2.5, 5.7, 4.8, 2.7 \\
+
+Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.2, 6.9, 1.4, 3.0, 3.9, 3.5, 6.5, 9.9, 3.6, 5.2, 9.8, 6.8, 4.7, 3.9 \\
+
+\begin{itemize}
+	\item[(a)] Complete the following survival tables  for both Group 1 and Group 2: \\
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+ & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\
+ Group 1: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\
+ & $1.6$ &1  &0  & $25$ persons survive $\geq 1.6$ weeks \\
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+ & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
+ \hline \\
+ Group 2: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\
+ & $1.2$ &2  &0  & $25$ persons survive $\geq 1.2$ weeks \\
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+\end{tabular}
+\end{center}
+
+	
+	\item[(b)] Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) for each group.
+	
+	\item[(c)] Based on the your answer in b), briefly explain which group has better overall survival prospects. What might be the problem with your argument?
+\end{itemize}
+
+\textbf{Problem 4.}
+Give your own example of each of the following types of censoring:
+\begin{enumerate}
+\item Right Censoring:
+\item Left Censoring:
+\item Interval Censoring:
+\end{enumerate}
+\newpage
+\textbf{Problem 5.}
+\begin{enumerate}
+\item 
+Identify the issue presented in each of the following studies as confounding or interaction. Then discuss how each of these issues might be dealt with in a statistical model.
+\begin{enumerate}
+\item A statistician working for ACME corporation collects data from male and female employees to see if there is a difference in the time it takes for new male and female employees to pass ACME Corp's programming certification. ACME Corp tends to hire male employees from technical colleges where students get several years of programming experience and female employees from liberal arts programs where students get at most one year of programming experience.
+\item  A statistician working for ACME corporation collects data from male and female employees to see if there is a difference in the time it takes for male and female employees to pass ACME Corp's English Proficiency Exam (EPE). Older male employees tend to take more time to pass the EPE than female employees and younger male employees tend to take less time to pass the EPE than female employees.
+\end{enumerate}
+\item Present your own examples of confounding and interaction. 
+\end{enumerate} 
+
+\textbf{Problem 6.}
+A group of 2000 patients are given different types of heart stents from Advanced Bionics and Juno Devices. A study is conducted concerning time, $T$, until major heart failure or death. There survival information collected is given below:
+\begin{center}
+\textbf{Advanced Bionics}
+\begin{tabular}{ c c c c }
+ Time & \# at risk & \# events & \# survived \\ \hline
+ 0-10 yrs & 600 & 80 & 520 \\
+ 10–20 yrs &  400 & 280 & 120
+\end{tabular} \\
+120 left study at the end of 10 years
+\end{center}
+\begin{center}
+\textbf{Juno Devices}
+\begin{tabular}{ c c c c }
+ Time & \# at risk & \# events & \# survived \\ \hline
+ 0-10 yrs & 400 & 100 & 300 \\
+ 10–20 yrs &  250 & 150 & 100
+\end{tabular} \\
+50 left study at the end of 10 years.
+\end{center}
+Based on the information above, summarize the 10 and 20 year survival experiences of the two groups.
+
+
+\textbf{Problem 7.}
+Given the pdfs below find the survival ($S(t)$) and hazard function (h(t)). Use the fact that
+\[
+S(t) = P(T>t) = \int_t^{\infty} f(u) du.
+\]
+
+\begin{itemize}
+	\item[(a)]
+	$$
+	f(t) = \begin{cases} \frac{3}{2} (\frac{t}{2})^2 \exp[-(\frac{t}{2})^3], &t > 0 \\
+		0, &t \leq 0.
+		\end{cases}
+	$$
+	\item[(b)] Use integration by parts.
+	$$
+	f(t) = \begin{cases} (1/9)t\exp(-t/3), &t > 0 \\
+		0, &t \leq 0.
+		\end{cases}
+    $$
+    \item[(c)] After you find the hazard function, identify a type of survival population that might have such a hazard.
+    $$
+	f(t) = \begin{cases} \frac{18}{(t+3)^3}, &t > 0 \\
+		0, &t \leq 0.
+		\end{cases}
+    $$
+\end{itemize}
+
+\section{Chapter 2 (to be added)}
+
+
+\end{document}
