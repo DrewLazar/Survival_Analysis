@@ -20,26 +20,46 @@
 \textbf{Problem 1.}
 Given the following survival time data (in weeks) for $n = 15$ subjects,
 $$
-2, 2, 2+, 2+, 2+, 3, 3, 3, 3+, 3+, 3+, 5, 5, 7, 7+
+1+, 2, 2, 2+, 2+, 3, 3, 3, 3+, 4+, 4+, 5, 5, 7, 8+
 $$ where $+$ denotes censored data, complete the following table:
 
 \begin{center}
 \begin{tabular}{ c c c c }
  $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
- \hline \\ 
- $0$ & $0$ & $0$ & $15$ persons survive $\geq 0$ weeks \\  
+ \hline \\
+ $0$ & $?$ & $?$ & $15$ \\
  $2$ &?  &?  &? \\
- $3$ &?  &?  &? \\    
+ $3$ &?  &?  &? \\
  $5$ &?  &?  &? \\
- $7$ &?  &?  &?   
+ $7$ &?  &?  &?
 \end{tabular}
 \end{center}
 
-Also, compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) using the raw data (ignoring the $+$ signs for $\overline{T}$). \\
+\begin{enumerate}
+\item Fill in the missing entries in the table.
+\item Use the table to estimate the following five probabilities
+\[
+P(T>t_{(f)}|t \ge t_{(f)}) \text{ for} t=0,2,4,5,7.
+\]
+\item Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) using the raw data (ignoring the $+$ signs for $\overline{T}$).
+\end{enumerate}
 
 
 
 \textbf{Problem 2.}
+Consider the comparison of the following survival curves.
+\vspace{30pt}
+\begin{enumerate}
+\item Which group has the better survival prognosis before time $t*$?
+\item Which group has a better survival prognosis after time $t*$?
+\item Which group has a longer median survival time?
+\end{enumerate}
+
+
+
+
+
+\textbf{Problem 3.}
 Survival times (in years) are given for two study groups, each with $25$ participants. Group 1 has no history of chronic disease (CHR $= 0$),and group 2 has a positive history of chronic disease (CHR $= 1$): \\
 
 Group 1 (CHR $= 0$): 11.3+, 6.4, 8.5, 13.7+, 10.1, 10.0, 5.7, 8.2, 2.0, 12.0, 9.9, 13.6+, 8.8, 2.2, 1.6, 10.2, 10.7, 11.1+, 5.3, 2.5, 10.6, 2.5, 5.7, 4.8, 2.7 \\
@@ -52,54 +72,92 @@ Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.
 \begin{center}
 \begin{tabular}{ c c c c c }
  & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
- \hline \\ 
- Group 1: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\  
+ \hline \\
+ Group 1: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\
  & $1.6$ &1  &0  & $25$ persons survive $\geq 1.6$ weeks \\
- & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$  
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
 \end{tabular}
 \end{center}
 
 \begin{center}
 \begin{tabular}{ c c c c c }
  & $t_{(f)}$ & $m_{f}$ & $q_{f}$ & $R(t_{(f)})$ \\
- \hline \\ 
- Group 2: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\  
+ \hline \\
+ Group 2: & $0.0$ & $0$ & $0$ & $25$ persons survive $\geq 0$ weeks \\
  & $1.2$ &2  &0  & $25$ persons survive $\geq 1.2$ weeks \\
- & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$   
+ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
 \end{tabular}
 \end{center}
 
-	\item[(b)] Using the data above (and/or using R) plot the estimated survival curves for both groups.
 	
-	\item[(c)] Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) for each group.
+	\item[(b)] Compute the average survival time ($\overline{T}$) and the average hazard rate ($\overline{h}$) for each group.
 	
-	\item[(d)] Based on these information, briefly explain which group has better survival possibilities.
+	\item[(c)] Based on the your answer in b), briefly explain which group has better overall survival prospects. What might be the problem with your argument?
 \end{itemize}
 
+\textbf{Problem 4.} 
+Give two of your own examples of each of the following types of censoring:
+\begin{enumerate}
+\item Right Censoring: 
+\item Left Censoring:
+\item Interval Censoring: 
+\end{enumerate} 
+
+\textbf{Problem 5.}
+Identify the issue presented in each of the following studies as confounding or interaction. Then discuss how each of these issue might be dealt with in a statistical model. 
+\begin{enumerate}
+\item A statistician working for ACME corporation collects data from male and female employees to see if there is a difference in the time it takes for new male and female employees to pass ACME corp's second programming certification. ACME corp tends to higher male employees from technical colleges where students get several years of programming experience and female employees from liberal arts programs where students get at most one year of programming experience. 
+\item  A statistician working for ACME corporation collects data from male and female employees to see if there is a difference in the time it takes for male and female employees to pass ACME corp's English proficiency exam (EFE). Older male employees tend to take more time to pass the EFE than female employees and younger male employees tend to take more time to pass the EFE than female employees. 
+\end{enumerate} 
+
+\textbf{Problem 6.} 
+A group of 2000 patients are given different types of heart stents from Advanced Bionics and Juno Devices. A study is conducted until time, $T$, until major heart failure or death. There survival information collected is given below 
+\begin{center}
+\textbf{Advanced Bionics}
+\begin{tabular}{ c c c c }
+ Time & \# at risk & \# events & \# survived \\ \hline
+ 0-10 yrs & 600 & 80 & 520 \\
+ 10–20 yrs &  400 & 280 & 35
+\end{tabular} \\
+40 left study at the end of 10 years
+\end{center}
+\begin{center}
+\textbf{Juno Devices}
+\begin{tabular}{ c c c c }
+ Time & \# at risk & \# events & \# survived \\ \hline
+ 0-10 yrs & 400 & 100 & 300 \\
+ 3–5 yrs &  250 & 150 & 100
+\end{tabular} \\
+50 left study at the end of 10 years.
+\end{center}
+Based on the information above, summarize the 10 and 20 year survival experiences of the two groups.   
 
 
+\textbf{Problem 5.}
+Given the pdfs below find the survival ($S(t)$) and hazard function (h(t)). Use the fact that
+\[
+S(t) = P(T>t) = \int_t^{\infty} f(u) du.
+\]
 
-\textbf{Problem 3.}
-Derive the survival ($S(t)$) and hazard ($h(t)$) functions for the following distributions:
 \begin{itemize}
-	\item[(a)] the continuous Weibull distribution, whose pdf is
+	\item[(a)]
 	$$
-	f(t) = \begin{cases} \frac{k}{\lambda} \Big(\frac{t}{\lambda}\Big)^{k - 1} e^{-(t/\lambda)^k}, &t \geq 0 \\
-		0, &t < 0
+	f(t) = \begin{cases} \frac{3}{2} (\frac{t}{2})^2 \exp[-(\frac{t}{2})^3], &t\geq 0 \\
+		0, &t < 0.
 		\end{cases}
-	$$ where $k, \lambda > 0$ are fixed constants. \\
-	\item[(b)] the continuous Gamma distribution, whose pdf is
 	$$
-	f(t) = \begin{cases} \frac{1}{\Gamma(k) \lambda^k} t^{k - 1} e^{t/\lambda}, &t \geq 0 \\
-		0, &t < 0
-		\end{cases}
-	$$ where $k, \lambda > 0$ are fixed constants. \\
-	\item[(c)] the discrete Geometric distribution, whose pmf is
+	\item[(b)] Use integration by parts.
 	$$
-	f(t) = \begin{cases} (1 - p)^{t - 1} p, &t = 1, 2, 3, \ldots \\
-		0, &\text{otherwise}
+	f(t) = \begin{cases} (1/9)t\exp(-t/3), &t\geq 0 \\
+		0, &t < 0.
 		\end{cases}
-	$$ where $0 < p < 1$ is a fixed constant.
+    $$
+    \item[(c)] After you find the hazard function, identify a type of survival population that might have such a hazard.
+    $$
+	f(t) = \begin{cases} \frac{18}{(x+3)^3}, &t\geq 0 \\
+		0, &t < 0.
+		\end{cases}
+    $$
 \end{itemize}
 
 
@@ -117,45 +175,44 @@ Group 1 (CHR $= 0$): 11.3+, 6.4, 8.5, 13.7+, 10.1, 10.0, 5.7, 8.2, 2.0, 12.0, 9.
 Group 2 (CHR $= 1$): 4.8, 2.9, 10.7, 9.3, 9.1, 3.9, 5.0, 1.2, 4.4, 12.0, 2.9, 1.2, 6.9, 1.4, 3.0, 3.9, 3.5, 6.5, 9.9, 3.6, 5.2, 9.8, 6.8, 4.7, 3.9 \\
 
 \begin{itemize}
-	\item[(a)] Complete the following tables of ordered failure times (\textit{see the table Examples of Section II on Pages 62-65 for reference}) for both Group 1 and Group 2:
+	\item[(a)] Complete the following tables of ordered failure times for Group 1 and Group 2:
 	
 \begin{center}
 \begin{tabular}{ c c c c c | c c c c c }
  \multicolumn{5}{c}{Group 1} & \multicolumn{5}{c}{Group 2} \\
- 
+
  $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $S(t_{(f)})$   & $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $S(t_{(f)})$ \\
- 
+
  \hline
- 
+
  $0.0$ & $25$ & $0$ & $0$ & $1.00$    & $0.0$ & $25$ & $0$ & $0$ & $1.00$ \\
- 
+
  $1.6$ & $25$ & $1$ & $0$ & $0.96$    & $1.2$ & $25$ & $2$ & $0$ & $0.92$ \\
- 
+
  $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
 \end{tabular}
 \end{center}
 
 	\item[(b)] Based on your results in part (a), plot the KM curves for Groups 1 and 2 on the same graph. Comment on how these curves compare with each other.
 	
-	\item[(c)] Complete the following partially-filled table of ordered failure times to allow for the computation of expected and observed minus expected values at each ordered failure time. Note that your new table here should combine both groups of ordered failure times into one listing and should have the following format (\textit{see the table Examples of Section IV on Page 69 for reference}):
-	
+	\item[(c)] Complete the following partially-filled table of ordered failure times to allow for the computation of expected and observed minus expected values at each ordered failure time. Note that your new table here should combine both groups of ordered failure times into one listing and should have the following format: 
 	\begin{center}
 \begin{tabular}{ c | c c | c c | c c | c c }
- 
+
  $t_{(f)}$ & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$   & $e_{1f}$ & $e_{2f}$ & $m_{1f} - e_{1f}$ & $m_{2f} - e_{2f}$ \\
- 
+
  \hline
- 
+
  $1.2$ & $0$ & $2$ & $25$ & $25$    & ? & ? & ? & ? \\
- 
+
  $1.4$ & $0$ & $1$ & $25$ & $23$    & ? & ? & ? & ? \\
- 
+
  $1.6$ & $1$ & $0$ & $25$ & $22$    & ? & ? & ? & ? \\
- 
+
  $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
- 
+
  \hline
- 
+
  Totals & $21$ & $25$ & &    & ? & ? & ? & ?
 \end{tabular}
 \end{center}
@@ -205,5 +262,5 @@ $T =$ time (in weeks) until URI is detected or time until censored. $s =$ censor
 \end{itemize}
 
 
-\end{document} 
+\end{document}
 
