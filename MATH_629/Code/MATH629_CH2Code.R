@@ -28,7 +28,7 @@ summary(kmfit2)
 #Plot the KM Estimates 
 windows(width=10, height=8)
 plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'),
-     xlab="survival time in weeks",ylab="survival probabilities",conf.int=.95)
+     xlab="survival time in weeks",ylab="survival probabilities")
 legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
        col=c('black','grey'))
 #PROBLEM 2.3
