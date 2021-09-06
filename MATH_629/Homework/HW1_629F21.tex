@@ -7,6 +7,7 @@
 \usepackage{amsmath,color,amssymb,graphicx,esdiff}
 \usepackage[shortlabels]{enumitem}
 \pagestyle{empty}
+\usepackage{listings}
 
 \setlength{\parindent}{0in}
 \setlist[enumerate]{leftmargin=*}
@@ -136,7 +137,7 @@ A group of 2000 patients are given different types of heart stents from Advanced
 \end{center}
 Based on the information above, and assuming independent censoring, summarize the 10 and 20 year survival experiences of the two groups.
 
-\newpage   
+\newpage
 \textbf{Problem 7.}
 Given the pdfs below find the survival ($S(t)$) and hazard function (h(t)). Use the fact that
 \[
@@ -166,5 +167,16 @@ S(t) = P(T>t) = \int_t^{\infty} f(u) du.
 
 \section{Chapter 2 (to be added)}
 
+\textbf{Problem 1.} Multiple myeloma is a malignant disease characterised by the accumulation
+of abnormal plasma cells, a type of white blood cell, in the bone marrow. Unless
+treated, the condition is invariably fatal. The aim of a study carried out at
+the Medical Center of the University of West Virginia, USA, was to examine the association between the values of certain explanatory variables or covariates and the survival time of patients. In the study, the primary response
+variable was the time, in months, from diagnosis until death from multiple
+myeloma.
+\begin{enumerate}
+\item Load the data by using the following command in R: \\
+
+ \lstinline{multmyl <-read.delim(``multmylenoma.txt'', header = TRUE)}
+\end{enumerate} 
 
 \end{document} 

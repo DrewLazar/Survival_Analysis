@@ -48,7 +48,7 @@ plot(kmvet.per,lty=c('solid','dashed','dotted'),col=c('black','grey','blue'),
      xlab="survival time in days",ylab="survival probabilities")
 legend("topright",c("1","2","3"),lty=c("solid","dashed",'dotted'),
        col=c('black','grey','blue'))
-survdiff(Y~Performance.Category)
+survdiff(W~vets$Performance.Category)
 #Problem 2.4
 #Flemington-Harrington for p=0, 0.15, 0.5, 3
 for (p in c(0,.15,0.5,3)){
