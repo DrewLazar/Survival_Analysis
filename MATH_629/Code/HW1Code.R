@@ -4,10 +4,7 @@ multmyl <-read.delim("multmylenoma.txt", header = TRUE)
 library(survival)
 attach(multmyl)
 Y<-Surv(Survt,Status==1)
-#Create a KM model with no partitioning 
-kmfit1=survfit(Y~1)
-summary(kmfit1)
-windows(width=10, height=8)
+
 plot(kmfit1,xlab="survival time in weeks",ylab="survival probabilities")
 kmfit2=survfit(Y~Sex)
 summary(kmfit2)

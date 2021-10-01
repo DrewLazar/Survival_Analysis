@@ -174,9 +174,47 @@ the Medical Center of the University of West Virginia, USA, was to examine the a
 variable was the time, in months, from diagnosis until death from multiple
 myeloma.
 \begin{enumerate}
-\item Load the data by using the following command in R: \\
+\item Load the data by using the following command in R:
 
- \lstinline{multmyl <-read.delim(``multmylenoma.txt'', header = TRUE)}
-\end{enumerate} 
+\lstinline{multmyl <-read.delim(``multmylenoma.txt'', header = TRUE)}
+\item We want to examine the differences between men (coded as 1) and women (coded as 2) and survival time. Complete the table below to get the Kaplan-Meirer estimates for the two groups.
+
+\begin{center}
+\begin{tabular}{ c c c c c | c c c c c }
+ \multicolumn{5}{c}{Group 1 - Men} & \multicolumn{5}{c}{Group 2 - Women} \\
+
+ $t_{(f)}$ & $m_f$ & $q_{f}$ & $R(t_{(f)})$ & $\hat{P}(T_1>t_{(f)}|T_1 \ge t_{(f)})$   & $t_{(f)}$ & $m_f$ & $q_{f}$ & $R(t_{(f)})$ & $\hat{P}(T_2>t_{(f)}|T_2 \ge t_{(f)})$\\
+
+ \hline
+
+ $0.0$ & $0$ & $0$ & $25$ & $1.00$    & $0.0$ & $0$ & $0$ & $23$ & $1.00$ \\
+
+ $1$ & $2$ & $0$ & $25$ & $0.96$    & $1$ & $1$ & $1$ & $23$ & $0.92$ \\
+
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+\end{tabular}
+\end{center}
+\item Fill in the table below which will allow you to compute a Log-Rank test in the following section. 
+
+	\begin{center}
+\begin{tabular}{ c | c c | c c | c c | c c }
+
+ $t_{(f)}$ & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$   & $e_{1f}$ & $e_{2f}$ & $m_{1f} - e_{1f}$ & $m_{2f} - e_{2f}$ \\
+
+ \hline
+
+ $1$ & $2$ & $1$ & $25$ & $23$    & ? & ? & ? & ? \\
+
+ $4$ & $1$ & $1$ & $23$ & $21$    & ? & ? & ? & ? \\
+
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+
+ \hline
+
+ Totals & ? & ? & &    & ? & ? & ? & ?
+\end{tabular}
+\end{center}
+
+\end{enumerate}
 
 \end{document} 
