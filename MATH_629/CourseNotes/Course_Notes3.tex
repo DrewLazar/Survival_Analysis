@@ -1,0 +1,162 @@
+\documentclass{article}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumerate}
+\usepackage{subfig}
+\input{notes_macros}
+\setlength\parindent{0pt}
+\setlength{\parskip}{\baselineskip}%
+\begin{document}
+
+\CPT{3}
+
+\idf{3.2} If for any two specifications of covariates $\mathbf{X}$ and $\mathbf{X}^*$, and for any $t>0$ we have
+\[
+\frac{h(t,\mathbf{X})}{h(t,\mathbf{X}^*)} = \theta \text{ for some constant } \theta > 0.
+\]
+then our population satisfies the \textbf{proportional hazards assumption}.
+
+\ith{3.1} If a population satisfies the Cox PH assumption then it satisfies the proportional hazards assumption. \\
+Assume the Cox PH assumption is satisfied then
+\[
+\frac{h(t,X)}{h(t,X^*)}=\exp(\beta'(X-X^*)) = \exp\left(\sum_{i=1}^p  \beta_i(X_i-X_i^*)\right)
+\]
+
+\ir{3.2}
+\NTS \, Show 2.,  3. Time-independent: sex, race, age at start of study, smoking status at start of study. Can change, of course. With time-independent covariate you are accounting for the effect at the beginning of the study only.
+
+
+\newpage
+\prbm{3.1}
+\begin{enumerate}
+\item Model 1: $h(t;TR) = h_{0,1}(t)\exp(\hat{\beta}_1 TR) = h_{0,1}(t)\exp(1.5721 TR)$
+\item Model 2: $h(t;TR,logWBC) = h_{0,2}(t)\exp(\hat{\beta}_1 \text{TR} + \hat{\beta}_2 \text{logWBC} ) = h_{0,2}(t)\exp( 1.3861 \text{TR} + 1.6909 \text{logWBC})$
+\item Model 3: $h(t;TR,logWBC) = h_{0,3}(t)\exp(\hat{\beta}_1 \text{TR} + \hat{\beta}_2 \text{logWBC} + \hat{\beta}_3 \text{TR}*\text{logWBC}) = h_{0,3}(t)\exp( 2.3749 \text{TR} + 1.8724 \text{logWBC} - 0.3175 \text{TR}*\text{logWBC})$
+\item From TR=0 to TR =1 the hazard ratio increases by approximately a factor of $\hat{HR}(TR)=\exp(1.5721) = 4.817.$ \\
+    95\% CI for $\beta_1: \hat{\beta_1} \pm z_{\alpha/2} 0.4125$ which gives (0.7638, 2.3804). \\
+    95\% CI for $HR(TR): (\exp(0.7638),\exp(1.6529)) = (2.1464, 10.8903)$ \\
+\end{enumerate}
+Is $\hat{\beta_1}$ significant at significance level $\alpha=0.05$? Since $0 \notin 95\%$ CI for $\beta_1$, yes!
+More formally, we test $H_0: \beta=0$ vs. $H_a: \beta_1 \neq 0$. Under $H_0$,
+\[ \frac{\hat{\beta}_1 -\beta_1}{SE({\hat{\beta}_1})} =  \frac{\hat{\beta}_1}{SE({\beta_1})}  \text{ approx } N(0,1)
+\]
+We observe
+\[
+z = \frac{\hat{\beta}_1}{SE{\beta_1}} = \frac{1.5721}{0.4124} = 3.812
+\]
+p-value = $2*P(Z>|z|) = 2*P(z>3.812) = 0.000138$. Since p-value $< \alpha=0.05$ we reject $H_0$. \\
+Similarity, we can get the coefficients and estimates for model 2 and model 3. \\
+If we include the interaction term then the approximate effect of treatment depends on logWBC. Specifically, from $TR=0$ to $TR=1$ the hazard ratio changes by approximately a factor of
+\[\exp(\hat{\beta_1}+ \hat{\beta}_3 \text{logWBC}) = \exp(2.3749 - 0.3175\text{logWBC}) \]
+
+Note the interaction coefficient has a large p-value of 0.546 and is \textit{not significant } for any $\alpha > 0.546$. \\
+Thus, we might exclude the interaction term and decide our ``best'' model is model 2. This is assuming that our COX PH assumption is met (in chapter 4 we will consider this). \\
+
+\ir{3.6}
+Large sample C.I.'s for $\hat{HR}$. \\
+
+Assume we have the term $X_i\beta_i$ in our Cox PH model. A ``large sample'' C.I. for a parameter $\beta_i$ is:
+\[
+\hat{\beta_i} \pm z_{\alpha/2} SE(\hat{\beta_i})
+\]
+Thus, without interaction $\hat{HR} = \exp(\hat{\beta}_i)$ and a ``large sample'' C.I. for $HR$ is
+\[
+\exp(\hat{\beta_i} \pm z_{\alpha/2} SE(\hat{\beta}_i))
+\]
+What if we had interaction? Then
+\[
+\hat{HR} = \exp(\hat{\beta}_i + \sum \hat{\beta_j}X_j)
+\]
+where $X_j's (j \neq i)$ are all the covariates that $X_i$ interacts with. What is the CI for $\ell = \beta_i + \sum \beta_jX_j$ when we have interaction?
+\[
+\hat{\ell} = \hat{\beta}_i + \sum \hat{\beta}_jX_j
+\]
+and the $100(1-\alpha)\%$ CI for $\ell$ is
+\[
+\hat{\ell} \pm z_{\alpha/2} SE(\hat{\ell})
+\]
+Assume we have one $X_j$ (for simplicity).
+Then
+\begin{align*}
+& SE(\hat{\ell}) = \sqrt{var(\hat{\ell})} = \sqrt{cov(\hat{\ell},\hat{\ell})} \\
+&\sqrt{cov(\hat{\beta}_i+ \hat{\beta}_jX_j,\hat{\beta}_i+ \hat{\beta}_jX_j)} = \\
+&\sqrt{var(\hat{\beta}_i) + 2X_iX_j cov(\hat{\beta}_i,\hat{\beta}_j) + X_j^2 var{\hat{\beta}_j}}
+\end{align*}
+
+Then a $100(1-\alpha)\%$ CI for $HR$ is
+\[
+\exp(\hat{\ell} \pm z_{\alpha/2} SE(\hat{\ell}))
+\]
+Example for Remission Data - Hazard ratio using mean of logWBC under interaction with TR.
+\[
+\hat{HR} = \exp(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3)
+\]
+and $95\%$ C.I. for $\hat{HR}$ is
+\[
+\exp\left(\hat{\beta_1}+\overline{logWBC}\hat{\beta}_3 \pm 1.96 \sqrt{var(\hat{\beta}_1)+2\overline{logWBC}cov(\hat{\beta}_1,\hat{\beta}_3)+\overline{logWBC}^2var(\hat{\beta}_3)}\right)
+\]
+
+\ith{3.2}
+Proof:
+By \ith{1.1} we have the relation
+\[
+S(t;X) = e^{\int_0^t h(u;X)du}
+\]
+Thus, in this case we have
+\begin{align*}
+S(t;X) & =  e^{\int_0^t h(u;X)du} = e^{\int_0^t h_0(u)e^{X'\beta}du} \\
+& = (e^{\int_0^t h_0(u)du})^{e^{X'\beta}} = S_0(t)^{e^{X'\beta}}
+\end{align*}
+
+
+Now once we have estimates, $\hat{\beta}$ we have
+\[
+\hat{S}(t,X) = \hat{S}_0(t)^{e^{X'(\hat{\beta})}}
+\]
+But how do we get $\hat{S}_0(t)$? We let the computer do it, with a Kaplan-Meirer like process (but more difficult) we are not going to examine this estimation in this class.
+
+
+\ir{3.7}
+Assume a random variable $X$ has a probability distribution $f(x;\beta_1,\ldots,\beta_p)$ that depends on parameters $\beta_1,\ldots,\beta_p$. If we then observe a sample from $X$, $x_1,\ldots,x_n$. Then the likelihood function is
+\[
+(*) L(\beta_1,\ldots,\beta_n) = g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n)
+\]
+where $g$ the joint probability of the sample $X_1,\ldots,X_n$.
+
+If $X_1,\ldots,X_n$ is a random sample then $g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n) = f(x_1;\beta_1,\ldots,\beta_p) \cdots  f(x_n;\beta_1,\ldots,\beta_p)$.
+
+The values of $\beta_1,\ldots,\beta_n$ that maximize (*) with respect to given observations are known as maximimum likelihood estimates (MLE's) and are denoted $\hat{\beta}_1,\ldots,\hat{\beta}_n$, respectively.
+
+Because $0<L(\beta_1,\ldots,\beta_n) \leq 1$ we can take it's natural log
+\[
+\ell(\beta_1,\ldots,\beta_n) = \ln[L(\beta_1,\ldots,\beta_n)]
+\]
+and because $\ln$ is a strictly increasing function we can maximize $L$ by maximizing $\ell$. $\ell(\beta_1,\ldots,\beta_n)$ is known as a log-likelihood function.
+
+If $X$ is discrete then
+\begin{align*}
+&L(\beta_1,\ldots,\beta_n) = g(x_1,\ldots,x_n;\beta_1,\ldots,\beta_n) = \\
+&P[(X_1=x_1) \cap (X_2=x_2) \ldots \cap X_n = x_n;\beta_1,\ldots,\beta_n)
+\end{align*}
+so by maximizing $L$ we are finding the parameters that are most likely to have produced the observations $x_1,\ldots,x_n$.
+To maximize $\ell$ we typically solve the \textbf{score equations}
+\begin{align*}
+\frac{\partial \ell}{\partial \beta_1}=0 \\
+\ldots \\
+\frac{\partial \ell}{\partial \beta_p}=0
+\end{align*}
+
+\prbm{3.3}
+R returns the log likelihood of the fully reduced model fit with a single, constant main effect.
+To test for $\beta_1=0$ in
+\[ h(t;X) = h_0(t)\exp(\beta_1 TR)
+\]
+using LRT we have $-2(LR_R-LR_F)=-2(-93.1842-(-85.00842)) = 16.3515$
+
+
+To test for $\beta_2=0$ in 
+\[
+h(t;X) = h_0(t)\exp(\beta_1 TR + \beta_2 logWBC) 
+\]
+using LRT we have $-2(\ln(L_R)-\ln(L_F)) = -2((-85.00842)-(69.82810))=
+
+\end{document} 

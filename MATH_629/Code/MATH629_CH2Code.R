@@ -48,7 +48,7 @@ plot(kmvet.per,lty=c('solid','dashed','dotted'),col=c('black','grey','blue'),
      xlab="survival time in days",ylab="survival probabilities")
 legend("topright",c("1","2","3"),lty=c("solid","dashed",'dotted'),
        col=c('black','grey','blue'))
-survdiff(W~vets$Performance.Category)
+survdiff(W~Performance.Category)
 #Problem 2.4
 #Flemington-Harrington for p=0, 0.15, 0.5, 3
 for (p in c(0,.15,0.5,3)){
@@ -60,11 +60,20 @@ survdiff(Surv(survt,status) ~ TR + strata(LogWBC.group),data=Remission)
 #Problem 2.6
 #"plain is Greenwood" 
 kmfit2=survfit(Y~Remission$TR,conf.type="plain")
-plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'), xlab="survival time in weeks",ylab="survival probabilities",conf.int=.95)
+summary(kmfit2)
+windows(width=10, height=8)
+par(mar = c(4,4,1,1))
+plot(kmfit2[1], conf.int=TRUE, col="green", xlab = "Time in Months", ylab = "Survival probability")
+lines(kmfit2[2], conf.int=TRUE, col="red")
+legend("topright",c("Treatment","Placebo"),lty=c("solid"),
+       col=c('green','red'))
 #Problem 2.7 
 kmfit2=survfit(Y~Remission$TR)
 summary(kmfit2)
 #For TR=1 our inequality works for times 4,5 and 8.
+#For time t_3=3
+0.5-1.96*0.0929 <0.7619
+0.5+1.96*0.0929 >0.7619
 #For time t_4=4 
 0.5-1.96*0.1029<0.6667
 0.5+1.96*0.1029>0.6677
@@ -77,7 +86,11 @@ summary(kmfit2)
 #For time t_7=11
 0.5-1.96*0.0986<0.2857
 0.5+1.96*0.0986>0.2857
+#For time t_8=12
+0.5-1.96*0.0857 <0.1905 
+0.5+1.96*0.0857 >0.1905 
 #We get CI (4,12) as our confidence interval. We use the code below
 #to get it directly in R
+survfit(Y ~ Remission$TR)
 #Simply comparing medians the survival experience for the treatment group
 #is better
