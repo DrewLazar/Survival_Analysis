@@ -13,11 +13,11 @@
 \setlist[enumerate]{leftmargin=*}
 \begin{document}
 
-{\sc {\bf {\large Homework 1 (more problems to be added)}}
+{\sc {\bf {\large Homework 1}}
             \hfill {MTH 629, Fall 2021}}
 \bigskip
 
-{\bf Due Wed. Sept. 15\textsuperscript{th} (tentative) by 11:59 pm on Canvas}
+{\bf Due Wed. Sept. 15\textsuperscript{th} by 11:59 pm on Canvas}
 
 \section{Chapter 1}
 
@@ -165,7 +165,7 @@ S(t) = P(T>t) = \int_t^{\infty} f(u) du.
     $$
 \end{itemize}
 
-\section{Chapter 2 (to be added)}
+\section{Chapter 2}
 
 \textbf{Problem 1.} Multiple myeloma is a malignant disease characterised by the accumulation
 of abnormal plasma cells, a type of white blood cell, in the bone marrow. Unless
@@ -173,10 +173,60 @@ treated, the condition is invariably fatal. The aim of a study carried out at
 the Medical Center of the University of West Virginia, USA, was to examine the association between the values of certain explanatory variables or covariates and the survival time of patients. In the study, the primary response
 variable was the time, in months, from diagnosis until death from multiple
 myeloma.
-\begin{enumerate}
-\item Load the data by using the following command in R: \\
+\begin{enumerate}[(a)]
+\item Load the data by using the following command in R:
 
- \lstinline{multmyl <-read.delim(``multmylenoma.txt'', header = TRUE)}
-\end{enumerate} 
+\bigotimes
+
+\item Patients are placed in  two types of treatment facilities: the myelmoa clinic at the City Hospital (coded as Clinic=1) and the private research clinic at the University (coded as Clinic=2). We want to estimate survival experiences of patients in the two clinics from this data set. Derive the Kaplan-Meirer estimates for Clinic 1 and Clinic 2 by filling in the table below.
+
+\begin{center}
+\begin{tabular}{ c c c c c | c c c c c }
+ \multicolumn{5}{c}{Clinic 1} & \multicolumn{5}{c}{Clinic 2} \\
+
+ $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $\hat{S}(t_{(f)})$   & $t_{(f)}$ & $n_f$ & $m_{f}$ & $q_{f}$ & $\hat{S}(t_{(f)})$ \\
+
+ \hline
+
+ $0.0$ & $25$ & $0$ & $0$ & $1.00$    & $0.0$ & $23$ & $0$ & $0$ & $1.00$ \\
+
+ $1$ & ? & ? & ? & ?    & $1$ & ? & ? & ? & ? \\
+
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+\end{tabular}
+\end{center}
+
+\item Use \lstinline{R} to confirm and then plot your Kaplan-Meirer curves for Clinic 1 and for Clinic 2. Add a key in the plot.
+
+\item Conduct a log-rank test for survival difference between clinics by first filling in the table below.
+
+	\begin{center}
+\begin{tabular}{ c | c c | c c | c c | c c }
+
+ $t_{(f)}$ & $m_{1f}$ & $m_{2f}$ & $n_{1f}$ & $n_{2f}$   & $e_{1f}$ & $e_{2f}$ & $m_{1f} - e_{1f}$ & $m_{2f} - e_{2f}$ \\
+
+ \hline
+
+ $1$ & $2$ & $1$ & $25$ & $23$    & ? & ? & ? & ? \\
+
+ $3$ & ? & ? & ? & ?    & ? & ? & ? & ? \\
+
+ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$    & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+
+ \hline
+
+ Totals & $20$ & $14$ & &    & ? & ? & ? & ?
+\end{tabular}
+\end{center}
+\item State your null hypothesis, $H_0$, compute your (approximate) test statistic, $LRS$, and find it's $p$-value. Conduct your test at significance level $\alpha=0.10$. State your conclusion.
+\item Verify your conclusion by conducting your test in \lstinline{R}. Give the $p$-values for both the approximate statistic and the exact statistic given in \lstinline{R}.
+\item Compute the Flemington-Harrington Test with $q=0$ and $p=0.4, 1, 2$. According to the $p$-values returned by \lstinline{R}, for which of these values is the test still significant (i.e.,  do you still reject $H_0$)?
+\item Researchers believe that the spread of this type of cancer is facilitated by fat cells and thus affected by the weight status of the subjects. In the data, subjects are classified as underweight or regular weight (WS=RW) or overweight (WS=OW) according the their BMI scores. Use \lstinline{R} to conduct a stratified log-rank test with respect to Clinic, stratifying on weight status (WS).
+\item Use \lstinline{R} to plot a Kaplan-Meirer curve and conduct a log-rank test for weight status using significance level $\alpha=.10$.
+\item Comparing the results on your unstratified log rank test in (e) to your stratified log rank test in (h), considering your results in (i), and inspecting the data, what conclusions can your reach about the confounding effect of weight status?
+\item Use \lstinline{R} to find $95\%$ confidence intervals about the KM estimates for both Clinic 1 and for Clinic 2. Use ``plain'' confidence intervals (i.e. confidence intervals using Greenwood's formula). Plot the KM curves for both clinics with the confidence intervals. What conclusion can you reach about the differences of the effects of Clinic type on survival time throughout the study?
+\item Find the $95\%$ median survival probabilities for Clinic 1 and for Clinic 2 in \lstinline{R}. Verify your the answer for Clinic 1 by using the formula at the end of Chapter 2 and the estimates and their standard errors for survival probabilities given in \lstinline{R}. According to your confidence intervals is there a statistically significant difference (at level 0.05) between the estimated median survival times for Clinic 1 and Clinic 2?
+\end{enumerate}
+
 
 \end{document} 

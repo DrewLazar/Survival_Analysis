@@ -1,0 +1,301 @@
+\documentclass{beamer}
+\usepackage{etex}
+\usetheme{Antibes}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfig}
+\input{notes_macros}
+%\definecolor{cardinal}{rgb}{0.77, 0.12, 0.23}
+%\usecolortheme[named=cardinal]{structure}
+%\setbeamercolor{block title}{bg=cardinal,fg=black}
+ \usepackage{tikz}
+ \usetikzlibrary{patterns,snakes,plotmarks}
+ \usepackage{multirow}
+% \usetikzlibrary{shadows}
+\usepackage{epstopdf}
+\usepackage{nicefrac}
+\usepackage{lmodern}
+\usepackage{pgfplots}
+\usepackage{qtree}
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}}%
+\DeclareCaptionLabelSeparator{horse}{:\,\,} % change according to your needs
+\captionsetup{
+  labelsep = horse,
+  figureposition = bottom % used to get the correct vertical space between the figure and the caption
+}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{enumerate items}[square]
+\theoremstyle{definition}
+\newtheorem*{exs}{Examples}
+\newtheorem{ex}{Example}
+\newtheorem*{exc}{Exercise}
+%\usepackage{booktabs}
+\setlength{\parindent}{0pt}
+%\setbeameroption{show notes}
+ \setbeamerfont{note page}{size=\tiny}
+%\setbeamertemplate{note page}[plain]
+%\setbeameroption{show only notes}
+\title{Math 629 - Survival Analysis \\ Chapter 3}
+\author{Drew Lazar}
+\institute{Ball State University}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+
+\section{Chapter 3}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model}
+\begin{block}{Definition 3.1 - Form of the Cox Proportional Hazard (PH) Model}
+Let $h$ be the hazard function of a survival population. If the Cox PH assumption is satisfied then
+\[
+h(t,X) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i X_i\right) = h_0(t)\exp(\beta' X)
+\]
+for some fixed parameters $\beta=(\beta_1,\ldots,\beta_p)'$, for any $t>0$ of interest and for any covariates specified as $X=(X_1,\ldots,X_p)'$. The function $h_0(t)$ is known as the \textbf{baseline hazard function}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.1 - Implications of Cox PH assumption}
+\begin{enumerate}
+\item The proportional hazards assumption is satisfied (see Theorem 3.1)
+\item Provided there is not interaction with another covariate, a unit increase in a covariate $X_i$ changes the hazard by a factor of $\exp(\beta_i)$.
+\item The covariates should be \textbf{time-independent} else the PH assumption will not be met.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.3 - Interaction terms}
+\begin{enumerate}
+\item We defined interaction in \idf{1.8} as ``when the effect of the change in a variable on survival probabilities depends on the level of a secondary variable''.
+\item One way we can account for interaction between two covariates ($X_i$ and $X_j$  with $i \neq j$) in a semi- or fully parametric model is by including an interaction term $\alpha X_iX_j$.
+\item Assuming $\beta_i X_i$ is in the model and no other interaction terms besides $\beta_k X_i X_j$ are in the model, the effect of a unit increase of $X_i$ on the hazard rate in a Cox PH model is
+\[
+\exp(\beta_i + \beta_k X_j)
+\]
+which depends on $X_j$ (hence the interaction).
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Problem 3.1 - Cox PH Model for the Remission Data}
+\begin{enumerate}
+\item In R, build three Cox PH models for the Remission data:
+\begin{enumerate}[i]
+\item A model that just accounts for treatment status (TR)
+\item A model that accounts for TR and logWBC
+\item A model that accounts for interaction between TR and logWBC
+\end{enumerate}
+\item Interpret the coefficients of the models, find confidence intervals for the coefficients and changes in HR and test the significance of the coefficients.
+\item Choose the ``best" model based on your last answer.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.4 - Model Selection and Parsimony}
+Why not include the interaction term? Even though the interaction effect is ``small'' won't this give us a better idea of the effect of treatment for different levels of LogWBC? Not necessarily, because
+\begin{enumerate}
+\item The p-value is so large that the estimated effect could solely be by chance.
+\item Including non-significant parameters can \textbf{``overfit''} your model, i.e., your model is too specific to the sample which you used to estimate your parameters and won't generalize.
+\end{enumerate}
+You want accurate yet \textbf{parsimonious} models.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Remark 3.5 - Confounding and the Cox PH model}
+\begin{itemize}
+\item  Why is the estimated effect of TR on the hazard ratio different from model 1 to model 2? Isn't there one such effect?
+\item The effect is different because model 2 accounts for logWBC in the model and for confounding.  Model 1 does not account for confounding.
+\item Note that in model 2 the effect of treatment is independent of logWBC (as there is not significant interaction) and does not depend on time (the PH assumption).
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Theorem 3.2 - Form of Survival Curves given Cox PH model}
+If we have a Cox PH model, i.e.,
+\[
+h(t;X) = h_0(t)\exp\left(\sum_i^n X_i \beta_i\right)= h_0(t) \exp(X' \beta)
+\]
+then
+\[
+S(t;X) = S_0(t)^{exp(X'\beta)}
+\]
+where $S_0(t) = S(t;\mathbf{0})$ is the \textbf{baseline survival function}.
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Cox Proportional Hazard Model, cont'd}
+\begin{block}{Problem 3.2 - Adjusted Cox Survival Curves}
+In R, plot adjusted Cox PH survival curves for TR=0 vs TR=1 using $\overline{\text{logWBC}}$ for logWBC.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\begin{block}{Example 3.1 - MLE of Bernoulli Distribution}
+Let $X$ have the pmf
+\[
+f(x;p) =   p^x (1-p)^{1-x}, x=0,1 \text{ and } 0<p<1
+\]
+If $x_1,\ldots,x_n$ are observations from a random sample then
+\begin{align*}
+L(p) & =  \prod_{i=1}^n f(x_i;p) = p^{x_1}(1-p)^{1-x_1} \cdots p^{x_n}(1-p)^{1-x_n} \\
+& = p^{\sum x_i} (1-p)^{n-\sum x_i}
+\end{align*}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Example 3.1 - MLE of Bernoulli Distribution (cont'd)}
+Thus we have,
+\[
+\ell(p) = \ln[L(p)] = \sum x_i \ln(p) +[n-\sum x_i] \ln(1-p)
+\]
+which gives score equation
+\[
+\frac{d}{dp}[\ell(p)]= \frac{\sum x_i}{p} - \frac{n-\sum x_i}{1-p} = 0
+\]
+Solving gives $\hat{p} = \sum x_i/n = \bar{x}$.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Partial Maximum Likelihood Estimation of the Cox PH Model}
+\begin{enumerate}
+\item In a parametric model, the distribution of responses is fully determined by the values of parameters to be estimated. Consider the exponential distribution
+\[
+h(t;\lambda) = \lambda \implies S(t;\lambda) = \exp(-\int_0^t \lambda du) = \exp(-\lambda t)
+\]
+\item A Cox PH model, however, is semi-parametric and parameters don't fully specify the distribution
+\[
+h(t,X;\beta) = h_0(t)\exp(X'\beta) \implies S(t,X;\beta)= S_0(t)^{\exp(X'\beta)}
+\]
+To estimate the parameters, in a Cox PH model we use Partial Maximum Likelihood Estimation in which we use relative hazards to specify probabilities given observed survival times.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Partial MLE of the Cox PH Model (cont'd) - Motivating Example}
+Consider a lottery in which tickets are chosen at random. All tickets of winning holders are removed from the pool after holder wins. Four tickets are chosen at random in a sequence. If
+Barry ($B$) holds 3 tickets, Gary ($G$) holds 4, Susan ($S$) holds 2 tickets and John ($J$) holds 1 ticket then what is the probability of the following sequence of winners: Bary, Gary, Susan, John?
+\begin{align*}
+& P(B_1 \cap G_2 \cap J_3 \cap S_4) = \\
+& P(B_1)P(G_2|B_1)P(J_3|B_1 \cap G_2)P(S_4|B_1 \cap G_2 \cap J_3) = \\
+& \left(\frac{3}{10}\right) \left(\frac{4}{7}\right) \left(\frac{1}{3}\right) \left(\frac{2}{2}\right) = \frac{2}{35}
+\end{align*}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Example 3.2 - Partial MLE of the Cox PH Model (cont'd)}
+Consider the following survival data about Bary, Gary, Susan and John.
+\begin{center}
+\begin{tabular}{ c c c c } \hline
+ Name & Time & Status & Coupon \\ \hline
+Bary & 2 & 1 & 1 \\
+ Gary & 3 & 0 & 1 \\
+Susan & 5 & 1 & 0 \\
+  John & 8 & 1 & 1 \\
+\end{tabular}
+\end{center}
+\end{block}
+Assuming the Cox PH model, how can we form a (partial) likelihood function from this data? We then want to maximize the likelihood to estimate $\beta$ with $\hat{\beta}$.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation (cont'd)}
+\begin{block}{Example 3.2 - Partial MLE of the Cox PH Model (cont'd)}
+When using a Cox PH model and doing partial maximum likelihood estimation, besides giving the events order the exact times of events doesn't matter. Consider the following survival data about Bary, Garry, Susan and John.
+\begin{center}
+\begin{tabular}{ c c c c } \hline
+ Name & Time & Status & Coupon \\ \hline
+Bary & 2 & 1 & 1 \\
+ Garry & 3 & 0 & 1 \\
+Susan & 5 & 1 & 0 \\
+  John & 30 & 1 & 1 \\
+\end{tabular}
+\end{center}
+\end{block}
+In this case we get the same parameter estimates as when we use the data on the previous slide.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Likelihood ratio test}
+\begin{block}{Distribution of likelihood ratio statistic}
+\begin{itemize}
+\item Consider parametric or semiparametric models: $MF$ and $MR$.
+\item Let $MF$ have $p$ parameters and $MR$ have $q$ parameters. Assume $MR$ is ``nested'' in $MF$, i.e., $MR$ and $MF$ are of the same distributional form and all $q$ parameters of $MR$ are parameters of $MF$.
+\item Let $\ln(L_F)$ be the value of the log-likelihood for estimates fit to $MF$ by MLE and let $\ln(L_R)$ be the value of the log-likelihood for estimates fit to $MR$ by MLE.
+\item Then for a ``large sample'' we have the following approximate distribution
+\[
+-2(\ln(L_R) - \ln(L_F)) \sim \chi^2(p-q)
+\]
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Likelihood ratio test}
+\begin{block}{Hypothesis test for ``extra'' parameters in $MF$}
+\begin{itemize}
+\item Let $(\beta_1,\ldots,\beta_q,\beta_{q+1},\ldots,\beta_p)$ be the parameters of $MF$ and $(\beta_1,\ldots,\beta_q)$ be the parameters of $MR$.
+\item Consider
+\vspace{-10pt}
+\begin{align*}  & H_0: \beta_{q+1} = \cdots = \beta_p=0 \text{ vs.}  \\
+& H_1: \text{ at least one of }  \beta_{q+1}, \ldots, \beta_p \text{ is not 0}.
+\end{align*}
+Under $H_0$ for a ``large sample'' we have approximately
+\[
+-2(\ln(L_R) - \ln(L_F)) \sim \chi^2(p-q)
+\]
+\item We can thus test $H_0$ at significance level $\alpha$:
+\[ \text{Reject } H_0 \text{ iff} -2(\ln(L_R) - \ln(L_F)) >\chi^2_\alpha(p-q).
+\]
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Likelihood ratio test}
+\begin{block}{Problem 3.3 - Significance of parameters in the Remission Data using LRT}
+Using the likelihood ratio test in problem 3.1 at a $\alpha=0.05$ significance level test the significance of
+\begin{enumerate}
+\item Just TR
+\item logWBC when TR is in the model
+\item the interaction of logWBC and TR (logWBC*TR) when logWBC and TR are in the model
+\item the interaction of logWBC and TR (logWBC*TR) and logWBC when TR is in the model.
+\end{enumerate}
+Get $p-$values in all your tests and compare your results with the Wald tests.
+\end{block}
+\end{frame}
+
+\end{document} 
