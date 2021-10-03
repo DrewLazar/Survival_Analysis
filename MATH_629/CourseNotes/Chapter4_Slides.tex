@@ -80,7 +80,7 @@ Then we have
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Log-Log Plots}
+\begin{block}{Graphical Approach I: Log-Log Plots}
 Thus, if population satisfies Cox PH model, for any $X$ and $X^*$,
 \begin{align*}
 &-\ln(-\ln(S(t,X)))- (-\ln(-\ln(S(t,X^*)))) = \\
@@ -106,9 +106,9 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
 \frametitle{Graphical Approaches (cont'd)}
 \begin{block}{Considerations about Log-Log Plots}
 \begin{enumerate}
-\item  One might ask "How parallel is parrel enough?". Determining parallelism is based on inspection and is subjective. 
+\item  One might ask "How parallel is parrel enough?". Determining parallelism is based on inspection and is subjective.
 \item  For continuous variables such as LogWBC once must choose ``cut-points''. Want many cut-points, but if choose too many data ``thins'' out.
-\item  To fully test Cox PH model must choose every combination of classes of covariates. Data might ``thin out'' in this case so test is not reliable (see next slide).  
+\item  To fully test Cox PH model must choose every combination of classes of covariates. Data might ``thin out'' in this case so test is not reliable (see next slide).
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -124,7 +124,7 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
     \hspace{-10pt}
     \begin{column}{0.48\textwidth}
          \includegraphics[width =\textwidth, height=5.5cm]{Ch4_loglog6.JPG}
-          Plot suggests Cox PH not satisfied, but unreliable. 
+          Plot suggests Cox PH not satisfied, but unreliable.
     \end{column}
 \end{columns}
 \end{block}
@@ -132,15 +132,43 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Problem 4.2 - Alternative approach to Log-Log plots} 
+\begin{block}{Problem 4.2 - Alternative approach to Log-Log plots}
 \begin{itemize}
-\item Rather than use KM plots on strata, we can fit Cox PH models using covariates that already satisfy the PH assumption. 
+\item Rather than use KM plots on strata, we can fit Cox PH models using covariates that already satisfy the PH assumption.
 \item These PH models are fit on strata of covariates we are testing.
 \item We then check log-log plots of estimated survival curves from different stata.  We use representative values (eg. overall mean) of covariates which we included in Cox PH model.
 \end{itemize}
-Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR satisfies the Cox PH assumption.   
+Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR and Sex satisfy the Cox PH assumption. 
 \end{block}
 \end{frame}
+
+\begin{frame}
+\frametitle{Graphical Approaches (cont'd)}
+\begin{block}{Graphical Approach II: Observed vs. Expected Plots}
+\begin{enumerate} 
+\item Stratify the data on specifications of covariates that we wish to assess for the PH assumption. 
+\item Compute and plot KM estimates on these strata. These are our ``observed'' survival curves. 
+\item Fit a Cox PH model and obtain adjusted survival curves for those specifications. There are our ``expected'' curves. 
+\item The ``observed'' survival curves should be similar to the ``expected'' curves if the PH assumption holds.  
+\end{enumerate} 
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Graphical Approaches (cont'd)}
+\begin{block}{Problem 4.3 - Observed vs. Expected Plots}
+\begin{enumerate} 
+\item Test the Cox PH assumption ``one-at-time" on each covariate in the Remission data set (TR, LogWBC, Sex). 
+\item As LogWBC is continuous we need to 1) choose strata for logWBC and 2) choose a way to represent strata in our Cox PH, ``expected", survival curves. In regard to 2) there are two options
+\begin{enumerate}
+\item Fit a Cox PH model and choose representative values for each strata (e.g. the means in each strata). 
+\item Use categorical or ``dummy'' variables for the strata and then fit the Cox PH model.  
+\end{enumerate}
+\end{enumerate} 
+\end{block}
+\end{frame}
+
+
 
 
 

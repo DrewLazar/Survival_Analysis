@@ -1,4 +1,5 @@
 #Chapter 3 
+library(dplyr) 
 #Remove any variables in your environment 
 rm(list=ls())
 #load the R Survival package 
@@ -16,14 +17,14 @@ kmfitTR2<-survfit(Y~TR,data=Remission)
 #Plot log(-log) survival curves against survt - note this function
 #takes the log of the negative log (doesn't use another negative)
 windows(width=10, height=8)
-plot(kmfitTR2,fun="cloglog",xlab="time in weeks",ylab="log-log survival", col=c('blue','green'), main="log-log curves by treatment")
+plot(kmfitTR2,fun="cloglog",xlab="time in weeks on log scale",ylab="log-log survival", col=c('blue','green'), main="log-log curves by treatment")
 legend("topright",c("Treatment","Placebo"),lty=c("solid"),
        col=c('blue','green'))
 #Fit KM curves against logWBC.group 
-kmfitLWBC3<-survfit(Y~LogWBC.group,data=Remission)
+kmfitLWBC3<-survfit(Y~logWBC.group,data=Remission)
 #Plot log(-log) survival curves against survt 
 windows(width=10, height=8)
-plot(kmfitLWBC3,fun="cloglog",xlab="time in weeks",ylab="log-log survival", col=c('blue','green','red'), main="log-log curves by treatment")
+plot(kmfitLWBC3,fun="cloglog",xlab="time in weeks on log scale",ylab="log-log survival", col=c('blue','green','red'), main="log-log curves by level of logWBC")
 legend("topright",c("Low LogWBC","Medium LogWBC","High LogWBC" ),lty=c("solid"),
        col=c('blue','green','red'))
 #Fit KM curves against logWBC.group 
@@ -31,7 +32,7 @@ kmfitS2<-survfit(Y~Sex,data=Remission)
 #Plot log(-log) survival curves against Sex
 summary(kmfitS2)
 windows(width=10, height=8)
-plot(kmfitS2,fun="cloglog",xlab="time in weeks",ylab="log-log survival", col=c('blue','green','red'), main="log-log curves by treatment")
+plot(kmfitS2,fun="cloglog",xlab="time in weeks on log scale",ylab="log-log survival", col=c('blue','green','red'), main="log-log curves by Sex")
 legend("topright",c("Male (Sex=0)","Female (Sex=1)"),lty=c("solid"),
        col=c('blue','green'))
 #Problem 4.2
@@ -44,4 +45,54 @@ Y1<-Surv(Remission1$survt,Remission1$status==1)
 #Fit Cox PH models to both strata
 Coxph.Rem.m0=coxph(Y0~logWBC,data=Remission0)
 Coxph.Rem.m1=coxph(Y1~logWBC,data=Remission1)
-
+#get the overall mean of logWBC
+meanlWBC=mean(Remission$logWBC)
+#plot our adjusted survival curves 
+windows(width=10, height=8)
+pattern=data.frame(logWBC=meanlWBC)
+plot(survfit(Coxph.Rem.m1,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted survival for TR=0 vs TR=1, mean(logWBC)",col=c('blue'))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.m0,newdata=pattern),fun="cloglog",conf.int=F,col=('green'),xlim=c(1,23),ylim=c(-3.9,2.3))
+legend("topright",c("Treatment","Placebo"),lty=('solid'),col=c('green','blue'))
+#Problem 4.3
+#Observed vs Expected for TR
+windows(width=10, height=8)
+plot(kmfitTR2,xlab="time in weeks",ylab="Survival Probabilities", col=c('blue','blue'),lty=c('solid','dashed'), main="Observed vs Expected curves by treatment")
+Coxph.Rem.TR=coxph(Y~TR,data=Remission)
+pattern1=data.frame(TR=0)
+pattern2=data.frame(TR=1)
+par(new=TRUE)
+plot(survfit(Coxph.Rem.TR,newdata=pattern1),conf.int=F,col=c('green'))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.TR,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+legend("topright",c("Treatment (observed)","Placebo (observed)","Treatment (expected)","Placebo (expected)"),lty=c("solid","dashed","solid","dashed"),
+       col=c('blue','blue','green','green'))
+#Observed vs Expected for Sex
+windows(width=10, height=8)
+plot(kmfitS2,xlab="time in weeks",ylab="Survival Probabilities", col=c('blue','blue'),lty=c('solid','dashed'), main="Observed vs Expected curves by treatment")
+Coxph.Rem.Sex=coxph(Y~Sex,data=Remission)
+pattern1=data.frame(Sex=0)
+pattern2=data.frame(Sex=1)
+par(new=TRUE)
+plot(survfit(Coxph.Rem.Sex,newdata=pattern1),conf.int=F,col=c('green'))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.Sex,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+legend("topright",c("Male (observed)","Female (observed)","Male (expected)","Female (expected)"),lty=c("solid","dashed","solid","dashed"),
+       col=c('blue','blue','green','green'))
+#Observed vs Expected for LogWBC
+Remission %>%
+  group_by(logWBC.group) %>%
+  summarise(mean_logWBC = mean(logWBC),
+            number_obs = n())
+Coxph.Rem.LWBC=coxph(Y~logWBC,data=Remission)
+pattern1=data.frame(logWBC=1.91)
+pattern2=data.frame(logWBC=2.64)
+pattern3=data.frame(logWBC=3.83)
+plot(survfit(Coxph.Rem.LWBC,newdata=pattern1),conf.int=F,col=c('green'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.LWBC,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Rem.LWBC,newdata=pattern3),conf.int=F,col=c('green'),lty=c('dashed'))
+plot(kmfitLWBC3,xlab="time in weeks on log scale",ylab="log-log survival", col=c('blue','green','red'), main="log-log curves by level of logWBC")
+legend("topright",c("Low LogWBC","Medium LogWBC","High LogWBC" ),lty=c("solid"),
+       col=c('blue','green','red'))
