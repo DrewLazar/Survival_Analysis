@@ -73,7 +73,7 @@ Assume Cox PH is met so that
 Then we have
 \begin{align*}
 &\ln( S(t,X)) = \exp(X'\beta)\ln(S_0(t)) \\
-&\implies -\ln(-\ln(S(t,X))) = -\ln(\ln(-S_0(t))) - X'\beta
+&\implies -\ln(-\ln(S(t,X))) = -\ln(-\ln(-S_0(t))) - X'\beta
 \end{align*}
 \end{block}
 \end{frame}
@@ -87,7 +87,7 @@ Thus, if population satisfies Cox PH model, for any $X$ and $X^*$,
 &-X'\beta - (-{X^*}'\beta) =(X^*-X)'\beta
 \end{align*}
 \end{block}
-As this expression does not involve time, the  $-\ln(-\ln)$ plots of our survival curves for $X$ and $X^*$, respectively, should be at the same distance throughout the study and their graphs should be parallel. $-\ln(-\ln)$ plots of good estimates, $\hat{S}(t,X)$ and $\hat{S}(t,X^*)$, should exhibit the same behavior.
+As this expression does not involve time, the  $-\ln(-\ln)$ plots of our survival curves for $X$ and $X^*$, respectively, should be at the same distance throughout the study and their graphs should be parallel. $-\ln(-\ln)$ plots of good estimates, $\hat{S}(t,X)$ and $\hat{S}(t,X^*)$, should exhibit the same behavior if the PH assumption is met. 
 \end{frame}
 
 \begin{frame}
@@ -138,39 +138,80 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
 \item These PH models are fit on strata of covariates we are testing.
 \item We then check log-log plots of estimated survival curves from different stata.  We use representative values (eg. overall mean) of covariates which we included in Cox PH model.
 \end{itemize}
-Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR and Sex satisfy the Cox PH assumption. 
+Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR and Sex satisfy the Cox PH assumption.
 \end{block}
 \end{frame}
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
 \begin{block}{Graphical Approach II: Observed vs. Expected Plots}
-\begin{enumerate} 
-\item Stratify the data on specifications of covariates that we wish to assess for the PH assumption. 
-\item Compute and plot KM estimates on these strata. These are our ``observed'' survival curves. 
-\item Fit a Cox PH model and obtain adjusted survival curves for those specifications. There are our ``expected'' curves. 
-\item The ``observed'' survival curves should be similar to the ``expected'' curves if the PH assumption holds.  
-\end{enumerate} 
+\begin{enumerate}
+\item Stratify the data on specifications of covariates that we wish to assess for the PH assumption.
+\item Compute and plot KM estimates on these strata. These are our ``observed'' survival curves.
+\item Fit a Cox PH model and obtain adjusted survival curves for those specifications. There are our ``expected'' curves.
+\item The ``observed'' survival curves should be similar to the ``expected'' curves if the PH assumption holds.
+\end{enumerate}
 \end{block}
 \end{frame}
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
 \begin{block}{Problem 4.3 - Observed vs. Expected Plots}
-\begin{enumerate} 
-\item Test the Cox PH assumption ``one-at-time" on each covariate in the Remission data set (TR, LogWBC, Sex). 
+\begin{enumerate}
+\item Test the Cox PH assumption ``one-at-time" on each covariate in the Remission data set (TR, LogWBC, Sex).
 \item As LogWBC is continuous we need to 1) choose strata for logWBC and 2) choose a way to represent strata in our Cox PH, ``expected", survival curves. In regard to 2) there are two options
 \begin{enumerate}
-\item Fit a Cox PH model and choose representative values for each strata (e.g. the means in each strata). 
-\item Use categorical or ``dummy'' variables for the strata and then fit the Cox PH model.  
+\item Fit a Cox PH model and choose representative values for each strata (e.g. the means in each strata).
+\item Use categorical or ``dummy'' variables for the strata and then fit the Cox PH model. Also, interpret the coefficients of the Cox PH model with dummy variables for level of LogWBC. 
 \end{enumerate}
-\end{enumerate} 
+\end{enumerate}
 \end{block}
 \end{frame}
 
+\begin{frame} 
+\frametitle{The Goodness of Fit (GOF) Testing Approach}
+\begin{block}{Overview}
+\begin{itemize} 
+\item A GOF testing approach provides a test statistic and p-value for
+assessing the PH assumption for a given predictor of interest.
+\item A researcher can make a more objective decision than using a statistical testwhen using either of
+the two graphical approaches
+\item A number of different tests for assessing the PH
+assumption have been proposed in the literature.
+\item We consider a test  based on residuals
+defined by Schoenfeld (1982), now called the Schoenfeld
+residuals.
+\end{itemize} 
+\end{block}
+\end{frame} 
 
+\begin{frame}
+\frametitle{The Goodness of Fit (GOF) Testing Approach (cont'd)}
+\begin{block}{Schoenfeld Residuals}
+\begin{enumerate}
+\item For each predictor in the model, Schoenfeld
+residuals are defined for every subject who
+has an event.
+\item If the PH assumption holds for a particular covariate
+then the Schoenfeld residuals for that
+covariate will not be related to survival time.
+\item The null hypothesis is $H_0: \text{The PH assumption holds for a particular covariate}$. 
+\item The test statistic is the correlation between Shoenfeld residuals for that covariate and ordered event times. 
+\end{enumerate} 
+\end{block}
+\end{frame} 
 
-
+\begin{frame} 
+\frametitle{The Goodness of Fit (GOF) Testing Approach (cont'd)}
+\begin{block}{Problem 4.4 - Using Schoenfeld residuals to test PH assumption}
+For the Remission data set, use Schoenfeld residuals to test the PH assumption for
+\begin{enumerate}
+\item just TR, 
+\item TR and logWBC simultaneously and 
+\item TR, LogWBC and Sex simultaneously. 
+\end{enumerate} 
+\end{block}
+\end{frame} 
 
 
 \end{document} 
