@@ -24,8 +24,6 @@ Assume the Cox PH assumption is satisfied then
 \ir{3.2}
 \NTS \, Show 2.,  3. Time-independent: sex, race, age at start of study, smoking status at start of study. Can change, of course. With time-independent covariate you are accounting for the effect at the beginning of the study only.
 
-
-\newpage
 \prbm{3.1}
 \begin{enumerate}
 \item Model 1: $h(t;TR) = h_{0,1}(t)\exp(\hat{\beta}_1 TR) = h_{0,1}(t)\exp(1.5721 TR)$
@@ -153,10 +151,10 @@ To test for $\beta_1=0$ in
 using LRT we have $-2(LR_R-LR_F)=-2(-93.1842-(-85.00842)) = 16.3515$
 
 
-To test for $\beta_2=0$ in 
+To test for $\beta_2=0$ in
 \[
-h(t;X) = h_0(t)\exp(\beta_1 TR + \beta_2 logWBC) 
+h(t;X) = h_0(t)\exp(\beta_1 TR + \beta_2 logWBC)
 \]
-using LRT we have $-2(\ln(L_R)-\ln(L_F)) = -2((-85.00842)-(69.82810))=
+using LRT we have $-2(\ln(L_R)-\ln(L_F)) = -2((-85.00842)-(-69.82810))= 30.36064$ 
 
 \end{document} 
