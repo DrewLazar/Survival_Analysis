@@ -2,7 +2,7 @@
 #Clean up
 rm(list=ls())
 #load the necessary packages 
-library(dplyr); library(survival); 
+library(dplyr); library(survival); library(crone)
 #load the R Survival package 
 #Remove any variables in your environment 
 #Set working directory 
@@ -12,7 +12,6 @@ load("Remission.rda")
 #Problem 4.1
 #Create a Survival Object 
 Y<-Surv(Remission$survt,Remission$status==1)
-#4.1a 
 #Fit KM curves against TR
 kmfitTR2<-survfit(Y~TR,data=Remission)
 #Plot log(-log) survival curves against survt - note this function
@@ -94,7 +93,7 @@ pattern2=data.frame(logWBC=2.64)
 pattern3=data.frame(logWBC=3.83)
 par(new=TRUE)
 plot(survfit(Coxph.Rem.LWBC,newdata=pattern1),conf.int=F,col=c('blue'),lty=c('dashed'))
-par(new=TRUE)
+par(new=TRUE)  
 plot(survfit(Coxph.Rem.LWBC,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
 par(new=TRUE)
 plot(survfit(Coxph.Rem.LWBC,newdata=pattern3),conf.int=F,col=c('red'),lty=c('dashed'))
@@ -132,4 +131,25 @@ mod3=coxph(Y~TR+logWBC+Sex, data=Remission)
 cox.zph(mod1,transform=rank)
 cox.zph(mod2,transform=rank)
 cox.zph(mod3,transform=rank)
+#Plots of Schoenfeld residuals. The fitted line should be mostly horizontal 
+#for the variable to meet the Cox PH assumption. 
+windows(width=10, height=8)
+plot(cox.zph(mod3,transform=rank),se=F,var='TR')
+windows(width=10, height=8)
+plot(cox.zph(mod3,transform=rank),se=F,var='logWBC')
+windows(width=10, height=8)
+plot(cox.zph(mod3,transform=rank),se=F,var='Sex')
+#Problem 4.5
+#Put the Remission data set in counting process format 
+Remission.cp=survSplit(Remission,cut=Remission$survt[Remission$status==1],
+                     end="survt", event="status",start="start",id="id")
+Remission.cp$logtTR=Remission.cp$TR*log(Remission.cp$survt)
+#Inspect Remission.cp for one individual 
+Remission.cp[Remission.cp$id==30,]
+#Run an extended CoxPH model for TR, logWBC and Sex one-at-a-time with 
+#g(t)=log(t)
+#Create an extended survival object 
+YE<-Surv(Remission.cp$start,Remission.cp$survt,Remission.cp$status)
+#Test for TR
+coxph(YE ~ TR + logtTR+cluster(id),data=Remission.cp)
 

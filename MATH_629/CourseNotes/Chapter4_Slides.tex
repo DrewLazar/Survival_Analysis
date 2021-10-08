@@ -52,7 +52,7 @@
 \section{Chapter 4}
 \begin{frame}
 \frametitle{Overview of Evaluating PH Assumption}
-\begin{block}{Approaches for assessing PH assumption}
+\begin{block}{Remark 4.1 - Approaches for assessing PH assumption}
 \begin{enumerate}
 \item Graphical techniques
 \begin{enumerate}[i.]
@@ -66,7 +66,7 @@
 \end{frame}
 \begin{frame}
 \frametitle{Graphical Approaches}
-\begin{block}{Log-Log Plots}
+\begin{block}{Definition 4.1 - Graphical Approach I: Log-Log Plots}
 Assume Cox PH is met so that
 \[ S(t,X) = S_0(t)^{\exp(X'\beta)} \text{ for some }  \beta \in \mathbb{R}^{p\times1}
 \]
@@ -80,14 +80,14 @@ Then we have
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Graphical Approach I: Log-Log Plots}
+\begin{block}{Definition 4.1 - Graphical Approach I: Log-Log Plots (cont'd)}
 Thus, if population satisfies Cox PH model, for any $X$ and $X^*$,
 \begin{align*}
 &-\ln(-\ln(S(t,X)))- (-\ln(-\ln(S(t,X^*)))) = \\
 &-X'\beta - (-{X^*}'\beta) =(X^*-X)'\beta
 \end{align*}
 \end{block}
-As this expression does not involve time, the  $-\ln(-\ln)$ plots of our survival curves for $X$ and $X^*$, respectively, should be at the same distance throughout the study and their graphs should be parallel. $-\ln(-\ln)$ plots of good estimates, $\hat{S}(t,X)$ and $\hat{S}(t,X^*)$, should exhibit the same behavior if the PH assumption is met.
+\textbf{Remark 4.2 }- As this expression does not involve time, the  $-\ln(-\ln)$ plots of our survival curves for $X$ and $X^*$, respectively, should be at the same distance throughout the study and their graphs should be parallel. $-\ln(-\ln)$ plots of good estimates, $\hat{S}(t,X)$ and $\hat{S}(t,X^*)$, should exhibit the same behavior if the PH assumption is met.
 \end{frame}
 
 \begin{frame}
@@ -95,20 +95,20 @@ As this expression does not involve time, the  $-\ln(-\ln)$ plots of our surviva
 \begin{block}{Problem 4.1 - Log-Log Plots}
 For the Remission data, test the Cox PH assumption by using log-log plots and by considering the covariates ``one at a time''.
 \begin{enumerate}
-\item Test Cox Ph assumption for TR.
-\item Test the Cox Ph assumption of LogWBC. First statify LogWbc with low - 1.45 to 2.30, med - 2.31 to 3.00, high 3.01 to 5.00.
-\item Test the Cox Ph for Sex.
+\item Test the PH assumption for TR.
+\item Test the PH assumption of LogWBC. First statify LogWbc with low - 1.45 to 2.30, med - 2.31 to 3.00, high 3.01 to 5.00.
+\item Test the PH assumption for Sex.
 \end{enumerate}
 \end{block}
 \end{frame}
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Considerations about Log-Log Plots}
+\begin{block}{Remark 4.3 - Considerations about Log-Log Plots}
 \begin{enumerate}
-\item  One might ask "How parallel is parrel enough?". Determining parallelism is based on inspection and is subjective.
+\item  One might ask ``How parallel is parallel enough?". Determining parallelism is based on inspection and is subjective.
 \item  For continuous variables such as LogWBC once must choose ``cut-points''. Want many cut-points, but if choose too many data ``thins'' out.
-\item  To fully test Cox PH model must choose every combination of classes of covariates. Data might ``thin out'' in this case so test is not reliable (see next slide).
+\item  To fully test PH assumption must choose every combination of classes of covariates. Data might ``thin out'' in this case so test is not reliable (see next slide).
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -116,7 +116,7 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Considerations about Log-Log Plots (cont'd)}
+\begin{block}{Remark 4.3 - Considerations about Log-Log Plots (cont'd)}
 \begin{columns}
     \begin{column}{0.48\textwidth}
         \includegraphics[width =\textwidth, height=4cm]{CH4_loglogMC.JPG}
@@ -132,19 +132,19 @@ For the Remission data, test the Cox PH assumption by using log-log plots and by
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Problem 4.2 - Alternative approach to Log-Log plots}
+\begin{block}{Remark 4.4 - Alternative approach to Log-Log plots}
 \begin{itemize}
 \item Rather than use KM plots on strata, we can fit Cox PH models using covariates that already satisfy the PH assumption.
 \item These PH models are fit on strata of covariates we are testing.
 \item We then check log-log plots of estimated survival curves from different stata.  We use representative values (eg. overall mean) of covariates which we included in Cox PH model.
 \end{itemize}
-Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR and Sex satisfy the Cox PH assumption.
+\textbf{Problem 4.2} - Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whether TR and Sex satisfy the Cox PH assumption.
 \end{block}
 \end{frame}
 
 \begin{frame}
 \frametitle{Graphical Approaches (cont'd)}
-\begin{block}{Graphical Approach II: Observed vs. Expected Plots}
+\begin{block}{Definition 4.2 - Graphical Approach II: Observed vs. Expected Plots}
 \begin{enumerate}
 \item Stratify the data on specifications of covariates that we wish to assess for the PH assumption.
 \item Compute and plot KM estimates on these strata. These are our ``observed'' survival curves.
@@ -158,7 +158,7 @@ Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whet
 \frametitle{Graphical Approaches (cont'd)}
 \begin{block}{Problem 4.3 - Observed vs. Expected Plots}
 \begin{enumerate}
-\item Test the Cox PH assumption ``one-at-time" on each covariate in the Remission data set (TR, LogWBC, Sex).
+\item Test the Cox PH assumption ``one-at-time" on each covariate in the Remission data set (TR, LogWBC, Sex) using observed vs. expected plots.
 \item As LogWBC is continuous we need to 1) choose strata for logWBC and 2) choose a way to represent strata in our Cox PH, ``expected", survival curves. In regard to 2) there are two options
 \begin{enumerate}
 \item Fit a Cox PH model and choose representative values for each strata (e.g. the means in each strata).
@@ -170,11 +170,11 @@ Use the approach above, assuming LogWBC satisfies the Cox PH model, to test whet
 
 \begin{frame}
 \frametitle{The Goodness of Fit (GOF) Testing Approach}
-\begin{block}{Overview}
+\begin{block}{Remark 4.5 - Overview}
 \begin{itemize}
 \item A GOF testing approach provides a test statistic and p-value for
 assessing the PH assumption for a given predictor of interest.
-\item A researcher can make a more objective decision than using a statistical testwhen using either of
+\item A researcher can make a more objective decision than using a statistical test when using either of
 the two graphical approaches
 \item A number of different tests for assessing the PH
 assumption have been proposed in the literature.
@@ -187,16 +187,16 @@ residuals.
 
 \begin{frame}
 \frametitle{The Goodness of Fit (GOF) Testing Approach (cont'd)}
-\begin{block}{Schoenfeld Residuals}
+\begin{block}{Definition 4.3 - Schoenfeld Residuals}
 \begin{enumerate}
 \item For each predictor in the model, Schoenfeld
 residuals are defined for every subject who
 has an event.
 \item If the PH assumption holds for a particular covariate
 then the Schoenfeld residuals for that
-covariate will not be related to survival time.
-\item The null hypothesis is $H_0: \text{The PH assumption holds for a particular covariate}$.
-\item The test statistic is the correlation between Shoenfeld residuals for that covariate and ordered event times.
+covariate will not be correlated with survival time.
+\item $H_0: \text{The PH assumption holds for a particular covariate}$. This is the null hypothesis.
+\item The test statistic is the correlation between Shoenfeld residuals for that covariate and the rank of the event times.
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -208,7 +208,51 @@ For the Remission data set, use Schoenfeld residuals to test the PH assumption f
 \begin{enumerate}
 \item just TR,
 \item TR and logWBC simultaneously and
-\item TR, LogWBC and Sex simultaneously.
+\item TR, LogWBC and Sex simultaneously. Plot the Shoenfeld residuals for each variable against time and fit a curve for each plot.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Assessing the PH Assumption Using Time-Dependent Covariates}
+\begin{block}{Definition 4.4 - The extended Cox model}
+\begin{itemize}
+\item Time-dependent variables can be used to assess the PH assumption for time-independent variables.
+\item The Cox PH model is extended to contain interaction terms involving the time-independent variable being assessed and some function of time.
+\item Below is a extended Cox PH model with one time-independent variable and an interaction term with this variable and a function of time.
+\[
+h(t,X) = h_0(t)\exp(\beta X + \delta g(t) X)
+\]
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Assessing the PH Assumption Using Time-Dependent Covariates (cont'd)}
+\begin{block}{Remark 4.6 - The extended Cox model (cont'd)}
+There are many choices for $g(t)$. Some examples:
+\begin{align*}
+& g(t) = t, \, g(t) = t^2, g(t)=\ln(t),  \\
+& g(t) = \begin{cases}
+1, \, t \ge t_0\\
+0, \, t < t_0.
+\end{cases}
+\end{align*}
+The last example above is known as a Heaviside function.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Assessing the PH Assumption Using Time-Dependent Covariates (cont'd)}
+\begin{block}{Problem 4.5 - Test PH assumption using time-dependent covariates on the Remission data set}
+\begin{enumerate}
+\item Set up the test of the following variables for satisfying the PH hazard model using time-dependent covariates
+\begin{enumerate}
+\item TR, LogWBC, and Sex, ``one-at-a-time".
+\item TR, LogWBC and Sex, simultaneously.
+\item Sex with TR and LogWBC in the model and assuming that TR and LogWBC satisfy the PH assumption.
+\end{enumerate}
+\item Carry out the test for TR satisfying the Cox PH in R, using $g(t) = \ln(t)$.
 \end{enumerate}
 \end{block}
 \end{frame}

@@ -13,7 +13,7 @@ load("Remission.rda")
 Y<-Surv(Remission$survt,Remission$status==1)
 #Create a KM model with no partitioning 
 kmfit1=survfit(Y~1)
-#See your KM estimates 
+#See your KM estimates  
 summary(kmfit1)
 #Plot your KM estimates
 windows(width=10, height=8)
