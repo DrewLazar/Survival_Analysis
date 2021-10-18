@@ -1,11 +1,9 @@
 rm(list=ls())
 library(survival)
-
-save(Ven.reset, file = "Venreset.RData")
 #1
 #i
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
-load("Venreset.RData")
+Ven.reset <-read.csv("Venreset.csv", header = TRUE)
 #ii
 Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
 kmfit3=survfit(Y~Ven.reset$Setting)
