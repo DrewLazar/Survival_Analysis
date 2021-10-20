@@ -38,8 +38,7 @@ pommatrix = function(survdata,lowerQ,upperQ) {
 
 
 # Test pommatrix(...)
-setwd("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data") 
-load("Remission.rda")
+
 load(file = "../Data/Remission.rda")
 
 Remission.event<-Remission[Remission$status==1,]
