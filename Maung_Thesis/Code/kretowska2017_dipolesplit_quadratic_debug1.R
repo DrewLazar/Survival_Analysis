@@ -1,65 +1,68 @@
 # Determines if a pair of covariates (xi, xj) is pure, mixed or neither
 # according to Kretowska 2017
-pom = function(xi,xj,lowerQ,upperQ) {
-  
-  xitime = xi$survt
-  xjtime = xj$survt
-  xistat = xi$status
-  xjstat = xj$status
-  
-  # Direct implementation of Kretowska's conditions:
-  if (
-    (xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) < lowerQ)
-  ) {
-    return("pure")
-  } else if (
-    ((xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) > upperQ)) ||
-    ((xistat == 0) && (xjstat == 1) && ((xitime - xjtime) > upperQ)) ||
-    ((xistat == 1) && (xjstat == 0) && ((xjtime - xitime) > upperQ))
-  ) {
-    return("mixed")
-  } else {
-    return("neither")
-  }
-  
-}
+# pom = function(xi,xj,lowerQ,upperQ) {
+#   
+#   xitime = xi$survt
+#   xjtime = xj$survt
+#   xistat = xi$status
+#   xjstat = xj$status
+#   
+#   # Direct implementation of Kretowska's conditions:
+#   if (
+#     (xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) < lowerQ)
+#   ) {
+#     return("pure")
+#   } else if (
+#     ((xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) > upperQ)) ||
+#     ((xistat == 0) && (xjstat == 1) && ((xitime - xjtime) > upperQ)) ||
+#     ((xistat == 1) && (xjstat == 0) && ((xjtime - xitime) > upperQ))
+#   ) {
+#     return("mixed")
+#   } else {
+#     return("neither")
+#   }
+#   
+# }
 
 # Classifies all data points according to pom(...) above
-pommatrix = function(survdata,lowerQ,upperQ) {
-  N = nrow(survdata)
-  matrix = matrix("neither",N,N)
-  for (i in 1:(N-1)) {
-    for (j in (i+1):N) {
-      matrix[i,j] = pom(survdata[i,], survdata[j,], lowerQ, upperQ)
-    }
-  }
-  return(matrix)
-}
+# pommatrix = function(survdata,lowerQ,upperQ) {
+#   N = nrow(survdata)
+#   matrix = matrix("neither",N,N)
+#   for (i in 1:(N-1)) {
+#     for (j in (i+1):N) {
+#       matrix[i,j] = pom(survdata[i,], survdata[j,], lowerQ, upperQ)
+#     }
+#   }
+#   return(matrix)
+# }
 
 
 # Test data Remission:
 
-# setwd("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data") 
-# load("Remission.rda")
-load(file = "../Data/Remission.rda")
 
-# Remission <- Remission[sample(nrow(Remission), 6), ]
+#load(file = "../Data/Remission.rda")
+
+#Remission <- Remission[sample(nrow(Remission), 6), ]
 
 # Subset the uncensored survival times
-Remission.uncensored <- Remission[Remission$status==1,]
+#Remission.uncensored <- Remission[Remission$status==1,]
 
 # Collect all pairwise (without double counting) absolute
 # difference between survival times
-Remission.absdists <- c(dist(Remission.uncensored$survt,
-                             method = "manhattan"))
+#Remission.absdists <- c(dist(Remission.uncensored$survt,
+#                             method = "manhattan"))
 
 # Take quantiles of absolute difference between survival times
-Q <- quantile(Remission.absdists, c(0.30, 0.70))
+#Q <- quantile(Remission.absdists, c(0.30, 0.70))
 
 # The "pure or mixed" matrix for the data set:
-Remission.poms <- pommatrix(Remission, Q["30%"], Q["70%"])
+#Remission.poms <- pommatrix(Remission, Q["30%"], Q["70%"])
+Remission.poms <- matrix(
+  c("neither", "neither", "mixed", "neither"), nrow = 2
+  )
 
 # The covariates of the data set
+Remission <- data.frame(TR = c(0, 1), logWBC = c(0.1, 3.7))
 Remission.X <- Remission[c("TR", "logWBC")]
 
 # Augment the covariates of the data set
@@ -125,10 +128,6 @@ N <- nrow(Remission.Z)
 Dp1 <- ncol(Remission.Z)
 
 # Coefficients of objective
-# NOTE: lp assumes ALL variables are >= 0.
-# This means the free variable v must be written as
-# v = v' - v'' : v', v'' >= 0
-# to get an lp in standard form
 objcoeffs <- c(rep(0, 2*Dp1), rep(1, 2*N))
 
 I2N <- diag(1, 2*N)
@@ -136,26 +135,22 @@ I2N <- diag(1, 2*N)
 pZmZ <- rbind( Remission.phipm[,"phipcount"] * Remission.Zmatrix,
               -Remission.phipm[,"phimcount"] * Remission.Zmatrix)
 
+O2NDp1 <- matrix(0, 2*N, Dp1)
+
 # Constraint matrix
-# NOTE: lp assumes ALL variables are >= 0.
-# This means the free variable v must be written as
-# v = v' - v'' : v', v'' >= 0
-# to get an lp in standard form
 constmat <- cbind(pZmZ, -pZmZ, I2N)
 
 # Constraint RHS
 delta <- 0.1
-constrhs <- delta * c(Remission.phipm[,"phipcount"],
-                      Remission.phipm[,"phimcount"])
+constrhs <- c(delta * Remission.phipm[,"phipcount"],
+              delta * Remission.phipm[,"phimcount"])
 
-# NOTE: lp assumes ALL variables are >= 0
 lpsoln <- lp(direction = "min",
              objective.in = objcoeffs,
              const.mat = constmat,
              const.dir = ">=",
              const.rhs = constrhs)
 
-v <- lpsoln$solution[1 : Dp1] -  lpsoln$solution[(Dp1+1) : (2*Dp1)]
+lpsoln$solution[1 : Dp1] -  lpsoln$solution[(Dp1+1) : (2*Dp1)]
 
 plot(logWBC ~ TR, data = Remission)
-abline(a = -v[1]/v[3], b = -v[2]/v[3])

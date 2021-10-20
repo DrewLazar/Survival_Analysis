@@ -29,3 +29,4 @@
 *.synctex
 *.Rhistory
 *.RData
+.DS_Store
