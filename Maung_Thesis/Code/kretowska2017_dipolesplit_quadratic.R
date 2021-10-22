@@ -61,9 +61,21 @@ Remission.poms <- pommatrix(Remission, Q["30%"], Q["70%"])
 
 # The covariates of the data set
 Remission.X <- Remission[c("TR", "logWBC")]
+# FOR QUADRATIC AUGMENTATION OF COVARIATES USE THIS INSTEAD:
+# augment.quadratic <- function(input){
+#   output <- do.call("cbind", lapply(1:ncol(input), FUN=function(z){ 
+#     do.call("cbind", lapply(z:ncol(input), FUN=function(x){
+#       tmp <- data.frame(input[,z] * input[,x])
+#       colnames(tmp)[1] <- paste(colnames(input)[z], ":", colnames(input)[x], sep="") # Multiplication symbol changed to : as per R style instead of x to avoid confusion with variables containing x
+#       tmp
+#     }))
+#   }))
+#   cbind(input, output)
+# }
+# Remission.X <- augment.quadratic(Remission[c("TR", "logWBC")])
 
 # Augment the covariates of the data set
-Remission.Z <- cbind(augment = 1, Remission.X)
+Remission.Z <- cbind("1" = 1, Remission.X)
 Remission.Zmatrix <- as.matrix(Remission.Z)
 
 # Count the number of plus and minus penalty functions
@@ -82,9 +94,11 @@ phipmcount = function(Zmatrix, vorient, pommatrix){
       
       if (pommatrix[i, j] == "pure") {
         
+        # if we EXPECT both zi and zj on +ve side of vorient:
         if (Zv[i] + Zv[j] > 0) {
           phip[i] = phip[i] + 1
           phip[j] = phip[j] + 1
+        # otherwise:
         } else {
           phim[i] = phim[i] + 1
           phim[j] = phim[j] + 1
@@ -92,9 +106,12 @@ phipmcount = function(Zmatrix, vorient, pommatrix){
         
       } else if (pommatrix[i, j] == "mixed") {
         
+        # if we EXPECT zi on +ve side of vorient
+        # while zj on -ve side of vorient:
         if (Zv[i] - Zv[j] > 0) {
           phip[i] = phip[i] + 1
           phim[j] = phim[j] + 1
+        # otherwise:
         } else {
           phim[i] = phim[i] + 1
           phip[j] = phip[j] + 1
@@ -159,3 +176,8 @@ v <- lpsoln$solution[1 : Dp1] -  lpsoln$solution[(Dp1+1) : (2*Dp1)]
 
 plot(logWBC ~ TR, data = Remission)
 abline(a = -v[1]/v[3], b = -v[2]/v[3])
+
+v.planeeqn <- paste(
+  paste(v, names(Remission.Z), sep = " * ", collapse = "    +    "),
+  "    =    0"
+)
