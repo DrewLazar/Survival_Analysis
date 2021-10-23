@@ -42,6 +42,11 @@ pommatrix = function(survdata,lowerQ,upperQ) {
 # setwd("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data") 
 # load("Remission.rda")
 load(file = "../Data/Remission.rda")
+#nr=nrow(Remission)
+#for (i in 1:nr)  
+#if (Remission[i,]$TR==0 && Remission[i,]$survt>2) {
+#  Remission[i,]$survt=Remission[i,]$survt+1
+#}
 
 # Remission <- Remission[sample(nrow(Remission), 6), ]
 
