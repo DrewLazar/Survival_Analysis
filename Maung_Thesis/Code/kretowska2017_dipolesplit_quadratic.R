@@ -1,6 +1,6 @@
 # Determines if a pair of covariates (xi, xj) is pure, mixed or neither
 # according to Kretowska 2017
-pom = function(xi,xj,lowerQ,upperQ) {
+pom = function(xi, xj, lowerQ, upperQ) {
   
   xitime = xi$survt
   xjtime = xj$survt
@@ -42,6 +42,11 @@ pommatrix = function(survdata,lowerQ,upperQ) {
 # setwd("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data") 
 # load("Remission.rda")
 load(file = "../Data/Remission.rda")
+#nr=nrow(Remission)
+#for (i in 1:nr)  
+#if (Remission[i,]$TR==0 && Remission[i,]$survt>2) {
+#  Remission[i,]$survt=Remission[i,]$survt+1
+#}
 
 # Remission <- Remission[sample(nrow(Remission), 6), ]
 
@@ -54,10 +59,12 @@ Remission.absdists <- c(dist(Remission.uncensored$survt,
                              method = "manhattan"))
 
 # Take quantiles of absolute difference between survival times
-Q <- quantile(Remission.absdists, c(0.30, 0.70))
+lowerQ <- 0.10
+upperQ <- 0.90
+Q <- quantile(Remission.absdists, c(lowerQ, upperQ))
 
 # The "pure or mixed" matrix for the data set:
-Remission.poms <- pommatrix(Remission, Q["30%"], Q["70%"])
+Remission.poms <- pommatrix(Remission, Q[1], Q[2])
 
 # The covariates of the data set
 Remission.X <- Remission[c("TR", "logWBC")]
@@ -122,7 +129,7 @@ phipmcount = function(Zmatrix, vorient, pommatrix){
     }
   }
   
-  return(cbind(phipcount = phip, phimcount = phim))
+  return(c(phip, phim))
 }
 
 # Test phipmcount(...)
@@ -150,8 +157,8 @@ objcoeffs <- c(rep(0, 2*Dp1), rep(1, 2*N))
 
 I2N <- diag(1, 2*N)
 
-pZmZ <- rbind( Remission.phipm[,"phipcount"] * Remission.Zmatrix,
-              -Remission.phipm[,"phimcount"] * Remission.Zmatrix)
+pZmZ <- Remission.phipm * rbind( Remission.Zmatrix,
+                                -Remission.Zmatrix)
 
 # Constraint matrix
 # NOTE: lp assumes ALL variables are >= 0.
@@ -162,8 +169,7 @@ constmat <- cbind(pZmZ, -pZmZ, I2N)
 
 # Constraint RHS
 delta <- 0.1
-constrhs <- delta * c(Remission.phipm[,"phipcount"],
-                      Remission.phipm[,"phimcount"])
+constrhs <- delta * Remission.phipm
 
 # NOTE: lp assumes ALL variables are >= 0
 lpsoln <- lp(direction = "min",
@@ -172,12 +178,19 @@ lpsoln <- lp(direction = "min",
              const.dir = ">=",
              const.rhs = constrhs)
 
-v <- lpsoln$solution[1 : Dp1] -  lpsoln$solution[(Dp1+1) : (2*Dp1)]
+Remission.v <- lpsoln$solution[1 : Dp1] -  lpsoln$solution[(Dp1+1) : (2*Dp1)]
 
-plot(logWBC ~ TR, data = Remission)
-abline(a = -v[1]/v[3], b = -v[2]/v[3])
+plot(logWBC ~ TR, data = Remission, pch = 20)
+abline(a = -Remission.v[1]/Remission.v[3],
+       b = -Remission.v[2]/Remission.v[3])
 
-v.planeeqn <- paste(
-  paste(v, names(Remission.Z), sep = " * ", collapse = "    +    "),
+Remission.v.eqn <- paste(
+  paste(Remission.v, names(Remission.Z),
+        sep = " * ", collapse = "    +    "),
   "    =    0"
 )
+
+kretowska.dipolarcriterion <- function(Z, v, phipm) {
+  Zv <- Z %*% v
+  phipm %*% pmax(delta + c(-Zv, Zv), 0)
+}
