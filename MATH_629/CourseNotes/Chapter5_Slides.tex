@@ -63,7 +63,7 @@
 
 \begin{frame}
 \frametitle{Stratification by covariate without interaction}
-\begin{block}{Example 4.1: Remission data - stratification by Sex}
+\begin{block}{Example 5.1: Remission data - stratification by Sex}
 \begin{itemize}
 \item We saw in chapter 4 that in the Remission data set: TR and LogWBC statisfy the PH assumption but Sex does not.
 \item We can stratify on Sex (Male and Female) and create Cox PH models using TR and LogWBC in each strata. Without interaction we have:
@@ -78,7 +78,7 @@ h_g(t,X) = h_{0,g}(t)\exp(\beta_1 TR + \beta_2 logWBC) \text{ for } g=1,2.
 
 \begin{frame}
 \frametitle{Stratification by covariate without interaction (cont'd)}
-\begin{block}{Problem 4.1: Remission data - stratification by Sex}
+\begin{block}{Problem 5.1: Remission data - stratification by Sex}
 \begin{enumerate}
 \item In R, fit a stratified Cox PH model to the Remission Data. Use TR and LogWBC as covariates and stratify on Sex.
 \item Use a Wald test to test for the significance of TR and LogWBC.
@@ -144,7 +144,7 @@ stratum as shown below.
 
 \begin{frame}
 \frametitle{Stratification by covariate with interaction}
-\begin{block}{Example 4.2: Remission data - stratification by Sex with interaction}
+\begin{block}{Example 5.2: Remission data - stratification by Sex with interaction}
 \begin{itemize}
 \item Without interaction our SC model is
 \[
@@ -164,12 +164,12 @@ h_g(t,X) = h_{0,g}(t)\exp(\beta_{1g} TR + \beta_{2g} logWBC) \text{ for } g=1,2.
 
 \begin{frame}
 \frametitle{Stratification by covariate with interaction (cont'd)}
-\begin{block}{Example 4.2: Remission data - stratification by Sex with interaction (cont'd)}
+\begin{block}{Example 5.2: Remission data - stratification by Sex with interaction (cont'd)}
 \begin{itemize}
 \item An alternative interaction model is a follows:
 \begin{equation}\label{eq:Int2}
 \begin{aligned}
-h_g(t,X) & = h_{0,g}(t)\exp[\beta_1^* TR + \beta_2^* logWBC +  \\
+h_g(t,X) & = h_{0,g}(t)\exp[\beta_1^*\ TR + \beta_2^*\ logWBC +  \\
 & \beta_3^*(Sex*TR) + \beta_4^*(Sex*logWBC) ] \text{ for } g=1,2.
 \end{aligned}
 \end{equation}
@@ -177,6 +177,24 @@ h_g(t,X) & = h_{0,g}(t)\exp[\beta_1^* TR + \beta_2^* logWBC +  \\
 \end{itemize}
 \end{block}
 \end{frame}
+
+\begin{frame} 
+\frametitle{Stratification by covariate with interaction (cont'd)}
+\begin{block}{Example 5.2: Remission data - stratification by Sex with interaction (cont'd)}
+How are \eqref{eq:Int1} and \eqref{eq:Int2} equivalent? 
+\begin{itemize}
+\item Using model \eqref{eq:Int1}, the effect of a unit increase in TR, i.e., HR(TR), is: 
+\[ \beta_{11} \text{ for } g=1 \text{ and }  \beta_{12} \text{ for } g=2. 
+\]
+\item Using model \eqref{eq:Int2}, the effect of a unit increase in TR, i.e., HR(TR), is: 
+\[
+\beta_{1}^* + \beta_{3}^**\text{Sex}. 
+\]
+\item Thus, $\beta_{11}=\beta_{1}^*$ and  $\beta_{12}=\beta_{1}^*+\beta_{3}^*$. 
+\item Similarily, we have $\beta_{21}=\beta_{2}^*$ and  $\beta_{22}=\beta_{2}^*+\beta_{4}^*$. 
+\end{itemize}
+\end{block} 
+\end{frame} 
 
 
 \end{document}

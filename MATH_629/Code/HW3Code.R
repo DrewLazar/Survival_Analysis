@@ -5,24 +5,30 @@ library(dplyr)
 #i
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 Ven.reset <-read.csv("Venreset.csv", header = TRUE)
-#ii
+#2
+#create a survival object from Ventilator data set
 Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
+#2ia
 #log-log curves for Setting 
 kmfitST3=survfit(Y~Ven.reset$Setting)
 windows(width=10, height=8)
-plot(kmfitST3,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting")
+plot(kmfitST3,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting",col=c('red','green','blue'))
+legend("topright",c("Setting=0","Setting=1","Setting=2"),lty=c("solid"),col=c("red","green","blue"))
+#2ib
 #log-log curves for LO2 
 quantile(Ven.reset$LO2)
 Ven.reset$LO2.group<-cut(Ven.reset$LO2,c(-2.58,1.0075,2.0350,3.0825,6.2300),labels=c('1','2','3','4'))
 length(unique(Ven.reset$LO2.group))
 kmfitO24=survfit(Y~Ven.reset$LO2.group)
 windows(width=10, height=8)
-plot(kmfitO24,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by LO2group")
+plot(kmfitO24,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by LO2group",col=c("red","green","blue","black"))
+legend("topright",c("LO2=high","LO2=medhigh","LO2=medlow","LO2=low"),lty=c("solid"),col=c("red","green","blue","black"))
+#2ii
 #Stratify Data set by Setting 
 Venreset0<-Ven.reset[Ven.reset$Setting==0, ]
 Venreset1<-Ven.reset[Ven.reset$Setting==1, ]
 Venreset2<-Ven.reset[Ven.reset$Setting==2, ]
-#Create Survival objects for both Strata
+#Create Survival objects for three Strata
 Y0<-Surv(Venreset0$eventtime,Venreset0$status==1)
 Y1<-Surv(Venreset1$eventtime,Venreset1$status==1)
 Y2<-Surv(Venreset2$eventtime,Venreset2$status==1)
@@ -35,12 +41,12 @@ meanlo2=mean(Ven.reset$LO2)
 #plot our adjusted survival curves 
 windows(width=10, height=8)
 pattern=data.frame(LO2=meanlo2)
-plot(survfit(Coxph.Ven.m0,newdata=pattern),xlim=c(0.08,23),ylim=c(-6,3.7),fun="cloglog",conf.int=F,main="Adjusted survival for TR=0 vs TR=1, mean(logWBC)",col=c('blue'))
+plot(survfit(Coxph.Ven.m0,newdata=pattern),xlim=c(0.08,23),ylim=c(-6,3.7),fun="cloglog",conf.int=F,main="Adjusted log-log survival curves for Setting=0, Setting=1 and Setting=2 w/ mean(LO2)",col=c('blue'))
 par(new=TRUE)
 plot(survfit(Coxph.Ven.m1,newdata=pattern),xlim=c(0.08,23),ylim=c(-6,3.7),fun="cloglog",conf.int=F,col=('green'))
 par(new=TRUE)
 plot(survfit(Coxph.Ven.m2,newdata=pattern),fun="cloglog",xlim=c(0.08,23),ylim=c(-6,3.7),conf.int=F,col=('red'))
-legend("topright",c("Treatment","Placebo"),lty=('solid'),col=c('green','blue'))
+legend("topright",c("Setting=2","Setting=1","Setting=0"),lty=('solid'),col=c('red','green','blue'))
 #Observed vs. Expected Plots
 #Observed vs. Expected Plots for Setting 
 windows(width=10, height=8)
