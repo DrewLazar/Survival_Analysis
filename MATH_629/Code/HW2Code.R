@@ -6,7 +6,14 @@ setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 Ven.reset <-read.csv("Venreset.csv", header = TRUE)
 #ii
 Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
-kmfit3=survfit(Y~Ven.reset$Setting)
+kmfitST3=survfit(Y~Ven.reset$Setting)
+windows(width=10, height=8)
+plot(kmfitST3,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting")
+
+
+
+
+
 summary(kmfit3)
 windows(width=10, height=8)
 plot(kmfit3,col=c('green','blue','red'),
