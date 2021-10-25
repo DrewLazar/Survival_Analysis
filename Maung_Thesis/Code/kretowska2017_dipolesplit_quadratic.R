@@ -40,11 +40,11 @@ pommatrix = function(survdata,lowerQ,upperQ) {
 # Test data Remission:
 
 # setwd("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data") 
-# load("Remission.rda")
+#load("Remission.rda")
 load(file = "../Data/Remission.rda")
 #nr=nrow(Remission)
 #for (i in 1:nr)  
-#if (Remission[i,]$TR==0 && Remission[i,]$survt>2) {
+#if (Remission[i,]$TR==1 && Remission[i,]$survt>2) {
 #  Remission[i,]$survt=Remission[i,]$survt+1
 #}
 
@@ -59,8 +59,8 @@ Remission.absdists <- c(dist(Remission.uncensored$survt,
                              method = "manhattan"))
 
 # Take quantiles of absolute difference between survival times
-lowerQ <- 0.10
-upperQ <- 0.90
+lowerQ <- 0.35
+upperQ <- 0.65
 Q <- quantile(Remission.absdists, c(lowerQ, upperQ))
 
 # The "pure or mixed" matrix for the data set:
