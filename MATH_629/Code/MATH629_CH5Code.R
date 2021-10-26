@@ -39,3 +39,28 @@ par(new=TRUE)
 plot(survfit(coxph.Rem.m1,newdata=pattern2),col=c('blue','red'), lty=c('dashed'),conf.int=F)
 legend("topright",c("Treatment, Sex=F","Placebo, Sex=F","Treatment, Sex=M","Placebo, Sex=M" ),lty=c("solid","dashed","solid","dashed"),
        col=c('blue','blue','red','red'))
+#Problem 5.2
+#1
+coxph.Rem.int.m1<-coxph(Y~TR+logWBC+Sex:TR+Sex:logWBC+strata(Sex),data=Remission)
+summary(coxph.Rem.int.m1)
+#2
+CSstat = -2*(coxph.Rem.m1$loglik[2]-coxph.Rem.int.m1$loglik[2])
+CV = qchisq(.95,df=2)
+CSstat>CV
+#2
+#HR of TR and CI of HR of TR with with Sex=0 (given in R but we compute below)
+b1=coxph.Rem.int.m1$coefficients[1]
+exp(b1)
+exp(b1-1.96*0.5636)
+exp(b1+1.96*0.5636)
+#HR of TR with Sex=1
+b3=coxph.Rem.int.m1$coefficients[3]
+exp(b1+b3)
+#Trick to find HR and CI for HR of TR with Sex=1 
+Remission$Sex2=Remission$Sex-1
+coxph.Rem.int.m2<-coxph(Y~TR+logWBC+Sex2:TR+Sex2:logWBC+strata(Sex2),data=Remission)
+summary(coxph.Rem.int.m2)
+#CI of HR of TR with Sex=1
+#HR is 7.227 which agrees with exp(b1+b2) above 
+#CI is  1.6974 to 30.775 right from output. 
+

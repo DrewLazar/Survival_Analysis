@@ -178,24 +178,33 @@ h_g(t,X) & = h_{0,g}(t)\exp[\beta_1^*\ TR + \beta_2^*\ logWBC +  \\
 \end{block}
 \end{frame}
 
-\begin{frame} 
+\begin{frame}
 \frametitle{Stratification by covariate with interaction (cont'd)}
 \begin{block}{Example 5.2: Remission data - stratification by Sex with interaction (cont'd)}
-How are \eqref{eq:Int1} and \eqref{eq:Int2} equivalent? 
+How are \eqref{eq:Int1} and \eqref{eq:Int2} equivalent?
 \begin{itemize}
-\item Using model \eqref{eq:Int1}, the effect of a unit increase in TR, i.e., HR(TR), is: 
-\[ \beta_{11} \text{ for } g=1 \text{ and }  \beta_{12} \text{ for } g=2. 
+\item Using model \eqref{eq:Int1}, the effect of a unit increase in TR, i.e., HR(TR), is:
+\[ \beta_{11} \text{ for } g=1 \text{ and }  \beta_{12} \text{ for } g=2.
 \]
-\item Using model \eqref{eq:Int2}, the effect of a unit increase in TR, i.e., HR(TR), is: 
+\item Using model \eqref{eq:Int2}, the effect of a unit increase in TR, i.e., HR(TR), is:
 \[
-\beta_{1}^* + \beta_{3}^**\text{Sex}. 
+\beta_{1}^* + \beta_{3}^**\text{Sex}.
 \]
-\item Thus, $\beta_{11}=\beta_{1}^*$ and  $\beta_{12}=\beta_{1}^*+\beta_{3}^*$. 
-\item Similarily, we have $\beta_{21}=\beta_{2}^*$ and  $\beta_{22}=\beta_{2}^*+\beta_{4}^*$. 
+\item Thus, $\beta_{11}=\beta_{1}^*$ and  $\beta_{12}=\beta_{1}^*+\beta_{3}^*$.
+\item Similarily, we have $\beta_{21}=\beta_{2}^*$ and  $\beta_{22}=\beta_{2}^*+\beta_{4}^*$.
 \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame} 
+\frametitle{Stratification by covariate with interaction (cont'd)}
+\begin{block}{Problem 5.2: Remission data - stratification by Sex with interaction}
+\begin{enumerate}
+\item In R, fit a stratified Cox PH model to the Remission Data. Use TR and LogWBC as covariates and stratify on Sex. Assume interaction of the covariates with sex.
+\item In R, test the interaction assumption using a likelihood ratio test.  
+\item Using the interaction model, find HR of TR for Sex=0 (female) and Sex=1 (male). 
+\end{enumerate} 
 \end{block} 
 \end{frame} 
-
-
 \end{document}
 
