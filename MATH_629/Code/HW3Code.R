@@ -1,8 +1,8 @@
+#Cleaning up and loading necessary packages 
 rm(list=ls())
 library(survival)
 library(dplyr)
-#1
-#i
+#1#i
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 Ven.reset <-read.csv("Venreset.csv", header = TRUE)
 #2
