@@ -8,10 +8,10 @@ library(survival)
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 #load Remission data 
 load("Remission.rda")
-#Problem 4.1
+#Problem 5.1
 #Create a Survival Object 
 Y<-Surv(Remission$survt,Remission$status==1)
-#Problem 4.1 
+#Problem 5.1 
 #fit our stratified Cox PH model
 coxph.Rem.m1<-coxph(Y~ TR + logWBC + strata(Sex),data=Remission)
 summary(coxph.Rem.m1)
@@ -63,4 +63,9 @@ summary(coxph.Rem.int.m2)
 #CI of HR of TR with Sex=1
 #HR is 7.227 which agrees with exp(b1+b2) above 
 #CI is  1.6974 to 30.775 right from output. 
+#Problem 5.3 
+W<-Surv(vets$Survival.time,vets$Status)
+Coxph.vets=coxph(W~Treatment+Cell.Type.1+Cell.Type.2+Cell.Type.3+Performance.status+Disease.duration+Age+Prior.Therapy,data=vets)
+summary(Coxph.vets)
+cox.zph(Coxph.vets,transform=rank)
 

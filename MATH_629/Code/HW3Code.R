@@ -118,7 +118,7 @@ legend("topright",c("Low LogWBC (observed)","Medium LogWBC (observed)","High Log
 #log rank test for difference in parameters.
 kmfitO24=survfit(Y~Ven.reset$LO2.group)
 Coxph.Ven.L02.d=coxph(Y~X1+X2+X3,data=Ven.reset)
-Coxph.Ven.LO2=coxph(Y~LO2,data=Ven.reset)
+Coxph.Ven.LO2=coxph(Y~LO2.group,data=Ven.reset)
 Coxph.Ven.LO2$loglik
 Coxph.Ven.L02.d$loglik
 qchisq(.025, 2, lower.tail=FALSE)
@@ -134,7 +134,7 @@ cox.zph(mod3,transform=rank)
 #Assessing the PH assumption using time dependent covariates. 
 Ven.Reset.cp=survSplit(Ven.reset,cut=Ven.reset$status[Ven.reset$status==1],
                        end="eventtime", event="status",start="start",id="id")
-Ven.Reset.cp$tLO2=Ven.Reset.cp$LO2(Ven.Reset.cp$eventtime)^2
+Ven.Reset.cp$tLO2=Ven.Reset.cp$LO2*(Ven.Reset.cp$eventtime)^2
 
 #Inspect Remission.cp for one individual 
 Ven.Reset.cp[Ven.Reset.cp$id==30,]
