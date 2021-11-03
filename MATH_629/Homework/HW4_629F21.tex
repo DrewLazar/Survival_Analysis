@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+%\input{hw_macros.tex}
+
+\setlength{\topmargin}{-.75in} \addtolength{\textheight}{2.00in}
+\setlength{\oddsidemargin}{.00in} \addtolength{\textwidth}{.75in}
+
+\usepackage{amsmath,color,amssymb,graphicx,esdiff}
+\usepackage[shortlabels]{enumitem}
+\pagestyle{empty}
+\usepackage{listings}
+
+\setlength{\parindent}{0in}
+\setlist[enumerate]{leftmargin=*}
+\begin{document}
+
+{\sc {\bf {\large Homework 4}}
+            \hfill {MTH 629, Fall 2021}}
+\bigskip
+
+{\bf Due Friday, Oct. 29\textsuperscript{th} by 11:59 pm on Canvas}
+
+\section{Chapter 5}
+\vspace{5pt}
+
+A medical lab is testing machine learning software which actively regulates oxygen levels in ventilators. If oxygen levels fall outside of an acceptable range, the ventilators automatically reset. A twenty day study is done with the response variable the time in days (eventtime) until the ventilators reset. The exposure variable, Setting, indicates whether the software is disabled (Setting=2), at the standard setting (Setting=1) or at the newly coded setting (Setting=0). The variable LO2 indicates the level of oxygen gas, compared to a baseline, that is supplied to the ventilator through a main tube.
+\\
+
+In the last homework we built Cox PH models from this data set. In this homework, we will test the appropriateness of the Cox PH model along with other considerations.
+\begin{enumerate}[1.]
+\item Load the data by using the following command in R
+
+ \lstinline{Ven.reset <-read.csv("Venreset.csv", header = TRUE)}
+
+\item Log-log Plots
+\begin{enumerate}[i.]
+\item Test the Cox PH model by using log-log plots (in R, the $x$-axis is on the log-scale) and by considering the covariates ``one-at-a-time".
+\begin{enumerate}[a.]
+\item Test the PH assumption for Setting. Create a legend for your plot. What does this plot suggest?
+\item Test the PH assumption of LO2. Use the four quartiles of LO2 to stratify LO2 into the variable LO2.group with four categories 1 (low), 2 (medlow), 3 (medhigh) and 4 (high) representing the four quarters of the data. You might use the `dplyr' package and the `cut' function as we did for LogWBC in the Remission data set. Create a legend for your plot.  What does this plot suggest?
+\end{enumerate}
+\item Assuming LO2 satisfies the Cox PH model, use the ``alternative approach" to create a log-log plot to test whether Setting satisfies the PH assumption. Create a legend for your plot. How does this plot differ from the log-log plot you created in 2.i.a. and why might this be the case? Note: when you create this plot use the argument: \lstinline{xlim=c(0.08,23),ylim=c(-6,3.7)} in each individual plot.
+\end{enumerate}
+\item Observed vs. Expected Plots
+\begin{enumerate}[i.]
+\item Create observed vs. expected plots for Setting. Create a legend for your plot. What does this plot suggest?
+\item Create observed vs. expected plots for LO2. Use the strata in 2.i.b.
+\begin{enumerate}[a.]
+\item Create your expected plots by fitting a Cox PH model including only LO2 and by plotting the adjusted survival curves using the mean of LO2 in each strata. Create a legend for your plot. What does this plot suggest?
+\item Create your expected plots by creating the appropriate number of dummy variables and by fitting a Cox PH model against those dummy variables. Then plot adjusted survival curves, setting the dummy variables appropriately. Create a legend for your plot. What does this plot suggest?
+\end{enumerate}
+\item According to the Cox PH model fit in 3.ii.b., what is the effect on the hazard of going from low to medlow, in going from medlow to medhigh, and from medhigh to high? Test whether the differences in these effects are significant by conducting a likelihood ratio test. In this test, your reduced model is a Cox PH model that just includes LO2.group and your full model is the Cox PH that is fit in 3.ii.b.. Use the appropriate degrees of freedom for your test.
+\end{enumerate}
+\item GOF test using Schoenfeld Residuals
+\begin{enumerate}[i.]
+\item Use Schoenfeld residuals to test the PH assumption for a) just Setting, b) just LO2 and c) for Setting and LO2 simultaneously.
+\item How do the results in a) compared to c) above agree with your comparison of the log-log plots in 2.i.a and 2ii.?
+\end{enumerate}
+\item Use the extended Cox PH model to test the PH assumption.
+\begin{enumerate}[i.]
+\item Put the Ven.reset data set in counting process format
+\item Carry out a test for LO2 satisfying the PH assumption in R, using $g(t)=t^2$.
+\end{enumerate}
+\end{enumerate}
+\end{document}  

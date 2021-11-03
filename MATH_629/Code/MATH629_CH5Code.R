@@ -68,4 +68,58 @@ W<-Surv(vets$Survival.time,vets$Status)
 Coxph.vets=coxph(W~Treatment+Cell.Type.1+Cell.Type.2+Cell.Type.3+Performance.status+Disease.duration+Age+Prior.Therapy,data=vets)
 summary(Coxph.vets)
 cox.zph(Coxph.vets,transform=rank)
+#Cell Type and Performance.status don't seem to satisfy PH assumption. As Performance.status 
+#is continuous we need to stratify it and then form strata against Cell.Type to form our Z*. 
+vets$PSBin<-cut(vets$Performance.status,c(5,60,99),labels=c(0,1));
+#To make our "dummy variable" code easier to read we create separate columns
+#CT and PS for vets$
+#Use "alternate" dummy variables for Z*
+vets$Z1=vets$Cell.Type.1; vets$Z2=vets$Cell.Type.2; vets$Z3=vets$Cell.Type.3
+vets$Z4=as.numeric(vets$PSBin)-1; vets$Z5=vets$Z1*vets$Z4; vets$Z6=vets$Z2*vets$Z4; 
+vets$Z7=vets$Z3*vets$Z4
+#We have 7 dummy variables representing our 8 strata of Z*. If we make an interaction
+#model with Treatment, Age, Disease Duration and Prior Therapy we would have
+#4+4*7=32 terms. Instead we just include Age and Treatment, and we will have
+#2+2*7=16 terms. 
+Coxph.vets.S.nint<-coxph(W ~ Age + Treatment + strata(Cell.Type.1,Cell.Type.2,Cell.Type.3,PSBin),data=vets)
+Coxph.vets.S.int<-coxph(W ~ Age + Treatment+Age:Z1+Treatment:Z1+Age:Z2+Treatment:Z2 
+                        +Age:Z3+Treatment:Z3+Age:Z4+Treatment:Z4+Age:Z5+Treatment:Z5
+                        +Age:Z6+Treatment:Z6+Age:Z7+Treatment:Z7+strata(Cell.Type.1,Cell.Type.2,Cell.Type.3,PSBin),data=vets)
+#Log-likehood of our Reduced model 
+LLR=Coxph.vets.S.nint$loglik[2]
+#Log-likehood of our Full model 
+LLF=Coxph.vets.S.int$loglik[2] 
+CSStat=-2*(LLR-LLF); 
+CV=qchisq(.05, 14, lower.tail=FALSE)
+pvalue=pchisq(CSStat, 14, lower.tail = FALSE)
+CSStat>CV
+print(paste0("The pvalue of test statistic is:",pvalue))
+int.cf=Coxph.vets.S.int$coefficients
+#HR for Age when Cell Type is squamous and PSBin=0 is
+exp(int.cf[1])
+#HR for TR when when Cell Type is squamous and PSBin=0 is
+exp(int.cf[2])
+#HR for Age when Cell Type is small and PSBin=1 is
+exp(int.cf[1]+int.cf[7]+int.cf[9]+int.cf[15])
+#HR for TR when Cell Type is small and PSBin=1 is 
+exp(int.cf[2]+int.cf[8]+int.cf[10]+int.cf[16])
+
+#Problem 5.4
+f1.1<-function(b) exp(b)/(3*exp(b)+1)
+f1.2<-function(b) 1/(1+exp(b))
+f2.1<-function(b) exp(b)/(2*exp(b)+1)
+f2.2<-function(b) exp(b)/(exp(b)+1)
+f<-function(b) -f1.1(b)*f1.2(b)*f2.1(b)*f2.2(b)
+#f <- function(b) -exp(b)/(3*exp(2*b)+4*exp(b)+1)
+x <- seq(-1,10,0.01)
+windows(width=10, height=8)
+plot(x, f(x))   
+optimize(f, lower = 0, upper = 1)
+time<-c(2,3,5,8,3,5,7);status<-c(1,0,1,1,1,1,1);Coupon<-c(1,1,0,1,1,1,0)
+location<-c(0,0,0,0,1,1,1)
+Sales=data.frame(Coupon,status,time,location)
+S<-Surv(Sales$time,Sales$status==1)
+coxph(S~Coupon+strata(location),data=Sales)
+
+
 

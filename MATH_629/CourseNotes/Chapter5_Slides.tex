@@ -119,9 +119,9 @@ Example with age and treatment. Age is interval variable so we stratify it.
 \begin{block}{The General Statified Cox (SC) Model (cont'd)}
 \begin{enumerate}
 \item The general SC model:
-\begin{equation} \label{SCnoint} 
+\begin{equation} \label{SCnoint}
 h_g(t,X) = h_{0g}(t)exp(\beta_1 X_1 + \ldots + \beta_p X_p) \text{ for }  g=1,\ldots,k^*
-\end{equation} 
+\end{equation}
 \item Different baseline hazard functions: $h_{0,g}(t), g=1,\ldots,k^*$ but same coefficients $\beta_1, \ldots, \beta_p$.
 \item Without interaction, the effect of a unit increase of a covariate, $X_i$, on the hazard (i.e., the HR) is $\exp(\beta_i)$.
 \end{enumerate}
@@ -213,9 +213,9 @@ How are \eqref{eq:Int1} and \eqref{eq:Int2} equivalent?
 \begin{enumerate}
 \item $Z^*$ and $k^*$ as before.
 \item The general SC model with interaction:
-\begin{equation} \label{genSCint1} 
+\begin{equation} \label{genSCint1}
 h_g(t,X) = h_{0g}(t)exp(\beta_{1g} X_1 + \ldots + \beta_{pg} X_p) \text{ for }  g=1,\ldots,k^*
-\end{equation} 
+\end{equation}
 \item Different baseline hazard functions: $h_{0,g}(t), g=1,\ldots,k^*$ and coefficients $\beta_{1g}, \ldots, \beta_{pg}$.
 \item With interaction, the effect of a unit increase of a covariate, $X_i$, on the hazard (i.e., the HR) is $\exp(\beta_{ig})$ for $g=1,\ldots,k^*$ and depends on the strata $g$.
 \end{enumerate}
@@ -226,59 +226,59 @@ h_g(t,X) = h_{0g}(t)exp(\beta_{1g} X_1 + \ldots + \beta_{pg} X_p) \text{ for }  
 \frametitle{Stratification by covariate with interaction (cont'd)}
 \begin{block}{The General Stratified Cox (SC) Model with interaction (cont'd)}
 \begin{enumerate}
-\item Let $Z^*$ and $k^*$ be as before and let $Z_1^*,\ldots,Z_{k*-1}$ be dummy variables representing the $k^*$ classes of $Z^*$. 
+\item Let $Z^*$ and $k^*$ be as before and let $Z_1^*,\ldots,Z_{k*-1}$ be dummy variables representing the $k^*$ classes of $Z^*$.
 \item Then the alternative General Stratified Cox (SC) Model with interaction is:
-\begin{equation} \label{genSCint2} 
-\begin{aligned} 
+\begin{equation} \label{genSCint2}
+\begin{aligned}
 h_g&(t;X)= h_{0,g}\exp[\tilde{\beta}_1X_1 + \ldots + \tilde{\beta}_p X_p \\
 &+\tilde{\beta}_{11}Z_1^*\times X_1 + \ldots + \tilde{\beta}_{p1}Z_1^*\times X_p \\
 &+\tilde{\beta}_{12}Z_2^*\times X_1 + \ldots + \tilde{\beta}_{p2}Z_2^*\times X_p \\
 &+\ldots \\
 &+\tilde{\beta}_{1(k^*-1)}Z_{k^*-1}^*\times X_1 + \ldots + \tilde{\beta}_{p(k^*-1)}Z_{k^*-1}^*\times X_p]. \\
-\end{aligned} 
-\end{equation} 
+\end{aligned}
+\end{equation}
 \end{enumerate}
 \end{block}
-\end{frame} 
+\end{frame}
 
 \begin{frame}
 \frametitle{Stratification by covariate with interaction (cont'd)}
 \begin{block}{The General Stratified Cox (SC) Model with interaction (cont'd)}
 \begin{itemize}
-\item Model $\ref{genSCint1}$ and $\ref{genSCint2}$ are equivalent with 
+\item Model $\ref{genSCint1}$ and $\ref{genSCint2}$ are equivalent with
 \[ \beta_{i1} = \tilde{\beta}_i \text{ and } \beta_{ig} = \tilde{\beta}_{i} + \tilde{\beta}_{i(g-1)} \text{ for } g=2,\ldots,k^*.
 \]
-\item For example 5.2 (Remission data) we have $g=2, k^*=2, X_1=\text{TR}, X_2=\text{logWBC}, Z_1^*=\text{Sex}$. 
+\item For example 5.2 (Remission data) we have $g=2, k^*=2, X_1=\text{TR}, X_2=\text{logWBC}, Z_1^*=\text{Sex}$.
 \begin{align*}
 &h_g(t,X) = \beta_{1g} \exp( X_1 + \beta_{2g} X_2)  \text{ or } \\
 &h_g(t,X) = h_{0,g}(t)\exp[\beta_1^*X_1  + \beta_2^*X_2 + \beta_3^*Z_1^*\times X_1 + \beta_4^*Z_1^*\times X_2 ]  \\
-&\text{ or } h_g(t,X) = h_{0,g}(t)\exp[\tilde{\beta}_1X_1  + \tilde{\beta}_2X_2 + \tilde{\beta}_{11}Z_1^*\times X_1 + \tilde{\beta}_{21}Z_1^*\times X_2 ] 
-\end{align*} 
+&\text{or } h_g(t,X) = h_{0,g}(t)\exp[\tilde{\beta}_1X_1  + \tilde{\beta}_2X_2 + \tilde{\beta}_{11}Z_1^*\times X_1 + \tilde{\beta}_{21}Z_1^*\times X_2 ]
+\end{align*}
 \end{itemize}
 \end{block}
-\end{frame}  
+\end{frame}
 
 \begin{frame}
 \frametitle{Stratification by covariate with interaction (cont'd)}
 \begin{block}{The General Stratified Cox (SC) Model with interaction (cont'd): likelihood ratio test for interaction}
 \begin{itemize}
-\item We can test for interaction of the covariates that satisfy the Cox PH model, $X_1,\ldots,X_p$ and $Z^*$. 
-\item $H_0: \tilde{\beta}_{ig} =0$ for $i=1,\ldots,p$ and $g=1,\ldots,k^*-1$.  
-\item We fit model \ref{SCnoint} as our reduced model and fit model \ref{genSCint2} as our full model. 
+\item We can test for interaction of the covariates that satisfy the Cox PH model, $X_1,\ldots,X_p$ and $Z^*$.
+\item $H_0: \tilde{\beta}_{ig} =0$ for $i=1,\ldots,p$ and $g=1,\ldots,k^*-1$.
+\item We fit model \ref{SCnoint} as our reduced model and fit model \ref{genSCint2} as our full model.
 \item Under $H_0$ our test statistic is approximately distributed as follows:
 \[
-CSStat= \-2(\ln(L_R) - \ln(L_F)) \sim \chi^2_{p(k^*-1)}. 
+CSStat= \-2(\ln(L_R) - \ln(L_F)) \sim \chi^2_{p(k^*-1)}.
 \]
-\item At significance level $\alpha$, we reject $H_0$  iff $CSStat>\chi^2_{\alpha,p(k^*-1)}$ or $p$-value$<\alpha$. 
-\end{itemize} 
-\end{block} 
-\end{frame}  
+\item At significance level $\alpha$, we reject $H_0$  iff $CSStat>\chi^2_{\alpha,p(k^*-1)}$ or $p$-value$<\alpha$.
+\end{itemize}
+\end{block}
+\end{frame}
 
 \begin{frame}
 \frametitle{Stratification by covariate with interaction}
 \begin{block}{Example 5.3: Vets data set - stratification by cell type and performance status with interaction}
-The dataset ``vets.dat'' considers survival times in days for 137 patients from the Veterans's Administration Lung Cancer Trial. The exposure variable of interest is treatment status. 
-The list of the variables is given as follows: 
+The dataset ``vets.dat'' considers survival times in days for 137 patients from the Veterans's Administration Lung Cancer Trial. The exposure variable of interest is treatment status.
+The list of the variables is given as follows:
 \begin{figure}
     \centering
     \includegraphics[height=3.5cm]{Ch5_vets.JPG}
@@ -289,11 +289,87 @@ The list of the variables is given as follows:
 \begin{frame}
 \frametitle{Stratification by covariate with interaction}
 \begin{block}{Problem 5.3: Vets data set - stratification by cell type and performance status with interaction}
-\begin{enumerate} 
-\item Use a GOF test with Schoenfeld residuals to determine which variables in the vets.dat data set satisfy the Cox PH model. 
-\item Fit a stratified Cox PH model: a) without interaction and b) with interaction with the variables that don't satisfy the Cox PH model based on 1). 
-\item Conduct a likelihood ratio test for interaction. 
+\begin{enumerate}
+\item Use a GOF test with Schoenfeld residuals to determine which variables in the vets.dat data set satisfy the Cox PH model.
+\item Fit a stratified Cox PH model stratifying on the variables that satisfy the PH assumption according to 1).
+ \begin{enumerate}
+ \item Fit a stratified model without interaction.
+ \item Fit a stratified model with interaction.
+\item Conduct a likelihood ratio test for interaction at significance level $\alpha=.05$.
+\item Using the interaction model, determine the HR for Setting and the HR for Age when 1) the cell type is squamous and PSBin=0 and 2) the cell type is small and PSBin=1. 
+\end{enumerate}
 \end{enumerate} 
-\end{block} 
-\end{frame} 
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Stratification by covariate with interaction}
+\begin{block}{Problem 5.3: Vets data set - stratification by cell type and performance status with interaction (cont'd)}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=6cm]{C5_models1.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=6cm]{C5_models3.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{A Graphical View of the Stratified Cox Approach}
+\begin{block}{Examples a. and b.}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5cm]{CH5_G1.JPG}
+        a. No interaction and no stratification model. 
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5cm]{CH5_G2.JPG}
+         a. Interaction and no stratification model. 
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{A Graphical View of the Stratified Cox Approach}
+\begin{block}{Examples c. and d.}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5cm]{CH5_G3.JPG}
+        c. No interaction and stratification model.
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5cm]{CH5_G4.JPG}
+         d. Interaction and stratification model.
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Stratified Cox Likelihood}
+\begin{block}{Problem 5.4 - Partial MLE of a SC Model}
+Consider the following survival data. Location doesn't satisfy the PH assumption. Assuming no interaction, create an appropriate SC model for this data and estimate the parameters by maximizing the partial likelihood.
+\begin{center}
+\begin{tabular}{c c c c c} \hline
+ Name & Time & Status & Coupon & Location \\ \hline
+Barry & 2 & 1 & 1 & 0 \\
+ Gary & 3 & 0 & 1 & 0\\
+Susan & 5 & 1 & 0 & 0\\
+  John & 8 & 1 & 1 & 0\\
+  Harry & 3 & 1 & 1 & 1 \\
+  Larry & 5 & 1& 1& 1 \\
+  David & 7 & 0& 0& 1 \\
+\end{tabular}
+\end{center}
+\end{block}
+\end{frame}
+
+
 \end{document}
+

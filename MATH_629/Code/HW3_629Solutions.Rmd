@@ -1,0 +1,239 @@
+---
+title: "MATH 629 HW 3 Solutions"
+author: "Drew Lazar"
+output: 
+  pdf_document: 
+    keep_tex: yes
+---
+```{r results='hide', include=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
+```
+
+## Cleaning up and loading necessary packages 
+
+```{r}
+rm(list=ls())
+library(survival)
+library(dplyr)
+```
+## 1.i. loading the data 
+```{r}
+setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
+Ven.reset <-read.csv("Venreset.csv", header = TRUE)
+```
+## 2. create a survival object from Ventilator data set
+```{r}
+Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
+```
+## 2.i.a.log-log curves for Setting 
+```{r}
+kmfitST3=survfit(Y~Ven.reset$Setting)
+plot(kmfitST3,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting",col=c('red','green','blue'))
+legend("topleft",c("Setting=2","Setting=1","Setting=0"),lty=c("solid"),col=c("red","green","blue"))
+```
+**The log-log plots for Setting=0, Setting=1 and Setting=3 are quite parallel throughout the study. There is some intersection at the beginning of the study between Setting=2 and Setting=1 curves. This intersection is exaggerated, however, due to the time axis being on the log scale. Overall, the plots suggest that Setting satisfies the PH assumption.** 
+
+## 2.i.b. log-log curves for LO2 
+```{r}
+#quantiles of LO2
+quantile(Ven.reset$LO2)
+Ven.reset$LO2.group<-cut(Ven.reset$LO2,c(-2.58,1.0075,2.0350,3.0825,6.2300),labels=c('1','2','3','4'))
+```
+```{r}
+kmfitO24=survfit(Y~Ven.reset$LO2.group)
+plot(kmfitO24,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by LO2group",col=c("red","green","blue","black"))
+legend("topleft",cex=.75,c("LO2=high","LO2=medhigh","LO2=medlow","LO2=low"),lty=c("solid"),col=c("red","green","blue","black"))
+```
+**The log-log plots are quite parallel which suggests that LO2 (as stratified into LO2.group) satisfies the PH assumption. Note that the log-log curves are at the same distance which suggests that the effect of a change of LO2 on the survival experience is the same from low to medlow, from medlow to medhigh and from medhigh to high.** 
+
+## 2.ii. "alternative" approach to creating log-log plots for Setting assuming ##statifies PH assumption. 
+```{r} 
+#Stratify Data set by Setting 
+Venreset0<-Ven.reset[Ven.reset$Setting==0, ]
+Venreset1<-Ven.reset[Ven.reset$Setting==1, ]
+Venreset2<-Ven.reset[Ven.reset$Setting==2, ]
+#Create Survival objects for three Strata
+Y0<-Surv(Venreset0$eventtime,Venreset0$status==1)
+Y1<-Surv(Venreset1$eventtime,Venreset1$status==1)
+Y2<-Surv(Venreset2$eventtime,Venreset2$status==1)
+#Fit Cox PH models to three strata
+Coxph.Ven.m0=coxph(Y0~LO2,data=Venreset0)
+Coxph.Ven.m1=coxph(Y1~LO2,data=Venreset1)
+Coxph.Ven.m2=coxph(Y2~LO2,data=Venreset2)
+#get the overall mean of LO2
+meanlo2=mean(Ven.reset$LO2)
+```
+```{r} 
+#plot our adjusted survival curves 
+pattern=data.frame(LO2=meanlo2)
+plot(main="Adjusted log-log survival curves for Setting w/mean(LO2)",survfit(Coxph.Ven.m0,newdata=pattern),xlim=c(0.08,23),ylim=c(-6,3.7),fun="cloglog",conf.int=F,col=c('blue'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.m1,newdata=pattern),xlim=c(0.08,23),ylim=c(-6,3.7),fun="cloglog",conf.int=F,col=('green'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.m2,newdata=pattern),fun="cloglog",xlim=c(0.08,23),ylim=c(-6,3.7),conf.int=F,col=('red'))
+legend("topleft",c("Setting=0","Setting=1","Setting=2"),lty=('solid'),col=c('red','green','blue'))
+```
+**This plot differs from the plot created in 2.i.a. in that these curves cross a bit less significantly than the log-log survival curves created in 2.i.a. This suggests some interaction of LO2 with Setting as Setting seems to satisfy the PH assumption to a bit more of an extent while considering LO2. ** 
+
+## 3. Observed vs. Expected Plots
+## 3i. Observed vs. Expected plots for Setting 
+```{r}
+#fit a Cox PH model against setting 
+Coxph.Ven.Setting=coxph(Y~Setting,data=Ven.reset)
+pattern1=data.frame(Setting=0)
+pattern2=data.frame(Setting=1)
+pattern3=data.frame(Setting=2)
+```
+```{r}
+#Plot our Expected Curves
+plot(kmfitST3,main="Observed vs Expected curves by Setting",xlab="time in days",ylab="Survival Probabilities", col=c('blue','green','red'),lty=c('solid','solid','solid'))
+#Plot our Observed Curves for each setting 
+par(new=TRUE)
+plot(survfit(Coxph.Ven.Setting,newdata=pattern1),conf.int=F,col=c('blue'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.Setting,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.Setting,newdata=pattern3),conf.int=F,col=c('red'),lty=c('dashed'))
+legend("topright",c("Setting=0(observed)","Setting=1(observed)","Setting=2(observed)","Setting=0(expected)","Setting=1(expected)","Setting=2(expected)"),lty=c('solid','solid','solid','dashed','dashed','dashed'),col=c('blue','green','red','blue','green','red'))
+```
+**As the observed vs. expected plots are similar these plots suggest that the Cox PH assumption is met for Setting**
+## 3.ii. Observed vs. Expected plots for LO2
+
+## 3.ii.a. Expected are adjusted survival curves using mean in each strata
+```{r}
+#Get mean in each strata 
+Ven.reset %>%
+  group_by(LO2.group) %>%
+  summarise(mean_LO2 = mean(LO2))
+Coxph.Ven.LO2=coxph(Y~LO2,data=Ven.reset)
+pattern1=data.frame(LO2=-0.421)
+pattern2=data.frame(LO2=1.456)
+pattern3=data.frame(LO2=2.439)
+pattern4=data.frame(LO2=4.011)
+```
+```{r}
+#Plot expected curves
+plot(kmfitO24,xlab="time in weeks on log scale",ylab="Survival Probabilities", col=c('blue','green','red','blueviolet'), main="Observed vs. Expected by level of LO2")
+#Plot observed curves
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2,newdata=pattern1),conf.int=F,col=c('blue'),lty=c('dashed'))
+par(new=TRUE)  
+plot(survfit(Coxph.Ven.LO2,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2,newdata=pattern3),conf.int=F,col=c('red'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2,newdata=pattern4),conf.int=F,col=c('blueviolet'),lty=c('dashed'))
+legend("topright",cex=.75,c("LO2=low (observed)","LO2=medlow (observed)","LO2=medhigh (observed)","LO2=high (observed)","LO2=low (expected)","LO2=medlow (expected)","LO2=medhigh (expected)","LO2=high (expected)"),lty=cbind(rep('solid',4),rep('dashed',4)),col=rep(c('blue','red','green','blueviolet'),2)) 
+```
+**These plots suggest that LO2 satisfies the PH assumption.** 
+
+##3.ii.b. Expected adjusted survival curves using dummy variables 
+
+```{r}
+#Create dummy variables and fit Cox PH model against dummy variables 
+Ven.reset$X1<-rep(0,nrow(Ven.reset));Ven.reset$X2<-rep(0,nrow(Ven.reset))
+Ven.reset$X3<-rep(0,nrow(Ven.reset))
+for (i in 1:nrow(Ven.reset))
+{
+  if (Ven.reset$LO2.group[i] == 2) {
+    Ven.reset$X1[i]=1
+  } else if (Ven.reset$LO2.group[i]==3) {
+    Ven.reset$X2[i]=1 
+  } else if (Ven.reset$LO2.group[i]==4) {
+    Ven.reset$X3[i]=1 
+  }
+}
+Coxph.Ven.LO2.d=coxph(Y~X1+X2+X3,data=Ven.reset)
+Coxph.Ven.LO2.g=coxph(Y~LO2.group,Ven.reset)
+pattern1=data.frame(X1=0,X2=0,X3=0)
+pattern2=data.frame(X1=1,X2=0,X3=0)
+pattern3=data.frame(X1=0,X2=1,X3=0)
+pattern4=data.frame(X1=0,X2=0,X3=1)
+```
+```{r}
+#Plot expected curves 
+plot(kmfitO24,xlab="time in weeks on log scale",ylab="Survival Probabilities", col=c('blue','green','red','blueviolet'), main="Observed vs. Expected by level of LogWBC")
+#Plot adjusted survival curves
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2.d,newdata=pattern1),conf.int=F,col=c('blue'),lty=c('dashed'))
+par(new=TRUE)  
+plot(survfit(Coxph.Ven.LO2.d,newdata=pattern2),conf.int=F,col=c('green'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2.d,newdata=pattern3),conf.int=F,col=c('red'),lty=c('dashed'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.LO2.d,newdata=pattern4),conf.int=F,col=c('blueviolet'),lty=c('dashed'))
+legend("topright",c("Low LogWBC (observed)","Medium LogWBC (observed)","High LogWBC (observed)","Low LogWBC (expected)","Medium LogWBC (expected)","High LogWBC (expected)"),lty=c("solid","solid","solid","dashed","dashed","dashed"),col=c('blue','green','red','blue','green','red'))
+```
+**These plots suggest that LO2 satisfies the PH assumption.** 
+
+## 3.iii. 
+
+```{r}
+summary(Coxph.Ven.LO2.d)
+```
+**The effect on the hazard of going from low to medlow (i.e. the HR) is 2.649, the HR of going from medlow to medhigh is exp(1.8386-0.9740)=6.288/2.649=2.374, the HR of going from medlow to medhigh is exp(2.7140-1.8386)=2.400.  We test $H_0: beta_1=beta_2=beta_3$ by using our likelihood ratio test. We fit the model $h(t,LO2.group)=h_0(t)exp(\beta LO2.group)$ as our reduced model and $h(t,LO2)=h_0(t)exp(beta_1 X_1 + beta_2 X_2 + beta_3 X_3)$ as our full model where $X_1,X_2,X_3$ are our dummy variables from 3.ii.b.**
+```{r}
+#Note as LO2.group is a factor variable, R will treat fit it just as if we used our three dummy variables. Thus, to conduct our likelihood test we must make a numeric variable LO2.group.n in order for the model to be reduced.
+Ven.reset$LO2.group.n=as.numeric(Ven.reset$LO2.group)
+Coxph.Ven.LO2.n=coxph(Y~Ven.reset$LO2.group.n,data=Ven.reset)
+#Log-likehood of our full model 
+LLF=Coxph.Ven.LO2.d$loglik[2]
+#Log-likehood of our reduced model 
+LLR=Coxph.Ven.LO2.n$loglik[2]
+#Our likelihood ratio test 
+CSStat=-2*(LLR-LLF); 
+CV=qchisq(.05, 2, lower.tail=FALSE)
+pvalue=pchisq(CSStat, 2, lower.tail = FALSE)
+CSStat>CV
+print(paste0("The pvalue of test statistic is:",pvalue))
+```
+**As our CSStat=0.1089477 < CV=5.991 we fail to reject H0 at alpha=0.05. Our p-value is 0.94698 so we fail to reject for any alpha greater than this value.** 
+
+## 4 GOF using Shoenfeld Residuals 
+## 4i. 
+```{r}
+mod1=coxph(Y~Setting, data=Ven.reset)
+mod2=coxph(Y~LO2,data=Ven.reset)
+mod3=coxph(Y~Setting+LO2, data=Ven.reset)
+cox.zph(mod1,transform=rank)
+cox.zph(mod2,transform=rank)
+cox.zph(mod3,transform=rank)
+```
+
+**The Schoenfeld residuals for Setting alone have a p-value of 0.38 which suggests at the 5 percent significance level that Setting satisfies the PH assumption. The Schoenfeld residuals for LO2 alone have a p-value of 0.089 which suggests at the 5% significance level that LO2 satisfies the PH assumption. The Schoenfeld Residuals with Setting and LO2 in the model are 0.15 and 0.85, respectively, which suggest that they both satisfy the PH assumption when they are both in the model. **
+
+## 4ii. 
+**The log-log plots for Setting alone in 2.i.a. suggests that Setting alone satisfies the PH assumption. That agrees with the large p-value (0.38) for the Schoenfeld residuals when Setting is fit alone. The log-log plots for Setting with LO2 in the model in 2.iii. also suggest that Setting satisfies the PH assumption and this agrees with the p-value of (0.15) when LO2 is in the model.**
+
+## 5 Use Extended Cox PH model to test PH assumption
+
+## 5i. Put the Ven.reset data in counting process format
+```{r}
+Ven.Reset.cp=survSplit(Ven.reset,cut=Ven.reset$eventtime[Ven.reset$status==1],
+                       end="eventtime", event="status",start="start",id="id")
+```
+## 5ii. Test for LO2 satisfying PH assumption by testing interaction of LO2 with g(t)=t^2
+```{r}
+#Create data for g(t)=t^2 at event times 
+Ven.Reset.cp$tLO2=Ven.Reset.cp$LO2*(Ven.Reset.cp$eventtime)^2
+#Create an extended survival object 
+YE<-Surv(Ven.Reset.cp$start,Ven.Reset.cp$eventtime,Ven.Reset.cp$status)
+#Test for Interaction between LO2 and t^2 
+coxph(YE ~ LO2 + tLO2+cluster(id),data=Ven.Reset.cp)
+```
+**The test indicated that the interaction of LO2 and $t^2$ is not significant at the 0.05 significance level with a large p-value=0.485. This suggest LO2 satisfies the PH assumption (as our previous tests do).**
+
+
+
+
+
+
+
+
+
