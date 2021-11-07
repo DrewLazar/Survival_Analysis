@@ -1,5 +1,5 @@
 ---
-title: "MATH 629 HW 3 Solutions"
+title: "MATH 629 HW 4 Solutions"
 author: "Drew Lazar"
 output: 
   pdf_document: 
@@ -23,17 +23,47 @@ library(dplyr)
 ```
 
 
-## 1.i. loading the data 
+## 1 loading the data 
 ```{r}
 load("addicts.rda")
 ```
-
+##2 Test the PH assumption
+##2i. Log-log plots for each variable
+```{r}
+#Create dose.group 
+quantile(addicts$dose)
+addicts$dose.group<-cut(addicts$dose,c(19,50,70,110),labels=c('1','2','3'))
+#create a survival object from the addicts data set 
+Y<-Surv(addicts$survt,addicts$status==1)
+#Create Cox PH model for clinic
+kmfitC2=survfit(Y~addicts$clinic)
+#Create Cox PH model for prison
+kmfitP2=survfit(Y~addicts$prison)
+#Create Cox PH model for dose.group
+kmfitDG32=survfit(Y~addicts$dose.group)
+```
+```{r}
+#log-log curves for clinic  
+plot(kmfitC2,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by clinic",col=c('red','green'))
+legend("topright",c("Clinic=1","Clinic=2"),lty=c("solid"),col=c("red","green"))
+#log-log curves for prison  
+plot(kmfitP2,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by prison",col=c('red','green'))
+legend("topright",c("prison=0","prison=1"),lty=c("solid"),col=c("red","green"))
+#log-log curves for dose.group  
+plot(kmfitDG32,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by dose.group",col=c('red','green','blue'))
+legend("topleft",c("dose.group=1","dose.group=2","dose.group=3"),lty=c("solid"),col=c("red","green","blue"))
+```
+##2ii. GOF using Schoenfeld Residuals 
 ```{r}
 Y<-Surv(addicts$survt,addicts$status)
 Coxph.addicts=coxph(Y~prison+dose+clinic,data=addicts)
 summary(Coxph.addicts)
 cox.zph(Coxph.addicts,transform=rank)
 ```
+
+
+
+
 
 
 

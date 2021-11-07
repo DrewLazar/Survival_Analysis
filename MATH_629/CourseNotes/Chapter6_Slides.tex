@@ -1,0 +1,143 @@
+\documentclass{beamer}
+\usepackage{etex}
+\usetheme{Antibes}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfig}
+\input{notes_macros}
+%\definecolor{cardinal}{rgb}{0.77, 0.12, 0.23}
+%\usecolortheme[named=cardinal]{structure}
+%\setbeamercolor{block title}{bg=cardinal,fg=black}
+ \usepackage{tikz}
+ \usetikzlibrary{patterns,snakes,plotmarks}
+ \usepackage{multirow}
+% \usetikzlibrary{shadows}
+\usepackage{epstopdf}
+\usepackage{nicefrac}
+\usepackage{lmodern}
+\usepackage{pgfplots}
+\usepackage{qtree}
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}}%
+\DeclareCaptionLabelSeparator{horse}{:\,\,} % change according to your needs
+\captionsetup{
+  labelsep = horse,
+  figureposition = bottom % used to get the correct vertical space between the figure and the caption
+}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{enumerate items}[square]
+\theoremstyle{definition}
+\newtheorem*{exs}{Examples}
+\newtheorem{ex}{Example}
+\newtheorem*{exc}{Exercise}
+%\usepackage{booktabs}
+\setlength{\parindent}{0pt}
+%\setbeameroption{show notes}
+ \setbeamerfont{note page}{size=\tiny}
+%\setbeamertemplate{note page}[plain]
+%\setbeameroption{show only notes}
+\title{Math 629 - Survival Analysis \\ Chapter 6: Extension
+of the Cox Proportional Hazards Model for Time-Dependent Variables
+}
+\author{Drew Lazar}
+\institute{Ball State University}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+
+\section{Chapter 5}
+\begin{frame}
+\frametitle{Time-Dependent Covariates}
+\begin{block}{Definitions of Time-Dependent Covariates}
+\begin{itemize}
+\item A time-dependent variable is defined as any variable whose value for a given subject may differ over time, $t$.
+\item We distinguish three types of time-dependent variables:
+\begin{enumerate}
+\item \textbf{Defined:} These are typically products of time-dependent covariates and time-independent covariates used for testing PH assumption.
+\item \textbf{Internal:} Variables such that the reason for the change in the value of variables depends on ``internal characteristics'' or behavior specific to subject.
+\item \textbf{Ancillary:} Variables such that the value changes primarily because of ``external'' characteristics of the environment.
+\end{enumerate}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Time-Dependent Covariates}
+\begin{block}{Examples of Time-Dependent Covariates}
+\begin{itemize}
+\item \textbf{Examples of Defined:} Race $\times$ time, E $\times \log(t-3)$ where $E$ is (0,1) exposure variable, E $\times g(t)$ where $g(t)$ is the Heaviside function.
+\item \textbf{Examples of Internal:} Employment status at time $t$ if employment is based on performance, smoking status at time $t$, obesity level at time $t$.
+\item \textbf{Examples of Ancillary:} Air pollution index at time $t$, employment status at time $t$ if employment is based on economic conditions.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Time-Dependent Covariates}
+\begin{block}{Examples of Time-Dependent Covariate}
+\begin{itemize}
+\item \textbf{Examples of part Internal, part Ancillary:} Heart transplant status at time $t$ (1 if received transplant, 0 if haven't at time $t$). Transplant status depends on internal characteristics:  age, other ailments, etc. and external characteristics: availability of donor, surgeon's schedule, etc.
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=4cm]{CH6_HT.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=4cm]{CH6_HTS2.JPG}
+    \end{column}
+\end{columns}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Extended Cox Model for Time-Dependent Variables}
+\begin{block}{The Extended Cox Model for Time-Dependent Variables (cont'd)}
+\[
+h(t,X(t)) = h_0(t) \exp\left[\sum_i^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t)\right]
+\]
+where 
+\[
+X(t)=(X_1,\ldots,X_{p_1},X_j(t),\ldots,X_{p_2}(t))
+\]
+with $X_1,\ldots,X_{p_1}$ time-independent and $X_1(t),\ldots,X_{p_2}(t)$ time-dependent. 
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Extended Cox Model for Time-Dependent Variables}
+\begin{block}{The Hazard Ratio Formula for the Extended Cox Model}
+Let $X(t)$ and $X^*(t)$ be two specifications of the covariates $X(t)$. Then the HR with respect to this change in $X(t)$ is 
+\begin{align*} 
+HR(t) &= \frac{h(t,X^*(t))}{h(t,X(t))} \\
+& = \exp\left[\sum_1^{p_1} \beta_i(X^*_i - X_i) + \sum_i^{p_2} \delta_i(X^*_j(t) - X_i(t))\right].
+\end{align*} 
+As the $HR(t)$ depends on time, the extended Cox PH model does not satisfy the PH assumption.  
+\end{block}
+\end{frame} 
+
+
+\begin{frame}
+\frametitle{The Extended Cox Model for Time-Dependent Variables}
+\begin{block}{Lag-time effect models}
+You may want to account for the effect of a time-dependent covariate at previous periods. You can use a lag-time model: 
+\[
+h(t,X(t)) = h_0(t) \exp\left[\sum_i^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t-L_1)\right]
+\]
+where $L_1>0$. 
+An example of an lag-time effect model is 
+\[
+h(t,EMP(t)) = h_0(t)\exp[\delta EMP(t-1)]
+\]
+where $EMP(t)$ is employment status at time $t$ in years and $EMP(t-1)$ is status at time $t-1$ (a year before time $t$). 
+\end{block}
+\end{frame}
+
+\end{document}
+ 

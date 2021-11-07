@@ -5,7 +5,6 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subfig}
-\input{notes_macros}
 %\definecolor{cardinal}{rgb}{0.77, 0.12, 0.23}
 %\usecolortheme[named=cardinal]{structure}
 %\setbeamercolor{block title}{bg=cardinal,fg=black}
@@ -15,6 +14,7 @@
 % \usetikzlibrary{shadows}
 \usepackage{epstopdf}
 \usepackage{nicefrac}
+\input{notes_macros}
 \usepackage{lmodern}
 \usepackage{pgfplots}
 \usepackage{qtree}
@@ -47,6 +47,20 @@
     \titlepage
 \end{frame}
 \section{Chapter 1}
+\begin{frame}
+\frametitle{Introduction to Survival Analysis}
+\begin{block}{Definition and Remark}
+\textbf{Definition 1.1 - Survival analysis} is a collection of statistical procedures for data analysis for which the outcome variable of interest is time, $T$, until an event occurs.
+\\
+\textbf{Remark 1.1}
+\begin{enumerate}
+\item $T$ is a random variable with positive support. Examples are time until death, time until machine breaks, length of road travelled until have a flat tire, etc. We will use the phrases ``time until event'' and ``survival time'' interchangeably.
+\item There are extensions and variations of survival analysis including \textbf{recurrent events} and \textbf{competing risks}.
+\item Example of recurrent events - multiple hospitalizations. Example of competing risks - death on dialysis and receiving a kidney transplant.
+\end{enumerate}
+\end{block}
+\end{frame}
+
 \begin{frame}\frametitle{Types of Censoring}
 \bn
 \item \textbf{Right Censoring:} An observation is \textbf{right censored} if the survival time is longer than its observed value. Some examples:

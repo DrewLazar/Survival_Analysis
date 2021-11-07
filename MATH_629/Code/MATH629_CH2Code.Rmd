@@ -1,0 +1,53 @@
+---
+title: "MATH629_CH2Code"
+author: "Drew Lazar"
+date: "11/5/2021"
+output: word_document
+---
+
+```{r}
+#Remove any variables in your environment 
+rm(list=ls())
+#load the R Survival package 
+library(survival)
+```
+
+
+```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
+```
+## R Markdown
+
+
+
+## Chapter 2
+## Problem 2.2 
+```{r}
+#load Remission data 
+load("Remission.rda")
+#Create a Survival object - this is like the second way 
+#to represent data in Chapter 1. 
+Y<-Surv(Remission$survt,Remission$status==1)
+#Create a KM model with no partitioning 
+kmfit1=survfit(Y~1)
+#See your KM estimates  
+summary(kmfit1)
+```
+
+```{r}
+#Plot your KM estimates
+plot(kmfit1,xlab="survival time in weeks",ylab="survival probabilities")
+#Ways to get particular estimate at time or times
+summary(kmfit1,times=11)
+summary(kmfit1,times=c(11,12,15))
+#statify on treatment and get the KM estimates 
+kmfit2=survfit(Y~Remission$TR)
+#See your KM estimates by TR
+summary(kmfit2)
+#Plot the KM Estimates 
+plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'),
+     xlab="survival time in weeks",ylab="survival probabilities")
+legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
+       col=c('black','grey'))
+```
