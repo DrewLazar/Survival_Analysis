@@ -100,7 +100,7 @@ of the Cox Proportional Hazards Model for Time-Dependent Variables
 \frametitle{The Extended Cox Model for Time-Dependent Variables}
 \begin{block}{The Extended Cox Model for Time-Dependent Variables (cont'd)}
 \[
-h(t,X(t)) = h_0(t) \exp\left[\sum_i^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t)\right]
+h(t,X(t)) = h_0(t) \exp\left[\sum_1^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t)\right]
 \]
 where
 \[
@@ -112,11 +112,11 @@ with $X_1,\ldots,X_{p_1}$ time-independent and $X_1(t),\ldots,X_{p_2}(t)$ time-d
 
 \begin{frame}
 \frametitle{The Extended Cox Model for Time-Dependent Variables}
-\begin{block}{The Hazard Ratio Formula for the Extended Cox Model}
+\begin{block}{The Hazard Ratio Formula for the Extended Cox PH Model}
 Let $X(t)$ and $X^*(t)$ be two specifications of the covariates $X(t)$. Then the HR with respect to this change in $X(t)$ is
 \begin{align*}
 HR(t) &= \frac{h(t,X^*(t))}{h(t,X(t))} \\
-& = \exp\left[\sum_1^{p_1} \beta_i(X^*_i - X_i) + \sum_i^{p_2} \delta_i(X^*_j(t) - X_i(t))\right].
+& = \exp\left[\sum_1^{p_1} \beta_i(X^*_i - X_i) + \sum_j^{p_2} \delta_i(X^*_j(t) - X_i(t))\right].
 \end{align*}
 As the $HR(t)$ depends on time, the extended Cox PH model does not satisfy the PH assumption.
 \end{block}
@@ -128,23 +128,7 @@ As the $HR(t)$ depends on time, the extended Cox PH model does not satisfy the P
 \begin{block}{Lag-time effect models}
 You may want to account for the effect of a time-dependent covariate at previous periods. You can use a lag-time model:
 \[
-h(t,X(t)) = h_0(t) \exp\left[\sum_i^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t-L_1)\right]
-\]
-where $L_1>0$.
-An example of an lag-time effect model is
-\[
-h(t,EMP(t)) = h_0(t)\exp[\delta EMP(t-1)]
-\]
-where $EMP(t)$ is employment status at time $t$ in years and $EMP(t-1)$ is status at time $t-1$ (a year before time $t$).
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{The Extended Cox Model for Time-Dependent Variables}
-\begin{block}{Lag-time effect models}
-You may want to account for the effect of a time-dependent covariate at previous periods. You can use a lag-time model:
-\[
-h(t,X(t)) = h_0(t) \exp\left[\sum_i^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t-L_1)\right]
+h(t,X(t)) = h_0(t) \exp\left[\sum_1^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t-L_1)\right]
 \]
 where $L_1>0$.
 An example of an lag-time effect model is
@@ -159,14 +143,14 @@ where $EMP(t)$ is employment status at time $t$ in years and $EMP(t-1)$ is statu
 \frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
 \begin{block}{Checking the PH assumption using defined time-dependent variables}
 \begin{enumerate}
-\item Assume we have $p$ time-dependent covariates $X=X_1,\ldots,X_p$.
+\item Assume we have $p$ time-independent covariates $X=X_1,\ldots,X_p$.
 \item To check the appropriateness of the Cox PH model
 \[
-h(t,X) = h_0(t)\exp(\sum_{i=1}^p \beta_i
+h(t,X) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i\right) 
 \]
 We introduce defined time-dependent covariates in an extended Cox PH model
 \[
-h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p X_i g_i(t)]
+h(t,X(t)) = \exp[\sum_{i=1}^{p_1} \beta_i X_i + \sum_{i=j}^{p_2} \delta_i X_i g_i(t)]
 \]
 \end{enumerate}
 \end{block}
@@ -184,7 +168,7 @@ h(t,X) = h_0(t)\exp(\sum_{i=1}^p \beta_i
 We introduce defined time-dependent covariates in an extended Cox PH model
 \begin{equation} \label{fullintCPH}
 h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)]
-\end{equation} 
+\end{equation}
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -199,74 +183,49 @@ h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)]
 H_0: \delta_i = 0 \text{ for all } i \text{ vs. } \delta_i \neq 0 \text{ for some } i.
 \]
 \item Our full model is \eqref{fullintCPH} and our reduced model is \eqref{reducedCPH}. Our test statistic and its distribution is:
-\vspace{-10pt} 
+\vspace{-10pt}
 \[
--2(\ln(L_R) - \ln(L_F)) \sim \chi^2(p) 
+-2(\ln(L_R) - \ln(L_F)) \sim \chi^2(p)
 \]
 \item A test of covariate $X_k$ ``one-at-a-time" uses reduced model
-\vspace{-10pt} 
+\vspace{-10pt}
 \[
-h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)]
-\] 
+h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
+\]
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame} 
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
-\begin{block}{Functions used for assessing interaction} 
-\begin{itemize}
-\item You want to choose a function, $g_i(t)$ that reflects the possible interaction between the covariate $X_i$ and time. 
-\item For example, assume the study is over the period (1,6). If the affect of an exposure variable $E (0 \text{ or } 1)$ is 
-\begin{enumerate} 
-\item increasing slowly with time you might use $g_i(t)= \ln(t)$. 
-\item decreasing rapidly with time you might use $g_i(t)=\exp(-(t-1))$. 
-\item increasing rapidly with time you might use $g_i(t)=(t-1)^2+2$ where 2 is the hazard ratio at the start of the study. 
-\end{enumerate}
-\end{itemize} 
-\end{block}
-\end{frame} 
-
 \begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
 \begin{block}{Functions used for assessing interaction}
 \begin{itemize}
-\item You want to choose a function, $g_i(t)$ that reflects the possible interaction between the covariate $X_i$ and time.
+\item You want to choose a function, $g_i(t)$, that reflects the possible interaction between the covariate $X_i$ and time.
 \item For example, assume the study is over the period (1,6). If the affect of an exposure variable $E (0 \text{ or } 1)$ is
 \begin{enumerate}
-\item increasing  but decelerating with time you might use $g_i(t)= \ln(t)$.
+\item increasing slowly with time you might use $g_i(t)= \ln(t)$.
 \item decreasing rapidly with time you might use $g_i(t)=\exp(-(t-1))$.
 \item increasing rapidly with time you might use $g_i(t)=(t-1)^2+2$ where 2 is the hazard ratio at the start of the study.
 \end{enumerate}
 \end{itemize}
 \end{block}
-\end{frame}   
+\end{frame}
+
 
 \begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
 \begin{block}{Functions used for assessing interaction (cont'd)}
-\begin{enumerate}
-\item Often the PH assumption is met with different ratios for different intervals in the study. 
-\item For example, before time $t_0$ women have twice the hazard as men and after time $t_0$ they have 1/2 the hazard. 
-\item In this case you can partition the data by time or you can use an extended Cox PH model with a heaviside function. 
-\end{enumerate} 
-\end{block}
-\end{frame}  
-
-\begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
-\begin{block}{Functions used for assessing interaction (cont'd): using the Heaviside function}
 \begin{enumerate}
 \item Often the PH assumption is met with different ratios for different intervals in the study.
 \item For example, before time $t_0$ women have twice the hazard as men and after time $t_0$ they have 1/2 the hazard.
 \item In this case you can partition the data by time or you can use an extended Cox PH model with a heaviside function.
 \end{enumerate}
 \end{block}
-\end{frame}  
+\end{frame}
 
 
 \begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
 \begin{block}{Functions used for assessing interaction (cont'd): using the Heaviside function}
 \begin{columns}
     \begin{column}{0.48\textwidth}
@@ -276,22 +235,70 @@ h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)]
     \begin{column}{0.48\textwidth}
          \includegraphics[width =\textwidth, height=4cm]{CH6_HeSi2.JPG}
     \end{column}
-\end{columns} 
+\end{columns}
 \end{block}
 \end{frame}
 
 \begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
 \begin{block}{Functions used for assessing interaction (cont'd): using the Heaviside function}
-\vspace{-20pt} 
+\vspace{-20pt}
 \begin{center}
 \includegraphics[width =\textwidth, height=5.2cm]{CH6_HeSi3.JPG}
-\end{center} 
-\end{block} 
+\end{center}
+\end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\begin{block}{Problem 6.1 - Functions used for assessing interaction (cont'd): using the Heaviside function}
+Assume for a our survival data we have a single exposure variable, $E$. We believe that in each of the intervals of the study 
+\[
+(0,.5], (0.5,1], (1,1.5], [1.5,\infty)
+\]
+the HR of $E$ is constant but different. Create an extended Cox PH to model this situation. 
+\end{block}
+\end{frame} 
 
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\begin{block}{Problem 6.1 - Functions used for assessing interaction (cont'd): using the Heaviside function}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5cm]{CH6_fhev.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5cm]{CH6_fhev2.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
 
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin
+Addiction}
+A 1991 Australian study by Caplehorn et al., compared retention in two methadone treatment clinics for heroin addicts. A patient’s survival time (T) was determined as the time in days until the patient dropped out of the clinic or was censored at the end of the study clinic. 
+\vspace{-10pt} 
+\begin{center}
+\includegraphics[height=3.2cm]{CH6_Heroin1.JPG}
+\end{center}
+\end{block} 
+\end{frame} 
 
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin
+Addiction (cont'd)}
+\begin{enumerate}
+\item For the variables Clinic, Prison and Dose test the PH assumption through a GOF test using Shoenfeld residuals. 
+\item For the variable that doesn't satisfy the PH assumption according to your GOF test, create adjusted survival curves with the other variables in the model.  
+\item Based on your log-log plot create an extended Cox PH model to estimate the effect of the variable that doesn't satisfy the Cox PH model. Estimate the HR of this variable with time. 
+\item Create another extended Cox PH as an alternative to 3) above. Estimate the HR of this variable with time based on this model. 
+\end{enumerate}
+\end{block}
+\end{frame} 
 \end{document}
+
 
