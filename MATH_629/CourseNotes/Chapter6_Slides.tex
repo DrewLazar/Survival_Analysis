@@ -51,7 +51,7 @@ of the Cox Proportional Hazards Model for Time-Dependent Variables
 
 
 
-\section{Chapter 5}
+\section{Chapter 6}
 \begin{frame}
 \frametitle{Time-Dependent Covariates}
 \begin{block}{Definitions of Time-Dependent Covariates}
@@ -100,13 +100,13 @@ of the Cox Proportional Hazards Model for Time-Dependent Variables
 \frametitle{The Extended Cox Model for Time-Dependent Variables}
 \begin{block}{The Extended Cox Model for Time-Dependent Variables (cont'd)}
 \[
-h(t,X(t)) = h_0(t) \exp\left[\sum_1^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t)\right]
+h(t,X(t)) = h_0(t) \exp\left[\sum_{i=1}^{p_1} \beta_i X_i + \sum_{i=j}^{p_2} \delta_i X_i(t)\right]
 \]
 where
 \[
 X(t)=(X_1,\ldots,X_{p_1},X_j(t),\ldots,X_{p_2}(t))
 \]
-with $X_1,\ldots,X_{p_1}$ time-independent and $X_1(t),\ldots,X_{p_2}(t)$ time-dependent.
+with $X_1,\ldots,X_{p_1}$ time-independent and $X_j(t),\ldots,X_{p_2}(t)$ time-dependent.
 \end{block}
 \end{frame}
 
@@ -116,7 +116,7 @@ with $X_1,\ldots,X_{p_1}$ time-independent and $X_1(t),\ldots,X_{p_2}(t)$ time-d
 Let $X(t)$ and $X^*(t)$ be two specifications of the covariates $X(t)$. Then the HR with respect to this change in $X(t)$ is
 \begin{align*}
 HR(t) &= \frac{h(t,X^*(t))}{h(t,X(t))} \\
-& = \exp\left[\sum_1^{p_1} \beta_i(X^*_i - X_i) + \sum_j^{p_2} \delta_i(X^*_j(t) - X_i(t))\right].
+& = \exp\left[\sum_{i=1}^{p_1} \beta_i(X^*_i - X_i) + \sum_{i=j}^{p_2} \delta_i(X^*_i(t) - X_i(t))\right].
 \end{align*}
 As the $HR(t)$ depends on time, the extended Cox PH model does not satisfy the PH assumption.
 \end{block}
@@ -128,7 +128,7 @@ As the $HR(t)$ depends on time, the extended Cox PH model does not satisfy the P
 \begin{block}{Lag-time effect models}
 You may want to account for the effect of a time-dependent covariate at previous periods. You can use a lag-time model:
 \[
-h(t,X(t)) = h_0(t) \exp\left[\sum_1^{p_1} \beta_i X_i + \sum_j^{p_2} \delta_j X_i(t-L_1)\right]
+h(t,X(t)) = h_0(t) \exp\left[\sum_{i=1}^{p_1} \beta_i X_i + \sum_{i=j}^{p_2} \delta_i X_i(t-L_1)\right]
 \]
 where $L_1>0$.
 An example of an lag-time effect model is
@@ -143,31 +143,14 @@ where $EMP(t)$ is employment status at time $t$ in years and $EMP(t-1)$ is statu
 \frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
 \begin{block}{Checking the PH assumption using defined time-dependent variables}
 \begin{enumerate}
-\item Assume we have $p$ time-independent covariates $X=X_1,\ldots,X_p$.
-\item To check the appropriateness of the Cox PH model
-\[
-h(t,X) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i\right) 
-\]
-We introduce defined time-dependent covariates in an extended Cox PH model
-\[
-h(t,X(t)) = \exp[\sum_{i=1}^{p_1} \beta_i X_i + \sum_{i=j}^{p_2} \delta_i X_i g_i(t)]
-\]
-\end{enumerate}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Assessing if Time-Independent Variables Satisfy the PH Assumption}
-\begin{block}{Checking the PH assumption using defined time-dependent variables}
-\begin{enumerate}
 \item Assume we have $p$ time-dependent covariates $X=X_1,\ldots,X_p$.
 \item To check the appropriateness of the Cox PH model
 \begin{equation} \label{reducedCPH}
-h(t,X) = h_0(t)\exp(\sum_{i=1}^p \beta_i
+h(t,X) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i X_i \right)
 \end{equation}
 We introduce defined time-dependent covariates in an extended Cox PH model
 \begin{equation} \label{fullintCPH}
-h(t,X(t)) = \exp[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)]
+h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)\right]
 \end{equation}
 \end{enumerate}
 \end{block}
@@ -197,13 +180,13 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 \end{frame}
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Functions used for assessing interaction}
 \begin{itemize}
 \item You want to choose a function, $g_i(t)$, that reflects the possible interaction between the covariate $X_i$ and time.
 \item For example, assume the study is over the period (1,6). If the affect of an exposure variable $E (0 \text{ or } 1)$ is
 \begin{enumerate}
-\item increasing slowly with time you might use $g_i(t)= \ln(t)$.
+\item increasing but decelerating with time you might use $g_i(t)= \ln(t)$.
 \item decreasing rapidly with time you might use $g_i(t)=\exp(-(t-1))$.
 \item increasing rapidly with time you might use $g_i(t)=(t-1)^2+2$ where 2 is the hazard ratio at the start of the study.
 \end{enumerate}
@@ -213,7 +196,7 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Functions used for assessing interaction (cont'd)}
 \begin{enumerate}
 \item Often the PH assumption is met with different ratios for different intervals in the study.
@@ -225,7 +208,7 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Functions used for assessing interaction (cont'd): using the Heaviside function}
 \begin{columns}
     \begin{column}{0.48\textwidth}
@@ -240,7 +223,7 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 \end{frame}
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Functions used for assessing interaction (cont'd): using the Heaviside function}
 \vspace{-20pt}
 \begin{center}
@@ -250,18 +233,18 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 \end{frame}
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Problem 6.1 - Functions used for assessing interaction (cont'd): using the Heaviside function}
-Assume for a our survival data we have a single exposure variable, $E$. We believe that in each of the intervals of the study 
+Assume for a our survival data we have a single exposure variable, $E$. We believe that in each of the intervals of the study
 \[
 (0,.5], (0.5,1], (1,1.5], [1.5,\infty)
 \]
-the HR of $E$ is constant but different. Create an extended Cox PH to model this situation. 
+the HR of $E$ is constant but different. Create an extended Cox PH to model this situation.
 \end{block}
-\end{frame} 
+\end{frame}
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Problem 6.1 - Functions used for assessing interaction (cont'd): using the Heaviside function}
 \begin{columns}
     \begin{column}{0.48\textwidth}
@@ -276,29 +259,200 @@ the HR of $E$ is constant but different. Create an extended Cox PH to model this
 \end{frame}
 
 \begin{frame}
-\frametitle{Modeling and testing interaction of time-independent variables with time.} 
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
 \begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin
 Addiction}
-A 1991 Australian study by Caplehorn et al., compared retention in two methadone treatment clinics for heroin addicts. A patient’s survival time (T) was determined as the time in days until the patient dropped out of the clinic or was censored at the end of the study clinic. 
-\vspace{-10pt} 
+A 1991 Australian study by Caplehorn et al., compared retention in two methadone treatment clinics for heroin addicts. A patient’s survival time (T) was determined as the time in days until the patient dropped out of the clinic or was censored at the end of the study clinic.
+\vspace{-10pt}
 \begin{center}
 \includegraphics[height=3.2cm]{CH6_Heroin1.JPG}
 \end{center}
-\end{block} 
-\end{frame} 
+\end{block}
+\end{frame}
 
 \begin{frame}
 \frametitle{Modeling and testing interaction of time-independent variables with time.}
-\begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin
-Addiction (cont'd)}
+\begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin Addiction (cont'd)}
 \begin{enumerate}
-\item For the variables Clinic, Prison and Dose test the PH assumption through a GOF test using Shoenfeld residuals. 
-\item For the variable that doesn't satisfy the PH assumption according to your GOF test, create adjusted survival curves with the other variables in the model.  
-\item Based on your log-log plot create an extended Cox PH model to estimate the effect of the variable that doesn't satisfy the Cox PH model. Estimate the HR of this variable with time. 
-\item Create another extended Cox PH as an alternative to 3) above. Estimate the HR of this variable with time based on this model. 
+\item For the variables Clinic, Prison and Dose test the PH assumption through a GOF test using Shoenfeld residuals.
+\item For the variable that doesn't satisfy the PH assumption according to your GOF test, create adjusted survival curves with the other variables in the model.
+\item Based on 2) create an extended Cox PH model to estimate the effect of the variable that doesn't satisfy the Cox PH model. Estimate the HR of this variable with time.
+\item Create another extended Cox PH as an alternative to 3) above. Estimate the HR of this variable with time based on this model.
 \end{enumerate}
 \end{block}
-\end{frame} 
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Problem 6.2 - An Application of the Extended Cox Model to An Epidemiologic Study on Heroin Addiction (cont'd)}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=5cm]{CH6_P2.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=5cm]{CH6_P2a.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to the Analysis of the Stanford Heart Transplant Data}
+In the 1977 Stanford Heart Transplant
+Study, patients identified as being eligible for a
+heart transplant were followed until death or
+censorship. Sixty-five of these patients received
+transplants at some point during follow-up,
+whereas thirty-eight patients did not receive a
+transplant. There were, thus, a total of $n = 103$
+patients. The goal of the study was to assess
+whether patients receiving transplants survived
+longer than patients not receiving transplants.
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to the Analysis of the Stanford Heart Transplant Data}
+There are three internal time-dependent covariates in this data set.
+\vspace{-15pt}
+\begin{enumerate}
+\item The exposure variable: heart transplant status, $H(t)$, at $t$.
+\item The covariates: tissue mismatch score at the time of transplant, $TMS(t)$ and age at time of transplant, $AGE(t)$.
+\end{enumerate}
+\begin{center}
+ \includegraphics[width = 5cm, height=3cm]{CH6_tnsp1.JPG}
+ \end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to An Epidemiologic Study on the Treatment of Heroin Addiction}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=3cm]{CH6_transp2.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=4cm]{CH6_transp3.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to the Analysis of the Stanford Heart Transplant Data}
+Our model is:
+\[
+h(t,X(t))= h_0(t) \exp[\delta_1 HT(t) + \delta_2 TMS(t) + \delta_3 AGE(t)]
+\]
+And the results of fitting the model are:
+\begin{center}
+ \includegraphics[width = 5cm, height=3cm]{CH6_trnsp4}
+ \end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to the Analysis of the Stanford Heart Transplant Data}
+With our model we can estimate at:
+\begin{enumerate}
+\item any particular time of transplant, $t$
+\item  for any particular TMS score at $t$, and
+\item for any particular Age at $t$
+\end{enumerate}
+the hazard ratio of receiving the transplant at time $t$:
+\[
+\hat{HR}(t) = \exp[\hat{\delta}_1 + \hat{\delta}_2 TMS(t) + \hat{\delta}_3 AGE(t)]
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling and testing interaction of time-independent variables with time.}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to the Analysis of the Stanford Heart Transplant Data}
+    \begin{center}
+        \includegraphics[width =5cm, height=5.5cm]{CH6_trnsp5.JPG}
+    \end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Example 6.1 - An Application of the Extended Cox Model to An Epidemiologic Study on the Treatment of Heroin Addiction}
+The range of the covariates must be as in the data: The TMS range must be: $(0-3.05)$ and the Age range: $(12-64)$.
+\begin{itemize}
+\item The hazard ratio of someone with age of 30 and TMS of .5 is
+\[ \exp[-.31718 + 0.4442\times 0.5 + .0552 \times 30] = 0.2768997
+\]
+\item The hazard ratio of someone with age of 50 and TMS of 2 is
+\[ \exp[-.31718 + 0.4442\times 2 + .0552 \times 50] = 1.636566
+\]
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation with time dependent covariates}
+\begin{block}{Example 6.2 - Partial MLE of the Extended Cox PH Model}
+Consider the survival data about Bary, Gary, Susan and John.
+\begin{center}
+\begin{tabular}{ c c c c } \hline
+ Name & Time & Status & Coupon \\ \hline
+Barry & 2 & 1 & 1 \\
+ Gary & 3 & 0 & 1 \\
+Susan & 5 & 1 & 0 \\
+  John & 8 & 1 & 1 \\
+\end{tabular}
+\end{center}
+\end{block}
+We want to model the interaction of Coupon with time $g(t)=t$. That is, we want to estimate $\beta$ and $\delta$ in
+\[
+h(t,X) = h_0(t) \exp[\beta X+ \delta X *t]
+\]
+where $X=\text{Coupon}$.
+\end{frame}
+
+\begin{frame}
+\frametitle{ML Estimation with time dependent covariates}
+\begin{block}{The data in counting process format}
+\begin{table}[]
+\begin{tabular}{c c c c c c}
+Name  & Start & Stop & Status & Coupon & Coupon $\times$ Time \\ \hline
+Barry & 0     & 2    & 1      & 1      & 2                    \\
+Gary  & 0     & 2    & 0      & 1      & 2                    \\
+Gary  & 2     & 3    & 0      & 1      & 3                    \\
+Susan & 0     & 2    & 0      & 0      & 0                    \\
+Susan & 2     & 5    & 1      & 0      & 0                    \\
+John  & 0     & 2    & 0      & 1      & 2                    \\
+John  & 2     & 5    & 0      & 1      & 5                    \\
+John  & 5     & 8    & 1      & 1      & 8
+\end{tabular}
+\end{table}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{ML Estimation with time dependent covariates}
+\begin{block}{Our (extended) partial likelihood, $L$}
+\begin{align*}
+L_1 & = \frac{e^{\beta+2\delta}}{e^{\beta+2\delta} + e^{\beta+2\delta} + 1 + e^{\beta+2\delta}} \\
+L_2 & = \frac{1}{1+e^{\beta+5\delta}} \\
+L_3 & = \frac{e^{\beta + 8\delta}}{e^{\beta + 8\delta}} \\
+L & = L_1 \times L_2 \times L_3
+\end{align*}
+\end{block}
+\end{frame}
 \end{document}
+
+
+
+
 
 

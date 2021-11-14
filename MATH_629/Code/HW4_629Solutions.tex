@@ -116,7 +116,7 @@ packages}\label{cleaning-up-and-loading-necessary-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{())}
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list=}\FunctionTok{ls}\NormalTok{())}
 \FunctionTok{library}\NormalTok{(survival)}
 \FunctionTok{library}\NormalTok{(dplyr)}
 \end{Highlighting}
@@ -144,7 +144,7 @@ packages}\label{cleaning-up-and-loading-necessary-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{load}\NormalTok{(}\StringTok{"addicts.rda"}\NormalTok{)}
+\NormalTok{Ven.reset }\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"VenresetMft.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -152,111 +152,111 @@ packages}\label{cleaning-up-and-loading-necessary-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(addicts}\SpecialCharTok{$}\NormalTok{survt, addicts}\SpecialCharTok{$}\NormalTok{status)}
-\NormalTok{Coxph.addicts }\OtherTok{=} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ prison }\SpecialCharTok{+}\NormalTok{ dose }\SpecialCharTok{+}\NormalTok{ clinic, }\AttributeTok{data =}\NormalTok{ addicts)}
+\NormalTok{Y}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset}\SpecialCharTok{$}\NormalTok{status)}
+\NormalTok{Coxph.addicts}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting}\SpecialCharTok{+}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft,}\AttributeTok{data=}\NormalTok{Ven.reset)}
 \FunctionTok{summary}\NormalTok{(Coxph.addicts)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## Call:
-## coxph(formula = Y ~ prison + dose + clinic, data = addicts)
+## coxph(formula = Y ~ Setting + LO2 + Mft, data = Ven.reset)
 ## 
-##   n= 238, number of events= 150 
+##   n= 150, number of events= 145 
 ## 
-##             coef exp(coef)  se(coef)      z Pr(>|z|)    
-## prison  0.326555  1.386184  0.167225  1.953   0.0508 .  
-## dose   -0.035369  0.965249  0.006379 -5.545 2.94e-08 ***
-## clinic -1.009896  0.364257  0.214889 -4.700 2.61e-06 ***
+##              coef exp(coef)  se(coef)      z Pr(>|z|)    
+## Setting  1.020442  2.774421  0.121373  8.408   <2e-16 ***
+## LO2      0.924932  2.521697  0.078409 11.796   <2e-16 ***
+## Mft     -0.005686  0.994330  0.184398 -0.031    0.975    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-##        exp(coef) exp(-coef) lower .95 upper .95
-## prison    1.3862     0.7214    0.9988    1.9238
-## dose      0.9652     1.0360    0.9533    0.9774
-## clinic    0.3643     2.7453    0.2391    0.5550
+##         exp(coef) exp(-coef) lower .95 upper .95
+## Setting    2.7744     0.3604    2.1871     3.520
+## LO2        2.5217     0.3966    2.1625     2.941
+## Mft        0.9943     1.0057    0.6927     1.427
 ## 
-## Concordance= 0.665  (se = 0.025 )
-## Likelihood ratio test= 64.56  on 3 df,   p=6e-14
-## Wald test            = 54.12  on 3 df,   p=1e-11
-## Score (logrank) test = 56.32  on 3 df,   p=4e-12
+## Concordance= 0.83  (se = 0.014 )
+## Likelihood ratio test= 191.6  on 3 df,   p=<2e-16
+## Wald test            = 157.5  on 3 df,   p=<2e-16
+## Score (logrank) test = 176.1  on 3 df,   p=<2e-16
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cox.zph}\NormalTok{(Coxph.addicts, }\AttributeTok{transform =}\NormalTok{ rank)}
+\FunctionTok{cox.zph}\NormalTok{(Coxph.addicts,}\AttributeTok{transform=}\NormalTok{rank)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##         chisq df       p
-## prison  0.853  1 0.35567
-## dose    0.608  1 0.43557
-## clinic 11.302  1 0.00077
-## GLOBAL 12.465  3 0.00595
+##           chisq df       p
+## Setting  2.0527  1    0.15
+## LO2      0.0492  1    0.82
+## Mft     19.1072  1 1.2e-05
+## GLOBAL  24.5777  3 1.9e-05
 \end{verbatim}
 
-\#\#2ii. Log-log plots for each variable
+\#\#2ii. Testing MFt with Setting and LO2 in the model
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Create dose.group}
-\FunctionTok{quantile}\NormalTok{(addicts}\SpecialCharTok{$}\NormalTok{dose)}
+\CommentTok{\#Stratify Remmision Data set by TR}
+\NormalTok{Ven.reset0}\OtherTok{\textless{}{-}}\NormalTok{Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{==}\DecValTok{0}\NormalTok{, ]}
+\NormalTok{Ven.reset1}\OtherTok{\textless{}{-}}\NormalTok{Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{==}\DecValTok{1}\NormalTok{, ]}
+\CommentTok{\#Create Survival Objects for both strata }
+\NormalTok{Y0}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset0}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset0}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\NormalTok{Y1}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset1}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset1}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\CommentTok{\#Fit Cox PH models to both strata}
+\NormalTok{Coxph.Ven.m0}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y0}\SpecialCharTok{\textasciitilde{}}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Setting,}\AttributeTok{data=}\NormalTok{Ven.reset0)}
+\NormalTok{Coxph.Ven.m1}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y1}\SpecialCharTok{\textasciitilde{}}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Setting,}\AttributeTok{data=}\NormalTok{Ven.reset1)}
+\CommentTok{\#get the overall mean of LO2 and Setting }
+\NormalTok{meanLO2}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
+\NormalTok{meanSetting}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{Setting)}
+\CommentTok{\#plot our adjusted survival curves }
+\NormalTok{pattern}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2=}\NormalTok{meanLO2,}\AttributeTok{Setting=}\NormalTok{meanSetting)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m0,}\AttributeTok{newdata=}\NormalTok{pattern),}\AttributeTok{fun=}\StringTok{"cloglog"}\NormalTok{,}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{23}\NormalTok{),}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{,}\FloatTok{2.3}\NormalTok{),}\AttributeTok{main=}\StringTok{"Adjusted survival for Mft=0 vs Mft=1"}\NormalTok{,}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m1,}\AttributeTok{newdata=}\NormalTok{pattern),}\AttributeTok{fun=}\StringTok{"cloglog"}\NormalTok{,}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{23}\NormalTok{),}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{,}\FloatTok{2.3}\NormalTok{),}\AttributeTok{main=}\StringTok{"Adjusted survival for Mft=0 vs Mft=1"}\NormalTok{,}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{"Mft=0"}\NormalTok{,}\StringTok{"Mft=1"}\NormalTok{),}\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW4_629Solutions_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\#3 Stratification by Mft
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#1 Fit a stratified model }
+\NormalTok{Y}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\NormalTok{coxph.Ven.m1}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Mft),}\AttributeTok{data=}\NormalTok{Ven.reset)}
+\FunctionTok{summary}\NormalTok{(coxph.Ven.m1)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##   0%  25%  50%  75% 100% 
-##   20   50   60   70  110
+## Call:
+## coxph(formula = Y ~ Setting + LO2 + strata(Mft), data = Ven.reset)
+## 
+##   n= 150, number of events= 145 
+## 
+##            coef exp(coef) se(coef)      z Pr(>|z|)    
+## Setting 0.96368   2.62133  0.12447  7.742 9.78e-15 ***
+## LO2     0.83814   2.31206  0.07825 10.711  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##         exp(coef) exp(-coef) lower .95 upper .95
+## Setting     2.621     0.3815     2.054     3.346
+## LO2         2.312     0.4325     1.983     2.695
+## 
+## Concordance= 0.809  (se = 0.019 )
+## Likelihood ratio test= 165.9  on 2 df,   p=<2e-16
+## Wald test            = 131.7  on 2 df,   p=<2e-16
+## Score (logrank) test = 155.1  on 2 df,   p=<2e-16
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{addicts}\SpecialCharTok{$}\NormalTok{dose.group }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(addicts}\SpecialCharTok{$}\NormalTok{dose, }\FunctionTok{c}\NormalTok{(}\DecValTok{19}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{70}\NormalTok{, }\DecValTok{110}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{,}
-    \StringTok{"3"}\NormalTok{))}
-\CommentTok{\# create a survival object from the addicts data set}
-\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(addicts}\SpecialCharTok{$}\NormalTok{survt, addicts}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
-\CommentTok{\# Create Cox PH model for clinic}
-\NormalTok{kmfitC2 }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ addicts}\SpecialCharTok{$}\NormalTok{clinic)}
-\CommentTok{\# Create Cox PH model for prison}
-\NormalTok{kmfitP2 }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ addicts}\SpecialCharTok{$}\NormalTok{prison)}
-\CommentTok{\# Create Cox PH model for dose.group}
-\NormalTok{kmfitDG32 }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ addicts}\SpecialCharTok{$}\NormalTok{dose.group)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# log{-}log curves for clinic}
-\FunctionTok{plot}\NormalTok{(kmfitC2, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
-    \AttributeTok{main =} \StringTok{"log{-}log curves by clinic"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{))}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Clinic=1"}\NormalTok{, }\StringTok{"Clinic=2"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{HW4_629Solutions_files/figure-latex/unnamed-chunk-6-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# log{-}log curves for prison}
-\FunctionTok{plot}\NormalTok{(kmfitP2, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
-    \AttributeTok{main =} \StringTok{"log{-}log curves by prison"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{))}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"prison=0"}\NormalTok{, }\StringTok{"prison=1"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{HW4_629Solutions_files/figure-latex/unnamed-chunk-6-2.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# log{-}log curves for dose.group}
-\FunctionTok{plot}\NormalTok{(kmfitDG32, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
-    \AttributeTok{main =} \StringTok{"log{-}log curves by dose.group"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"dose.group=1"}\NormalTok{, }\StringTok{"dose.group=2"}\NormalTok{, }\StringTok{"dose.group=3"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{),}
-    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{HW4_629Solutions_files/figure-latex/unnamed-chunk-6-3.pdf}
+Our fitted stratified Cox PH model is:
+\(h(X,t)=h_0(t)\exp(0.96368*X_1+0.83814X_2)\).
 
 \end{document}

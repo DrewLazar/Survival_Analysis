@@ -25,52 +25,155 @@ library(dplyr)
 
 ## 1 loading the data 
 ```{r}
-load("addicts.rda")
+Ven.reset <-read.csv("VenresetMft2.csv", header = TRUE)
 ```
 ##2 Test the PH assumption
-##2i. Log-log plots for each variable
+##2i. GOF using Schoenfeld Residuals 
 ```{r}
-#Create dose.group 
-quantile(addicts$dose)
-addicts$dose.group<-cut(addicts$dose,c(19,50,70,110),labels=c('1','2','3'))
-#create a survival object from the addicts data set 
-Y<-Surv(addicts$survt,addicts$status==1)
-#Create Cox PH model for clinic
-kmfitC2=survfit(Y~addicts$clinic)
-#Create Cox PH model for prison
-kmfitP2=survfit(Y~addicts$prison)
-#Create Cox PH model for dose.group
-kmfitDG32=survfit(Y~addicts$dose.group)
-```
-```{r}
-#log-log curves for clinic  
-plot(kmfitC2,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by clinic",col=c('red','green'))
-legend("topright",c("Clinic=1","Clinic=2"),lty=c("solid"),col=c("red","green"))
-#log-log curves for prison  
-plot(kmfitP2,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by prison",col=c('red','green'))
-legend("topright",c("prison=0","prison=1"),lty=c("solid"),col=c("red","green"))
-#log-log curves for dose.group  
-plot(kmfitDG32,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by dose.group",col=c('red','green','blue'))
-legend("topleft",c("dose.group=1","dose.group=2","dose.group=3"),lty=c("solid"),col=c("red","green","blue"))
-```
-##2ii. GOF using Schoenfeld Residuals 
-```{r}
-Y<-Surv(addicts$survt,addicts$status)
-Coxph.addicts=coxph(Y~prison+dose+clinic,data=addicts)
+Y<-Surv(Ven.reset$eventtime,Ven.reset$status)
+Coxph.addicts=coxph(Y~Setting+LO2+Mft,data=Ven.reset)
 summary(Coxph.addicts)
 cox.zph(Coxph.addicts,transform=rank)
 ```
+##2ii. Testing MFt with Setting and LO2 in the model 
+```{r}
+#Stratify Remmision Data set by TR
+Ven.reset0<-Ven.reset[Ven.reset$Mft==0, ]
+Ven.reset1<-Ven.reset[Ven.reset$Mft==1, ]
+#Create Survival Objects for both strata 
+Y0<-Surv(Ven.reset0$eventtime,Ven.reset0$status==1)
+Y1<-Surv(Ven.reset1$eventtime,Ven.reset1$status==1)
+#Fit Cox PH models to both strata
+Coxph.Ven.m0=coxph(Y0~LO2+Setting,data=Ven.reset0)
+Coxph.Ven.m1=coxph(Y1~LO2+Setting,data=Ven.reset1)
+#get the overall mean of LO2 and Setting 
+meanLO2=mean(Ven.reset$LO2)
+meanSetting=mean(Ven.reset$Setting)
+#plot our adjusted survival curves 
+pattern=data.frame(LO2=meanLO2,Setting=meanSetting)
+plot(survfit(Coxph.Ven.m0,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted survival for Mft=0 vs Mft=1",col=c('blue'))
+par(new=TRUE)
+plot(survfit(Coxph.Ven.m1,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted survival for Mft=0 vs Mft=1",col=c('red'))
+legend("bottomright",c("Mft=0","Mft=1"),lty=c("solid"),col=c("blue","red"))
+```
 
+## 3. Stratification by Mft
+## 3i. Fit a stratified model 
+```{r}
+#i Fit a stratified model 
+Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
+coxph.Ven.m1<-coxph(Y~Setting + LO2 + strata(Mft),data=Ven.reset)
+summary(coxph.Ven.m1)
+```
+Our fitted stratified Cox PH model is: $h(X,t)=h_0(t)\exp(0.96368*X_1+0.83814X_2)$. 
+## 3ii. Wald test to test for significance of Setting and LO2 
+Both setting an LO2 have very small p-values ( 5.14e-14 and <2e-16, respectively) and thus are significant. 
+```{r}
+coxph.Ven.m1$loglik
+CSstat = -2*(coxph.Ven.m1$loglik[1]-coxph.Ven.m1$loglik[2])
+CV = qchisq(.95,df=2)
+CSstat>CV
+pvalue1=pchisq(CSstat,df = 2,lower.tail = FALSE)
+```
+## 3iv. Plotting adjusted Survival Curves 
+```{r}
+meanLO2=mean(Ven.reset$LO2)
+pattern1=data.frame(Setting=0,LO2=meanLO2)
+plot(survfit(coxph.Ven.m1,newdata=pattern1),col=c('blue','red'),conf.int=F,main="Adjusted survival for Setting=0, 1 and 2, mean(LO2) from stratified Cox PH model")
+pattern2=data.frame(Setting=1,LO2=meanLO2)
+par(new=TRUE)
+plot(survfit(coxph.Ven.m1,newdata=pattern2),col=c('blue','red'), lty=c('dashed'),conf.int=F)
+pattern3=data.frame(Setting=2,LO2=meanLO2)
+par(new=TRUE)
+plot(survfit(coxph.Ven.m1,newdata=pattern3),col=c('blue','red'), lty=c('dotted'),conf.int=F)
+```
+## 4. Fitting and examining a stratified Cox PH model with interaction 
+## 4i. 
+```{r}
+coxph.Ven.int.m1<-coxph(Y~Setting+LO2+Mft:LO2+Mft:Setting+strata(Mft),data=Ven.reset)
+summary(coxph.Ven.int.m1)
+```
+## 4ii. 
+```{r}
+CSstat = -2*(coxph.Ven.m1$loglik[2]-coxph.Ven.int.m1$loglik[2])
+CV = qchisq(.95,df=2)
+pchisq(CSstat, 2, lower.tail = FALSE)
+CSstat>CV
+```
+## 4iii. 
+```{r}
+#HR for Setting and 95% CI for HR for Setting with MFt=0. 
+b1=coxph.Ven.int.m1$coefficients[1]
+exp(b1)
+exp(b1-1.96*0.18159)
+exp(b1+1.96*0.18159)
+```
+```{r}
+Ven.reset$Mft2=Ven.reset$Mft-1
+coxph.Ven.int.m2<-coxph(Y~Setting+LO2+Mft2:LO2+Mft2:LO2+strata(Mft2),data=Ven.reset)
+summary(coxph.Ven.int.m2)
+#HR for Setting and 95% CI for HR for Setting with MFt=1. 
+b1=coxph.Ven.int.m2$coefficients[1]
+exp(b1)
+exp(b1-1.96*0.12567)
+exp(b1+1.96*0.12567)
+```
 
+#HR for Setting and 95% CI for HR for Setting with MFt=0.  
+```{r}
+b1=coxph.Ven.int.m1$coefficients[1]
+exp(b1)
+exp(b1-1.96*0.18159)
+exp(b1+1.96*0.18159)
+```
 
-
-
-
-
-
-
-
-
-
-
-
+### 6. 
+```{r}
+#Problem 5.4
+f1.1<-function(b) 1/(exp(b*2)+2*exp(1.5*b)+1)
+f1.2<-function(b) exp(2*b)/(exp(2*b)+2*exp(1.5*b))
+f2.1<-function(b) exp(b)/(2*exp(b)+exp(2*b))
+f2.2<-function(b) exp(b)/(exp(b)+exp(2*b))
+f<-function(b) -f1.1(b)*f1.2(b)*f2.1(b)*f2.2(b)
+#f <- function(b) -exp(b)/(3*exp(2*b)+4*exp(b)+1)
+x <- seq(-20,10,0.01)
+plot(x, f(x))   
+optimize(f, lower = -5, upper = 0)
+```
+```{r}
+time<-c(2,3,5,6,6,7,8);status<-c(1,1,0,1,0,1,1);Dose<-c(0,2,1,1,1.5,2,1.5);
+Type<-c(0,0,1,1,0,1,0)
+Alcohol=data.frame(time,status,Dose,Type)
+S<-Surv(Alcohol$time,Alcohol$status==1)
+coxph(S~Dose+strata(Type),data=Alcohol)
+```
+##Chapter 6
+##6 i. 
+```{r}
+Coxph.ven3=coxph(Y~Setting+LO2+Mft,data=Ven.reset)
+settingmean=mean(Ven.reset$Setting); LO2mean=mean(Ven.reset$LO2); 
+pattern1=data.frame(Setting=settingmean,LO2=LO2mean,Mft=0);
+pattern2=data.frame(Setting=settingmean,LO2=LO2mean,Mft=1);
+plot(survfit(Coxph.ven3,newdata=pattern1),conf.int=F,main="Adjusted survival for Mft=0 vs Mft=1, mean(Setting), mean(LO2)",col=c("blue"))
+par(new=TRUE)
+plot(survfit(Coxph.ven3,newdata=pattern2),conf.int=F,col=c("red"))
+legend("topright",c("Mft=0","Mft=1"), lty=c("solid"),col=c('blue','red'))
+```
+##6 ii.
+```{r}
+Venreset.cp4=survSplit(Ven.reset,cut=4,end="eventtime",event="status",start="start",id="id")
+Venreset.cp4$hv2=Venreset.cp4$Mft*(Venreset.cp4$start>=4)
+Y4=Surv(Venreset.cp4$start,Venreset.cp4$eventtime,Venreset.cp4$status)
+coxph.Venreset.hs2<-coxph(Y4 ~ Setting + LO2 + Mft + hv2 + cluster(id),data=Venreset.cp4)
+summary(coxph.Venreset.hs2)
+```
+##6 iii. 
+```{r}
+Venreset.cp=survSplit(Ven.reset,cut=Ven.reset$eventtime[Ven.reset$status==1],end="eventtime",event="status",start="start",id="id")
+Venreset.cp$t.Mft=Venreset.cp$Mft*log(Venreset.cp$eventtime)
+#Create an extended survival object
+YE<-Surv(Venreset.cp$start,Venreset.cp$eventtime,Venreset.cp$status)
+#Test for clinic
+coxph.venreset.ct<-coxph(YE ~ LO2 + Setting + Mft + t.Mft + cluster(id),data=Venreset.cp)
+summary(coxph.venreset.ct)
+```
