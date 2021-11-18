@@ -25,7 +25,7 @@ library(dplyr)
 
 ## 1 loading the data 
 ```{r}
-Ven.reset <-read.csv("VenresetMft2.csv", header = TRUE)
+Ven.reset <-read.csv("VenresetMft.csv", header = TRUE)
 ```
 ##2 Test the PH assumption
 ##2i. GOF using Schoenfeld Residuals 

@@ -43,6 +43,7 @@ exp(0.459373+1.371144)
 #Equivalent model with two heaviside functions
 addicts.cp365$hv1=addicts.cp365$clinic*(addicts.cp365$start<365)
 coxph.addicts.hs1<-coxph(Y365 ~ prison + dose + hv1 + hv2 + cluster(id),data=addicts.cp365)
+summary(coxph.addicts.hs1)
 #4
 addicts.cp=survSplit(addicts,cut=addicts$survt[addicts$status==1],end="survt", event="status",start="start",id="id")
 addicts.cp$t.clinic=addicts.cp$clinic*addicts.cp$survt
