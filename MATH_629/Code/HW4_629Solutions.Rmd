@@ -37,7 +37,7 @@ cox.zph(Coxph.addicts,transform=rank)
 ```
 ##2ii. Testing MFt with Setting and LO2 in the model 
 ```{r}
-#Stratify Remmision Data set by TR
+#Stratify Ventilator Data set by TR
 Ven.reset0<-Ven.reset[Ven.reset$Mft==0, ]
 Ven.reset1<-Ven.reset[Ven.reset$Mft==1, ]
 #Create Survival Objects for both strata 
@@ -51,30 +51,44 @@ meanLO2=mean(Ven.reset$LO2)
 meanSetting=mean(Ven.reset$Setting)
 #plot our adjusted survival curves 
 pattern=data.frame(LO2=meanLO2,Setting=meanSetting)
-plot(survfit(Coxph.Ven.m0,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted survival for Mft=0 vs Mft=1",col=c('blue'))
+plot(survfit(Coxph.Ven.m0,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted log-log for Mft=0 vs Mft=1",col=c('blue'))
 par(new=TRUE)
-plot(survfit(Coxph.Ven.m1,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),main="Adjusted survival for Mft=0 vs Mft=1",col=c('red'))
-legend("bottomright",c("Mft=0","Mft=1"),lty=c("solid"),col=c("blue","red"))
+plot(survfit(Coxph.Ven.m1,newdata=pattern),fun="cloglog",conf.int=F,xlim=c(1,23),ylim=c(-3.9,2.3),col=c('red'))
+legend("bottomright",cex=1.5,c("Mft=0","Mft=1"),lty=c("solid"),col=c("blue","red"))
 ```
 
+**The Schoenfeld Residuals for Setting, LO2 and Mft are 0.1658, 0.9808 and 0.0017, respectively.  Also, the adjusted log-log plots for Mft clearly cross and are not parallel throughout the study. Both of these suggests that Mft doesn't satisfy the PH assumption with Setting and LO2 in the model. **
+
+
 ## 3. Stratification by Mft
-## 3i. Fit a stratified model 
+## 3i. Fit a stratified model without interaction. 
 ```{r}
 #i Fit a stratified model 
 Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
 coxph.Ven.m1<-coxph(Y~Setting + LO2 + strata(Mft),data=Ven.reset)
 summary(coxph.Ven.m1)
 ```
-Our fitted stratified Cox PH model is: $h(X,t)=h_0(t)\exp(0.96368*X_1+0.83814X_2)$. 
+Our fitted stratified Cox PH model is: $h_g(X,t)=h_{g0}(t)\exp(0.96368X_1+0.83814X_2)$ for $g=1,2$ with $X_1=Setting$ and $X_2=LO2$.
+
 ## 3ii. Wald test to test for significance of Setting and LO2 
-Both setting an LO2 have very small p-values ( 5.14e-14 and <2e-16, respectively) and thus are significant. 
+Both setting an LO2 have very small p-values ( 5.14e-14 and <2e-16, respectively) and thus are significant at $\alpha=0.05$.
+
+## 3iii. Likelihood ratio test to test for overall significance of Setting and LO2. 
 ```{r}
 coxph.Ven.m1$loglik
 CSstat = -2*(coxph.Ven.m1$loglik[1]-coxph.Ven.m1$loglik[2])
+print(paste("The value of our test statistic is", CSstat))
 CV = qchisq(.95,df=2)
+print(paste("Our critical value is:",CV))
 CSstat>CV
 pvalue1=pchisq(CSstat,df = 2,lower.tail = FALSE)
+print(paste("Our p value is:",pvalue1))
 ```
+Our test statistic has a value of 163.6716 and our critical value is 5.9915. As 163.6716>5.9915 we reject $H_0: \beta_1=\beta_2=0$ in $h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2)$.
+
+## 3iv. 
+For every unit increase in Setting the hazard increases by a factor of $e^{0.93998}=2.560$ and for every unit increase in LO2 the hazard increases by a factor of $e^{0.84471}=2.327$.    
+
 ## 3iv. Plotting adjusted Survival Curves 
 ```{r}
 meanLO2=mean(Ven.reset$LO2)
@@ -86,7 +100,10 @@ plot(survfit(coxph.Ven.m1,newdata=pattern2),col=c('blue','red'), lty=c('dashed')
 pattern3=data.frame(Setting=2,LO2=meanLO2)
 par(new=TRUE)
 plot(survfit(coxph.Ven.m1,newdata=pattern3),col=c('blue','red'), lty=c('dotted'),conf.int=F)
+legend("topright",cex=1.5,c("Setting=0, Mft=0","Setting=0, Mft=1","Setting=1, Mft=0","Setting=1,Mft=1","Setting=2, Mft=0","Setting=2, Mft=1"),lty=c("solid","solid","dashed","dashed","dotted","dotted"),col=c("blue","red"))
 ```
+The curves do not suggest significant interaction between Setting and Mft adjusted for LO2. The changes in Survival experience from Setting=0 to Setting=1 to Setting=2 looks quite similar for Mft=0 and Mft=1. 
+
 ## 4. Fitting and examining a stratified Cox PH model with interaction 
 ## 4i. 
 ```{r}
@@ -96,10 +113,15 @@ summary(coxph.Ven.int.m1)
 ## 4ii. 
 ```{r}
 CSstat = -2*(coxph.Ven.m1$loglik[2]-coxph.Ven.int.m1$loglik[2])
+print(paste("The value of the test statistic is:",CSstat))
 CV = qchisq(.95,df=2)
-pchisq(CSstat, 2, lower.tail = FALSE)
+print(paste("The critical value is:",CV))
 CSstat>CV
+pvalue2=pchisq(CSstat, 2, lower.tail = FALSE)
+print(paste("The p value is:",pvalue2))
 ```
+Our test statistic has a value of 0.6511 and our critical value is 5.9915. As 0.6511<5.9915 we reject $H_0: \delta_1=\delta_2=0$ in $h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_3*X_1 + \delta_2 X_3*X_2)$ where $X_3=\text{Mft}$. 
+
 ## 4iii. 
 ```{r}
 #HR for Setting and 95% CI for HR for Setting with MFt=0. 
@@ -109,23 +131,21 @@ exp(b1-1.96*0.18159)
 exp(b1+1.96*0.18159)
 ```
 ```{r}
+#We use a trick here and recode Mft=0 as Mft=-1 and Mft=1 as Mft=0 and refit the model.
 Ven.reset$Mft2=Ven.reset$Mft-1
-coxph.Ven.int.m2<-coxph(Y~Setting+LO2+Mft2:LO2+Mft2:LO2+strata(Mft2),data=Ven.reset)
+coxph.Ven.int.m2<-coxph(Y~Setting+LO2+Mft2:LO2+Mft2:Setting+strata(Mft2),data=Ven.reset)
 summary(coxph.Ven.int.m2)
 #HR for Setting and 95% CI for HR for Setting with MFt=1. 
 b1=coxph.Ven.int.m2$coefficients[1]
 exp(b1)
-exp(b1-1.96*0.12567)
-exp(b1+1.96*0.12567)
+exp(b1-1.96*0.1779)
+exp(b1+1.96*0.1779)
 ```
+Mft=0: Estimated HR for Setting is 2.359079 and 95% CI:(1.652609, 3.367558). \
+Mft=1: Estimated HR for Setting is 2.788632 and 95% CI: (1.967703,3.952052).  \
+The HRs are similar and the CIs overlap which suggests there is not a significant interaction effect. \
+This agrees with the interaction term having a p-value of 0.501 (using Wald test) which does not suggest significant interaction. 
 
-#HR for Setting and 95% CI for HR for Setting with MFt=0.  
-```{r}
-b1=coxph.Ven.int.m1$coefficients[1]
-exp(b1)
-exp(b1-1.96*0.18159)
-exp(b1+1.96*0.18159)
-```
 
 ### 6. 
 ```{r}

@@ -31,15 +31,15 @@ A medical lab is testing machine learning software which actively regulates oxyg
 \item Test the proportional hazard (PH) assumption for the variables Setting, LO2 and Mft:
 \begin{enumerate}[i.]
 \item Use a GOF test using Schoenfeld Residuals to test each variable. Conduct your test at significance level $\alpha=0.05$.
-\item From homework 3 we saw that Setting and LO2 satisfy the PH assumption.  Test whether MFT satisfies the PH assumption by using the alternative approach to log-log plots (as in problem 4.2 in the slides). For your adjusted survival curves, use the overall mean of LO2 and the overall mean of Setting. Add a legend to your log-log plots.
+\item From homework 3 we saw that Setting and LO2 satisfy the PH assumption.  Test whether MFT satisfies the PH assumption by using the alternative approach to log-log plots (as in problem 4.2 in the slides). For your adjusted log-log curves, use the overall mean of LO2 and the overall mean of Setting. Add a legend to your log-log plots.
 \item What conclusion do you reach from the Schoenfeld residuals and from your adjusted log-log plots about the covariate Mft and the PH assumption?
 \end{enumerate}
 \item Fitting and examining a stratified Cox PH model without interaction.
 \begin{enumerate}[i.]
 \item Fit a stratified Cox PH model to the Ventilator Reset data without interaction. Use Setting and LO2 as covariates and stratify on Mft. Give your fitted stratified model.
 \item Use individual Wald tests to test for the significance of Setting and LO2 at $\alpha=0.05$.
-\item Use a Likelihood ratio test to test for the overall significance of Setting and LO2 at $\alpha=0.05$. 
-\item Interpret the coefficients of Setting and LO2 in the stratified Cox PH model. 
+\item Use a Likelihood ratio test to test for the overall significance of Setting and LO2 at $\alpha=0.05$.
+\item Interpret the coefficients of Setting and LO2 in the stratified Cox PH model.
 \item Plot the adjusted survival curves for Setting from your stratified Cox PH model. Set LO2=mean(LO2). Do the curves suggest significant interaction between Setting and Mft adjusted for LO2?
 \end{enumerate}
 \vspace{30pt}
@@ -82,19 +82,19 @@ Subject & Time & Status & Dose & Type \\ \hline
 7  & 8 & 1  & 1.5 & 0 \\
 \end{tabular}
 \end{center}
-Fit a stratified Cox PH model to the data. Your estimate of $\beta$ should be similar to the one you got in your optimization routine (the same sign and within 0.16 of each other). 
-According to your estimate, what is the effect of a unit increase of Dose on the hazard (the HR), regardless of type (use either estimate)? 
-\end{enumerate} 
+Fit a stratified Cox PH model to the data. Your estimate of $\beta$ should be similar to the one you got in your optimization routine (the same sign and within 0.16 of each other).
+According to your estimate, what is the effect of a unit increase of Dose on the hazard (the HR), regardless of type (use either estimate)?
+\end{enumerate}
 
 
 \section{Chapter 6}
 In the previous chapter, in the Ventilator data set, Mft didn't satisfy the PH assumption but Setting and LO2 did. Thus, we fit a stratified model Cox PH, stratifying on Mft with Setting and LO2 as covariates. We are now going to test Mft for the PH assumption using defined time-dependent covariates in an extended Cox PH model. We are also going to model Mft  in an extended Cox PH model, so that we can get a (time-dependent) HR for this variable.
 \begin{enumerate}
-\item Create adjusted survival curves for Mft with Setting and LO2 in the model. Use the means of LO2 and setting for your two adjusted survival curves with Mft=0 and Mft=1, respectively.  
+\item Create adjusted survival curves for Mft with Setting and LO2 in the model. Use the means of LO2 and setting for your two adjusted survival curves with Mft=0 and Mft=1, respectively.
 \item Based on your adjusted survival curves, choose a ``split point'' for the data. Create an extended Cox PH with the interaction between Mft and a heaviside function which has a value of 0 before the split point and a value of 1 after the split point. Is the interaction between Mft and the heaviside function significant? Estimate the HR of Mft before the split point and after the split point.
-\item Create an extended Cox PH model with the interaction between Mft and $\ln(t)$. Is this interaction significant? Estimate the HR of Mft at times 1.9, 4.5 and 10.  
+\item Create an extended Cox PH model with the interaction between Mft and $\ln(t)$. Is this interaction significant? Estimate the HR of Mft at times 1.9, 4.5 and 10.
 
-\end{enumerate} 
+\end{enumerate}
 
 \end{document}
 
