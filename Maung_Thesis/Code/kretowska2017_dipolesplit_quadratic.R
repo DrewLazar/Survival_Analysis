@@ -194,3 +194,79 @@ kretowska.dipolarcriterion <- function(Z, v, phipm) {
   Zv <- Z %*% v
   phipm %*% pmax(delta + c(-Zv, Zv), 0)
 }
+
+
+
+
+
+# Reorientation Attempt
+Remission.phipm.reorient1 <- phipmcount(Remission.Zmatrix,
+                                        Remission.v,
+                                        Remission.poms)
+
+pZmZ.reorient1 <- Remission.phipm.reorient1 * rbind( Remission.Zmatrix,
+                                                    -Remission.Zmatrix)
+
+# Constraint matrix
+# NOTE: lp assumes ALL variables are >= 0.
+# This means the free variable v must be written as
+# v = v' - v'' : v', v'' >= 0
+# to get an lp in standard form
+constmat.reorient1 <- cbind(pZmZ.reorient1, -pZmZ.reorient1, I2N)
+
+constrhs.reorient1 <- delta * Remission.phipm.reorient1
+
+lpsoln.reorient1 <- lp(direction = "min",
+             objective.in = objcoeffs,
+             const.mat = constmat.reorient1,
+             const.dir = ">=",
+             const.rhs = constrhs.reorient1)
+
+Remission.v.reorient1 <- lpsoln.reorient1$solution[1 : Dp1] -  lpsoln.reorient1$solution[(Dp1+1) : (2*Dp1)]
+
+kretowska.dipolarcriterion(Remission.Zmatrix, Remission.v, Remission.phipm)
+kretowska.dipolarcriterion(Remission.Zmatrix, Remission.v.reorient1, Remission.phipm.reorient1)
+
+
+plot(logWBC ~ TR, data = Remission, pch = 20)
+abline(a = -Remission.v.reorient1[1]/Remission.v.reorient1[3],
+       b = -Remission.v.reorient1[2]/Remission.v.reorient1[3])
+
+
+
+
+
+
+
+Remission.phipm.reorient2 <- phipmcount(Remission.Zmatrix,
+                                        Remission.v.reorient1,
+                                        Remission.poms)
+
+pZmZ.reorient2 <- Remission.phipm.reorient2 * rbind( Remission.Zmatrix,
+                                                     -Remission.Zmatrix)
+
+# Constraint matrix
+# NOTE: lp assumes ALL variables are >= 0.
+# This means the free variable v must be written as
+# v = v' - v'' : v', v'' >= 0
+# to get an lp in standard form
+constmat.reorient2 <- cbind(pZmZ.reorient2, -pZmZ.reorient2, I2N)
+
+constrhs.reorient2 <- delta * Remission.phipm.reorient2
+
+lpsoln.reorient2 <- lp(direction = "min",
+                       objective.in = objcoeffs,
+                       const.mat = constmat.reorient2,
+                       const.dir = ">=",
+                       const.rhs = constrhs.reorient2)
+
+Remission.v.reorient2 <- lpsoln.reorient2$solution[1 : Dp1] -  lpsoln.reorient2$solution[(Dp1+1) : (2*Dp1)]
+
+kretowska.dipolarcriterion(Remission.Zmatrix, Remission.v.reorient1, Remission.phipm.reorient1)
+kretowska.dipolarcriterion(Remission.Zmatrix, Remission.v.reorient2, Remission.phipm.reorient2)
+
+
+plot(logWBC ~ TR, data = Remission, pch = 20)
+abline(a = -Remission.v.reorient2[1]/Remission.v.reorient2[3],
+       b = -Remission.v.reorient2[2]/Remission.v.reorient2[3])
+
