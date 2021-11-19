@@ -196,7 +196,54 @@ kretowska.dipolarcriterion <- function(Z, v, phipm) {
 }
 
 
+Remission.vold = Remission.v
+kretowska.old = kretowska.dipolarcriterion(Remission.Zmatrix, Remission.v, Remission.phipm)
+epsilon = 10^(-4)
+i = 0
+repeat {
+  Remission.phipm.new <- phipmcount(Remission.Zmatrix,
+                                         Remission.vold,
+                                         Remission.poms)
+  
+  pZmZ.new <- Remission.phipm.new * rbind( Remission.Zmatrix,
+                                                       -Remission.Zmatrix)
+  
+  # Constraint matrix
+  # NOTE: lp assumes ALL variables are >= 0.
+  # This means the free variable v must be written as
+  # v = v' - v'' : v', v'' >= 0
+  # to get an lp in standard form
+  constmat.new <- cbind(pZmZ.new, -pZmZ.new, I2N)
+  
+  constrhs.new <- delta * Remission.phipm.new
+  
+  lpsoln.new <- lp(direction = "min",
+                         objective.in = objcoeffs,
+                         const.mat = constmat.new,
+                         const.dir = ">=",
+                         const.rhs = constrhs.new)
+  
+  Remission.vnew <- lpsoln.new$solution[1 : Dp1] -  lpsoln.new$solution[(Dp1+1) : (2*Dp1)]
+  
+  
+  kretowska.new = kretowska.dipolarcriterion(Remission.Zmatrix, Remission.vnew, Remission.phipm.new)
+  
+  Remission.vold = Remission.vnew
+  
+  i = i + 1
+  
+  if (abs(kretowska.old - kretowska.new) < epsilon) {
+    break
+  }
+  
+  kretowska.old = kretowska.new
+}
 
+print(i)
+
+plot(logWBC ~ TR, data = Remission, pch = 20)
+abline(a = -Remission.vold[1]/Remission.vold[3],
+       b = -Remission.vold[2]/Remission.vold[3])
 
 
 # Reorientation Attempt
