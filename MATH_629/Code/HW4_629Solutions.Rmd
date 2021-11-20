@@ -146,8 +146,14 @@ Mft=1: Estimated HR for Setting is 2.788632 and 95% CI: (1.967703,3.952052).  \
 The HRs are similar and the CIs overlap which suggests there is not a significant interaction effect. \
 This agrees with the interaction term having a p-value of 0.501 (using Wald test) which does not suggest significant interaction. 
 
+## 5. 
+The model is
+\begin{align*}
+h(t:X)=h_0(t)\exp(&\beta_1 X_4 +  \beta_2 X_5 + \beta_3 X_6 + \beta_4 X_4*X_1 + \beta_5 X_5*X_1 + \beta_6 X_6*X_1 \\
+                  &+\beta_4 X_4*X_1 + \beta_5 X_5*X_1 + \beta_6 X_6*X_1)
+\end{align*}
 
-### 6. 
+## 6. 
 ```{r}
 #Problem 5.4
 f1.1<-function(b) 1/(exp(b*2)+2*exp(1.5*b)+1)
