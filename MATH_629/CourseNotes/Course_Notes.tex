@@ -395,91 +395,91 @@
 %using LRT we have $-2(LR_R-LR_F)=-2(-93.1842-(-85.00842)) = 16.3515$
 
 \CPT{4}
-\ir[4.1] Note to self: Recall the definition of Cox Ph model and the proportional hazard assumption. If the Cox PH model assumption is met then the hazards shouldn't cross. 
+\ir[4.1] Note to self: Recall the definition of Cox Ph model and the proportional hazard assumption. If the Cox PH model assumption is met then the hazards shouldn't cross.
 
-%\CPT{7}
-%\ir{7.1}
-%A \textbf{parametric survival model} is one is which the distribution is fully specified except the parameters. The Cox-Proportional Hazards model is \textbf{semi-parametric} because the baseline hazard is not fully specified. Parametric models assume the data follows a particular distribution and requires more assumptions for suitable estimation. Semi-parametric or non-parametric models require less assumptions (and thus are more robust) but yield less information.
-%
-%\iex{7.1} The populations that you are modeling approximately follow the exponential distribution so that you assume
-%\[
-%S(t;X) = \exp(-\lambda t)
-%\]
-%where $\lambda$ depends on $X$.
-%Then one you estimate lambda you can plot survival curves and get estimated survival probabilities at any time.
-%So for $X=1$ you might have $\hat{\lambda=.5}$ and you can estimate
-%\[ S(2;1) \approx \exp(-.5 2)) = \exp(-1) = 0.36787
-%\]
-%\NTS \, Draw smooth survival curve and step function for Cox-Proportional Hazard.
-%
-%\ir{7.2} We saw Proportional Hazards (PH) with respect to the Cox-Propotional Hazard Model.
-%
-%\iex{7.2} We illustrate the Accelerated Failure Time property with an example. Let our survival random variable be time to death of 60 years olds, and $X$ be smoking status (0=non-smoker, 1=smoker).
-%Assume we have
-%\[
-%S(t;0) = S((2/3)t,1) \text{ for all } t>0
-%\]
-%Let $T_0$ be the survival random variable for non-smokers and $T_1$ be the survival random variable for smokers.
-%
-%Then
-%\[ S(7.5;0) = P(T_0>7.5) = P(T_1>5;1) \]
-% and
-%\[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)
-%\]
-%Note we have
-%\[
-%S((3/2)t;0) = S(t;1) \text{ for all } t>0
-%\]
-%and $T_1=(3/2)T_0$.
-%
-%\ir{7.3} In general, if we have the AT property for some $\gamma$ so that
-%\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
-%\]
-%then
-% \[ S((1/\gamma)t;X) =  S( t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0.
-%\]
-%and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
-%\[
-%\gamma T_X = T_{X^*}
-%\]
-%
-%\ir{7.4} ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. Example: We might have failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Note that we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
-%
-%\ir{7.5} Exponential accommodates PH. Why? Let
-%\[
-%\lambda=\exp(\beta_0 + \beta' X)
-%\] where $\beta, X$ are both $p \times 1$.
-%Then
-%\[
-%\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
-%\]
-%
-%\ir{7.6} Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
-%\begin{align*}
-%& q = S(t) = \exp(\lambda t) \\
-%& \ln(q) = - \lambda t \\
-%& t = \frac{1}{\lambda} (- \ln(q))
-%\end{align*}
-%Let
-%\[
-%\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
-%\]
-%Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus,
-%\[
-%\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
-%\]
-%
-%\ir{7.7} Relationship between AF and HR for exponential model. We have
-%\[
-%\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\beta_0 + \beta_1'X) \\
-%\]
-%Thus,
-%\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
-%Thus,
-%\begin{align*}
-%&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
-%&\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
-%\end{align*}
+\CPT{7}
+\ir{7.1}
+A \textbf{parametric survival model} is one is which the distribution is fully specified except the parameters. The Cox-Proportional Hazards model is \textbf{semi-parametric} because the baseline hazard is not fully specified. Parametric models assume the data follows a particular distribution and requires more assumptions for suitable estimation. Semi-parametric or non-parametric models require less assumptions (and thus are more robust) but yield less information.
+
+\iex{7.1} The populations that you are modeling approximately follow the exponential distribution so that you assume
+\[
+S(t;X) = \exp(-\lambda t)
+\]
+where $\lambda$ depends on $X$.
+Then one you estimate lambda you can plot survival curves and get estimated survival probabilities at any time.
+So for $X=1$ you might have $\hat{\lambda=.5}$ and you can estimate
+\[ S(2;1) \approx \exp(-.5 2)) = \exp(-1) = 0.36787
+\]
+\NTS \, Draw smooth survival curve and step function for Cox-Proportional Hazard.
+
+\ir{7.2} We saw Proportional Hazards (PH) with respect to the Cox-Propotional Hazard Model.
+
+\iex{7.2} We illustrate the Accelerated Failure Time property with an example. Let our survival random variable be time to death of 60 years olds, and $X$ be smoking status (0=non-smoker, 1=smoker).
+Assume we have
+\[
+S(t;0) = S((2/3)t,1) \text{ for all } t>0
+\]
+Let $T_0$ be the survival random variable for non-smokers and $T_1$ be the survival random variable for smokers.
+
+Then
+\[ S(7.5;0) = P(T_0>7.5) = P(T_1>5;1) \]
+ and
+\[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)
+\]
+Note we have
+\[
+S((3/2)t;0) = S(t;1) \text{ for all } t>0
+\]
+and $T_1=(3/2)T_0$.
+
+\ir{7.3} In general, if we have the AT property for some $\gamma$ so that
+\[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
+\]
+then
+ \[ S((1/\gamma)t;X) =  S( t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0.
+\]
+and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
+\[
+\gamma T_X = T_{X^*}
+\]
+
+\ir{7.4} ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. Example: We might have failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Note that we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+
+\ir{7.5} Exponential accommodates PH. Why? Let
+\[
+\lambda=\exp(\beta_0 + \beta' X)
+\] where $\beta, X$ are both $p \times 1$.
+Then
+\[
+\text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
+\]
+
+\ir{7.6} Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
+\begin{align*}
+& q = S(t) = \exp(\lambda t) \\
+& \ln(q) = - \lambda t \\
+& t = \frac{1}{\lambda} (- \ln(q))
+\end{align*}
+Let
+\[
+\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
+\]
+Then we have $\exp(\alpha_0 + \alpha_1'X)$ (time to ``reach" $q$ for $X$) and \\ $\exp(\beta_0 + \beta'X^*)$ (time to ``reach'' $q$ for $X^*$). Thus,
+\[
+\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
+\]
+
+\ir{7.7} Relationship between AF and HR for exponential model. We have
+\[
+\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\beta_0 + \beta_1'X) \\
+\]
+Thus,
+\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
+Thus,
+\begin{align*}
+&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
+&\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
+\end{align*}
 
 
 
