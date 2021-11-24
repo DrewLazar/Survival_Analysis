@@ -37,7 +37,7 @@
  \setbeamerfont{note page}{size=\tiny}
 %\setbeamertemplate{note page}[plain]
 %\setbeameroption{show only notes}
-\title{Math 629 - Survival Analysis \\ Chapter 7: Parametric Survival Models  
+\title{Math 629 - Survival Analysis \\ Chapter 7: Parametric Survival Models
 }
 \author{Drew Lazar}
 \institute{Ball State University}
@@ -55,14 +55,14 @@
 \frametitle{Parametric Survival Models}
 \begin{block}{Overview}
 \begin{enumerate}
-\item Explain parametric survival models, compare to semi-parametric and non-parametric models.  
-\item We explain the accelerated failure time assumption (AFT) and compare to proportional hazard assumption (PH).
+\item Explain parametric survival models, compare to semi-parametric and non-parametric models.
+\item We explain the accelerated failure time assumption (AFT), the proportional odds assumption (PO) and compare to proportional hazard assumption (PH).
 \item We present examples of several parametric models, including the exponential model, the Weibull model, and the
 log-logistic model.
-\item We discuss interval censored data modeled by parametric models. 
-\item We introduce frailty models which allow for flexibility in individual subjects in parametric models. 
+\item We discuss interval censored data modeled by parametric models.
+\item We introduce frailty models which allow for flexibility in individual subjects in parametric models.
 \end{enumerate}
-\end{block}  
+\end{block}
 \end{frame}
 
 \begin{frame}
@@ -72,10 +72,10 @@ log-logistic model.
 \item In parametric survival models the outcome (survival) is from some family of
 distributions of similar form with unknown parameters. When the value of the parameter(s) is known then the exact distribution
 is fully specified.
-\item A Cox PH model is semi-parametric as there are parameters involved but they do not fully specify the distribution. 
-\item Kaplan-Meirer estimates, log-rank statistics, overall hazards rates and survival times are non-parametric. 
-\end{itemize} 
-\end{block} 
+\item A Cox PH model is semi-parametric as there are parameters involved but they do not fully specify the distribution.
+\item Kaplan-Meirer estimates, log-rank statistics, overall hazards rates and survival times are non-parametric.
+\end{itemize}
+\end{block}
 \end{frame}
 
 \begin{frame}
@@ -95,24 +95,12 @@ is fully specified.
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{The pdf, survival function and hazard function} 
-Recall: 
-\begin{align*} 
-& S(t) = P(T>t) \text{ and } h(t) = \lim_{\Delta \rightarrow 0} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t} \\
-& \text{ and we have the following relationship} \\ 
-& S(t) = \exp\left[-\int_0^t h(u) du\right] \text{ and } h(t) = -\frac{d S(t)/dt}{S(t)}. \\
-\end{align*} 
-\end{block} 
-\end{frame} 
-
-\begin{frame}
-\frametitle{Parametric Survival Models}
-\begin{block}{The pdf, survival function and hazard function (cont'd)}
-The pdf of a survival distribution is the function $f(t)$ such that 
+\begin{block}{The pdf, survival function and hazard function}
+Recall:
 \begin{align*}
-& S(t) = \int_t^\infty f(t) dt \\
-& \text{ Using the fundamental theorem of Calculus we have } \\
-& \frac{-d(S(t))}{dt} = f(t) \text{ thus } h(t) = -\frac{d S(t)/dt}{S(t)} = \frac{f(t)}{S(t)} \\
+& S(t) = P(T>t) \text{ and } h(t) = \lim_{\Delta t \rightarrow 0} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t} \\
+& \text{ and we have the following relationship} \\
+& S(t) = \exp\left[-\int_0^t h(u) du\right] \text{ and } h(t) = -\frac{d S(t)/dt}{S(t)}. \\
 \end{align*}
 \end{block}
 \end{frame}
@@ -134,15 +122,15 @@ The pdf of a survival distribution is the function $f(t)$ such that
 \begin{block}{Some parametric survival distributions}
 \begin{center}
 \begin{tabular}{ c c c c }
-Distribution & $S(t)$ & $f(t)$ & $h(t)$  \\    \hline                                                                                                                                          
-Exponential  & $\exp(-\lambda t)$  & $\lambda \exp(-\lambda t)$ & $\lambda$    \\                                                                                                                     
-Weibull      & $\exp(-\lambda t^p)$ & $ \lambda p t^{p-1} \exp(-\lambda t^p)$ & $\lambda p  t^{p-1}$  \\                                                                                                     
+Distribution & $S(t)$ & $f(t)$ & $h(t)$  \\    \hline
+Exponential  & $\exp(-\lambda t)$  & $\lambda \exp(-\lambda t)$ & $\lambda$    \\
+Weibull      & $\exp(-\lambda t^p)$ & $ \lambda p t^{p-1} \exp(-\lambda t^p)$ & $\lambda p  t^{p-1}$  \\
 Log-logistic & $\frac{1}{1 + \lambda t^p}$ & $\frac{\lambda p t^{p-1}}{(1+\lambda t^p)^2}$ & $\frac{\lambda p t^{p-1}}{(1+\lambda t^p)}$ \\ \hline
 \end{tabular}
 \end{center}
-\end{block} 
-Typically, you will reparameterize in order to allow for the effect of covariates. 
-\end{frame} 
+\end{block}
+Typically, you will reparameterize in order to allow for the effect of covariates.
+\end{frame}
 
 
 \begin{frame}
@@ -154,7 +142,7 @@ S(t;X) = \exp(-\lambda t) = \exp[-(\beta_0 + \beta_1 X)t]
 \]
 where $X$ is a single covariate. \\
 
-You might have $\hat{\beta}_0=.2$ and $\hat{\beta}_0=.3$ so for $X=1$ you have
+You might have $\hat{\beta}_0=.2$ and $\hat{\beta}_1=.3$ so for $X=1$ you have
 \[
 \hat{S}(t;1) = \exp(-0.5 t)
 \]
@@ -168,7 +156,7 @@ You might have $\hat{\beta}_0=.2$ and $\hat{\beta}_0=.3$ so for $X=1$ you have
 
 
 
- 
+
  \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Definition 7.1 - Three properties of survival analysis populations}
@@ -186,25 +174,38 @@ Let $X$ and $X^*$ be any two different specifications of the covariates.
 \end{block}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Assumptions of some parametric distributions }
 \begin{center}
 \begin{tabular}{ c c c | c }
 Distribution & $S(t)$ & $h(t)$ & Accommodates \\ \hline
-Exponential & $\exp(\lambda t)$ & $\lambda$ & PH, AFT \\
+Exponential & $\exp(-\lambda t)$ & $\lambda$ & PH, AFT \\
 Weibull  & $\exp(-\lambda t^p)$ & $\lambda p t^{p-1}$ & PH, AFT\\
 Log-logistic & $\frac{1}{1+\lambda t^p}$ & $ \frac{\lambda p t^{p-1}}{1+\lambda t^p}$ & PO, AFT
 \end{tabular}
 \end{center}
 \end{block}
-We will show each of these. 
+We will show each of these.
 \end{frame}
- 
- 
+
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{Illustration of Accelerated Failure Time property} 
+\begin{block}{Illustration 1 of Accelerated Failure Time property}
+It is said ``every dog year is seven human years''. So if $X=0$ is dogs and $X=1$ is humans then
+\[
+S(t,0) = S(7t,1) \text{ for any } t>0.
+\]
+\begin{center}
+        \includegraphics[width=5cm, height=4.5cm]{CH7_Dogs.JPG}
+    \end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Illustration 2 of Accelerated Failure Time property}
 Assume our survival random variable ($T$) is time to death of 60 years olds and $X$ is smoking status (0=non-smoker, 1=smoker).
 Assume we have
 \[
@@ -217,14 +218,14 @@ Then
  and
 \[S(15;0) = P(T_0>15) = S(10;1) = P(T_1>10)
 \]
-Note we have $S((3/2)t;0) = S(t;1)$ and $T_1=(3/2)T_0$. 
+Note we have $S((3/2)t;0) = S(t;1)$ and $T_1=(2/3)T_0$.
 \end{block}
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{Accelerated Failure Time property} 
+\begin{block}{Accelerated Failure Time property}
 In general, if we have the AT property for some $\gamma$ so that
 \[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
 \]
@@ -235,24 +236,13 @@ and if $T_X$ and $T_{X^*}$ are respective conditional random variables then
 \[
 \gamma T_X = T_{X^*}
 \]
-\end{block} 
-\end{frame} 
-
-
-\begin{frame}
-\frametitle{Parametric Survival Models}
-\begin{block}{Proportional odds property} 
-``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$. 
-\vspace{10pt} 
-
-Example: We might have: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
 \end{block}
-\end{frame} 
+\end{frame}
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{Properties}
-Exponential accommodates PH: Let
+\begin{block}{Exponential accommodates PH}
+Exponential accommodates PH. Why? Let
 \[
 \lambda=\exp(\beta_0 + \beta' X)
 \] where $\beta, X$ are both $p \times 1$.
@@ -261,42 +251,42 @@ Then
 \text{HR}(X \text{ vs. } X^*)  = \dfrac{\exp(\beta_0 + \beta' X)}{\exp(\beta_0 + \beta' X^*)} = \exp(\beta'(X - X^*))
 \]
 \end{block}
-\end{frame} 
+\end{frame}
 
 \begin{frame}
-\frametitle{Parametric Survival Models} 
-\begin{block}{Properties} 
+\frametitle{Parametric Survival Models}
+\begin{block}{Exponential accommodates AFT.}
 Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
 \begin{align*}
-& q = S(t) = \exp(\lambda t) \implies \ln(q) = - \lambda t \implies \\
+& q = S(t) = \exp(- \lambda t) \implies \ln(q) = - \lambda t \implies \\
 & t = \frac{1}{\lambda} (- \ln(q)).
 \end{align*}
 Let
 \[
-\frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
+\frac{1}{\lambda} = \exp(\alpha_0 + \alpha'X)
 \]
-Then $\exp(\alpha_0 + \alpha_1'X)(- \ln(q))$ is time to ``reach" $q$ for any $X$. Thus, 
-\vspace{-10pt} 
+Then $\exp(\alpha_0 + \alpha_1'X)(- \ln(q))$ is time to ``reach" $q$ for any $X$. Thus,
+\vspace{-10pt}
 \[
-\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha_1'X)}{\exp(\beta_0 + \beta'X^*}) = \exp(\alpha_1'(X-X^*)).
+\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha'X)}{\exp(\alpha_0 + \alpha'X^*)} = \exp(\alpha'(X-X^*)).
 \]
 \end{block}
-\end{frame} 
+\end{frame}
 
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{Properties}
+\begin{block}{Relationship between AF and HR for exponential model}
 Relationship between AF and HR for exponential model. We have
 \[
-\lambda = \exp(\beta_0 + \beta_1'X) \text{ and } \frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1'X)
+\lambda = \exp(\beta_0 + \beta'X) \text{ and } \frac{1}{\lambda} = \exp(\alpha_0 + \alpha'X)
 \]
 Thus,
-\[ \ln(\lambda) = \beta_0 + \beta_1'X = -\alpha_0 - \alpha_1'X \implies \beta_i = -\alpha_i, \, i=0,1 \]
+\[ \ln(\lambda) = \beta_0 + \beta'X = -\alpha_0 - \alpha'X \implies \beta_0 = -\alpha_0 \text{ and } \beta'=-\alpha' \]
 Thus,
 \begin{align*}
-&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta_1'(X - X^*)) =\\
-&\exp(-\alpha_1'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
+&\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta'(X - X^*)) =\\
+&\exp(-\alpha'(X - X^*)) = 1/\text{AF}(X \text{ vs. } X^*) = 1/\gamma.
 \end{align*}
 \end{block}
 \end{frame}
@@ -318,7 +308,19 @@ We have hazard ratio
 \]
  \end{block}
  \end{frame}
- 
+
+\begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
+\begin{block}{As a AFT model}
+Assuming an exponential distribution, we parameterize
+\[ \frac{1}{\lambda} = \exp(\alpha_0 + \alpha_1 TRT)
+\]
+We have AF factor
+\[
+\text{ AF(TR=0 vs. TR=1) } = \exp(\alpha_1 \text{TR})
+\]
+ \end{block}
+ \end{frame}
+
 \begin{frame}{Example 7.2 - Modeling Remission Data w/Exponential Model, cont'd}
 \begin{block}{As a AFT model}
 Assuming an exponential distribution, we parameterize
@@ -332,8 +334,27 @@ We have AF factor
  \end{frame}
 
 
+ \begin{frame}{Modeling Remission Data w/Exponential Model}
+\begin{block}{Problem 7.1 (cont'd)}
+\begin{enumerate}
+\item Fit a AFT exponential model to the Remission data using only covariate TR.
+\item Give the fitted AFT model and the AF for TR.
+\item Give the fitted PH models and the HR  for TR.
+\end{enumerate}
+ \end{block}
+ \end{frame}
 
 
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Proportional odds property}
+``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$.
+\vspace{10pt}
+
+Example: We might have: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+\end{block}
+\end{frame}
 
 
 
