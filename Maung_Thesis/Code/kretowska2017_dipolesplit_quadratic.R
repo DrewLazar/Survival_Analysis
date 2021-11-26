@@ -137,6 +137,10 @@ Remission.phipm <- phipmcount(Remission.Zmatrix,
                               c(-mean(Remission$logWBC), 0, 1),
                               Remission.poms)
 
+#Remission.phipm <- phipmcount(Remission.Zmatrix,
+#                              c(-2.65, 0.395, 1),
+#                              Remission.poms)
+
 # Linear Programming Library
 if (!require("lpSolve")) {
   install.packages("lpSolve")

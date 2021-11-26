@@ -34,7 +34,6 @@ for (i in 1:22)
     b[k]=Rem.md0[i]
   }
 }
-lines<-cbind(a,b)
+lines<-as.data.frame(cbind(a,b))
 #lines are of the form y+ax=b 
-    
-    
+save(lines, file = "allsplits.rda")
