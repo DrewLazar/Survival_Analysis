@@ -47,6 +47,7 @@ summary(coxph.Rem.int.m1)
 CSstat = -2*(coxph.Rem.m1$loglik[2]-coxph.Rem.int.m1$loglik[2])
 CV = qchisq(.95,df=2)
 CSstat>CV
+pvalue3=pchisq(CSstat,df = 2,lower.tail = FALSE)
 #2
 #HR of TR and CI of HR of TR with with Sex=0 (given in R but we compute below)
 b1=coxph.Rem.int.m1$coefficients[1]

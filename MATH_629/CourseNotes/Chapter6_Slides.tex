@@ -150,7 +150,7 @@ h(t,X) = h_0(t)\exp\left(\sum_{i=1}^p \beta_i X_i \right)
 \end{equation}
 We introduce defined time-dependent covariates in an extended Cox PH model
 \begin{equation} \label{fullintCPH}
-h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)\right]
+h(t,X(t)) = h_0(t) \exp\left[\sum_{i=1}^p \beta_i X_i + \sum_{i=1}^p \delta_i X_i g_i(t)\right]
 \end{equation}
 \end{enumerate}
 \end{block}
@@ -184,11 +184,11 @@ h(t,X(t)) = \exp\left[\sum_{i=1}^p \beta_i X_i + \delta_k X_k g_k(t)\right]
 \begin{block}{Functions used for assessing interaction}
 \begin{itemize}
 \item You want to choose a function, $g_i(t)$, that reflects the possible interaction between the covariate $X_i$ and time.
-\item For example, assume the study is over the period (1,6). If the affect of an exposure variable $E (0 \text{ or } 1)$ is
+\item For example, assume the study is over the period (1,6). If the effect of an exposure variable $E (0 \text{ or } 1)$ is
 \begin{enumerate}
 \item increasing but decelerating with time you might use $g_i(t)= \ln(t)$.
 \item decreasing rapidly with time you might use $g_i(t)=\exp(-(t-1))$.
-\item increasing rapidly with time you might use $g_i(t)=(t-1)^2+2$ where 2 is the hazard ratio at the start of the study.
+\item increasing rapidly with time you might use $g_i(t)=(t-1)^2+2$ where 2 reflects the hazard ratio at the start of the study.
 \end{enumerate}
 \end{itemize}
 \end{block}

@@ -250,7 +250,7 @@ h_g&(t;X)= h_{0,g}\exp[\tilde{\beta}_1X_1 + \ldots + \tilde{\beta}_p X_p \\
 \]
 \item For example 5.2 (Remission data) we have $g=2, k^*=2, X_1=\text{TR}, X_2=\text{logWBC}, Z_1^*=\text{Sex}$.
 \begin{align*}
-&h_g(t,X) = \beta_{1g} \exp( X_1 + \beta_{2g} X_2)  \text{ or } \\
+&h_g(t,X) = h_{0,g}(t) \exp(\beta_{1g} X_1 + \beta_{2g} X_2)  \text{ or } \\
 &h_g(t,X) = h_{0,g}(t)\exp[\beta_1^*X_1  + \beta_2^*X_2 + \beta_3^*Z_1^*\times X_1 + \beta_4^*Z_1^*\times X_2 ]  \\
 &\text{or } h_g(t,X) = h_{0,g}(t)\exp[\tilde{\beta}_1X_1  + \tilde{\beta}_2X_2 + \tilde{\beta}_{11}Z_1^*\times X_1 + \tilde{\beta}_{21}Z_1^*\times X_2 ]
 \end{align*}
@@ -328,7 +328,7 @@ The list of the variables is given as follows:
     \hspace{-10pt}
     \begin{column}{0.48\textwidth}
          \includegraphics[width =\textwidth, height=5cm]{CH5_G2.JPG}
-         a. Interaction and no stratification model.
+         b. Interaction and no stratification model.
     \end{column}
 \end{columns}
 \end{block}

@@ -136,8 +136,8 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 #HR for Setting and 95% CI for HR for Setting with MFt=0. 
 b1=coxph.Ven.int.m1$coefficients[1]
 exp(b1)
-exp(b1-1.96*0.18159)
-exp(b1+1.96*0.18159)
+exp(b1-1.96*0.17398)
+exp(b1+1.96*0.17398)
 ```
 ```{r}
 #We use a trick here and recode Mft=0 as Mft2=-1 and Mft=1 as Mft2=0 and refit the model with Mft2 rather than Mft. 
@@ -159,7 +159,7 @@ This agrees with the interaction term with Setting having a p-value of 0.501 (us
 The model is
 \begin{align*}
 h(t;X)=h_0(t)\exp(&\beta_1 X_4 +  \beta_2 X_5 + \beta_3 X_6 + \beta_4 X_4*X_1 + \beta_5 X_5*X_1 + \beta_6 X_6*X_1 \\
-                  &+\beta_4 X_4*X_1 + \beta_5 X_5*X_1 + \beta_6 X_6*X_1)
+                  &+\beta_4 X_4*X_2 + \beta_5 X_5*X_2 + \beta_6 X_6*X_2)
 \end{align*}
 \begin{enumerate}
 \item If the patient Nasopharynx throat cancer $X_1=1$ and $X_2=0$. Let 
@@ -169,26 +169,26 @@ X &= (X_1,X_2,X_4,X_5,X_6) = (1,0,X_4,X_5,1) \\
 \end{align*} 
 The estimated HR for chemotherapy vs. surgery ($X_6=1$ vs. $X_6=0$) is
 \[
-\hat{HR} = \frac{\hat{h}(t;X)}{\hat{h}(t;\tilde{X})} = \hat{\beta}_3 + \hat{\beta}_6 = \exp(0.45671) + \exp(-0.307024) = 2.3145
+\hat{HR} = \frac{\hat{h}(t;X)}{\hat{h}(t;\tilde{X})} = \exp(\hat{\beta}_3 + \hat{\beta}_6) = \exp(0.45751 -0.307024) = 1.16240
 \]
 \item Similarly, if the patient has Oropharynx throat cancer $X_1=0$ and $X_2=1$ and the estimated HR for chemotherapy vs. surgery ($X_6=1$ vs. $X_6=0$) is
 \[
-\hat{HR} = \hat{\beta}_3 + \hat{\beta}_9 = \exp(0.45671) + \exp(0.907024) = 4.05581
+\hat{HR} = \exp(\hat{\beta}_3 + \hat{\beta}_9) = \exp(0.45751 + 0.907024) = 3.91390
 \]
-\item If the patient has Oropharynx throat cancer $X_1=0$ and $X_2=0$ and the estimated HR for chemotherapy vs. surgery ($X_6=1$ vs. $X_6=0$) is
+\item If the patient has Hypopharynx throat cancer $X_1=0$ and $X_2=0$ and the estimated HR for chemotherapy vs. surgery ($X_6=1$ vs. $X_6=0$) is
 \[
-\hat{HR} = \hat{\beta}_3 = \exp(0.45671) = 1.57887.
+\hat{HR} = \exp(\hat{\beta}_3) = \exp(0.45751) = 1.58013.
 \]
 \end{enumerate}
-Note: A patient's age and BMI have no effect on the estimated HR as neither interaction between age and $X6$ nor interaction between BMI and $X6$ are included in the model.  
+Note: A patient's age and BMI have no effect on the estimated HR as neither interaction between age and $X6$ nor interaction between BMI and $X6$ are included in the model. 
+
 ## 6. 
 ```{r}
 #Create and plot our partial likelihood. 
 f1.1<-function(b) 1/(exp(b*2)+2*exp(1.5*b)+1)
 f1.2<-function(b) exp(2*b)/(exp(2*b)+2*exp(1.5*b))
-f2.1<-function(b) exp(b)/(2*exp(b)+exp(2*b))
-f2.2<-function(b) exp(b)/(exp(b)+exp(2*b))
-f<-function(b) f1.1(b)*f1.2(b)*f2.1(b)*f2.2(b)
+f2.1<-function(b) exp(b)/(exp(b)+exp(2*b))
+f<-function(b) f1.1(b)*f1.2(b)*f2.1(b)
 x <- seq(-20,10,0.01)
 plot(x, f(x))   
 ```
@@ -209,8 +209,9 @@ coxph(S~Dose+strata(Type),data=Alcohol)
 h_g(t;Coupon) = h_{0g}(t)\exp(\beta * Coupon) \text{ for } g=1,2
 \]
 where $g=1,2$ indicates two strata of medication type. Maximizing our partial likelihood returns an estimate $\hat{\beta}=-1.844587$ and using the coxph routine in R return an estimate of -1.6913. Using R to estimate the effect of a unit increase in Dose on the hazard (i.e. the HR) we get $\hat{HR}=\exp(-1.6913)=0.1843$. That is, for every unit increase in Dose, the hazard goes down by 1-0.1843=0.8157=81.57\% regardless of type (as there is no interaction).  
+
 ## Chapter 6
-## 6 i. 
+## 7 i. 
 ```{r}
 #Our adjusted survival Curves. 
 Coxph.ven3=coxph(Y~Setting+LO2+Mft,data=Ven.reset)
@@ -222,18 +223,19 @@ par(new=TRUE)
 plot(survfit(Coxph.ven3,newdata=pattern2),conf.int=F,col=c("red"))
 legend("topright",c("Mft=0","Mft=1"), lty=c("solid"),col=c('blue','red'))
 ```
-##6 ii.
+
+##7 ii.
 ```{r}
-#Based on the adjusted survival curve we choose t=4 as a split (or cut) point. 
-Venreset.cp4=survSplit(Ven.reset,cut=4,end="eventtime",event="status",start="start",id="id")
-Venreset.cp4$hv2=Venreset.cp4$Mft*(Venreset.cp4$start>=4)
-Y4=Surv(Venreset.cp4$start,Venreset.cp4$eventtime,Venreset.cp4$status)
-coxph.Venreset.hs2<-coxph(Y4 ~ Setting + LO2 + Mft + hv2 + cluster(id),data=Venreset.cp4)
+#Based on the adjusted survival curve we choose t=3.5 as a split (or cut) point. 
+Venreset.cp3.5=survSplit(Ven.reset,cut=3,end="eventtime",event="status",start="start",id="id")
+Venreset.cp3.5$hv2=Venreset.cp3.5$Mft*(Venreset.cp3.5$start>=3)
+Y4=Surv(Venreset.cp3.5$start,Venreset.cp3.5$eventtime,Venreset.cp3.5$status)
+coxph.Venreset.hs2<-coxph(Y4 ~ Setting + LO2 + Mft + hv2 + cluster(id),data=Venreset.cp3.5)
 summary(coxph.Venreset.hs2)
 ```
 **Comment:**Our model is 
 \[
-h(t;X)=h(t)\exp(\beta_1 Setting + \beta_2 LO2 + \delta h(t)*Mft )
+h(t;X)=h(t)\exp(\beta_1 Setting + \beta_2 LO2 + \beta_3 + \delta h(t)*Mft )
 \]
 where 
 \[
@@ -241,18 +243,18 @@ h(t) = \begin{cases} 1 \text{ if } t \ge 0 \\
                      0 \text{ if } t < 0.
         \end{cases}
 \]
-As $\delta$ has p-value of $0.0869$ the interaction term is significant at level $\alpha=0.05$. 
+As $\delta$ has p-value of $0.0160$ the interaction term is significant at level $\alpha=0.05$. 
 The estimated HR is 
 \[
-\hat{HR}=\exp(\hat{\beta}_1 + \hat{\delta} h(t))
+\hat{HR}=\exp(\hat{\beta}_3 + \hat{\delta} h(t))
 \]
 
 \begin{enumerate}
-\item[]The estimated HR before time $t=4$ is $\hat{HR}=\exp(1.01996)=2.77308$. 
-\item[] The estimated hazard ratio after time $t=4$ is $\hat{HR}=\exp(1.01996+0.63812)=5.24922.$
+\item[]The estimated HR before time $t=3.5$ is $\hat{HR}=\exp(-0.51445  )=0.597829$. 
+\item[] The estimated hazard ratio after time $t=3.5$ is $\hat{HR}=\exp(-0.51445+0.84088)=1.38601.$
 \end{enumerate}
 
-## 6iii. 
+## 7iii. 
 ```{r}
 #We fit an extended model with h(t)=ln(t)
 Venreset.cp=survSplit(Ven.reset,cut=Ven.reset$eventtime[Ven.reset$status==1],end="eventtime",event="status",start="start",id="id")
@@ -265,16 +267,16 @@ summary(coxph.venreset.ct)
 ```
 **Comment:**Our model is 
 \[
-h(t;X)=h(t)\exp(\beta_1 Setting + \beta_2 LO2 + \delta \ln(t)*Mft )
+h(t;X)=h(t)\exp(\beta_1 Setting + \beta_2 LO2 + \beta_3 Mft + \delta \ln(t)*Mft )
 \]
 As $\delta$ has p-value of $0.000282$ the interaction term is significant at level $\alpha=0.05$. 
 The estimated HR is 
 \[
-\hat{HR}=\exp(\hat{\beta}_1 + \hat{\delta} \ln(t))
+\hat{HR}=\exp(\hat{\beta}_3 + \hat{\delta} \ln(t))
 \]
 \begin{enumerate}
-\item[] At time $t=1.9$ we have $\hat{HR}=\exp(1.01996+0.49864ln(1.9))=3.8191.$.
-\item[] At time $t=4.5$ we have $\hat{HR}\exp(1.01996+0.49864ln(4.5))=5.87058.$
-\item[] At time $t=10$ we have $\hat{HR}\exp(1.01996+0.49864ln(4.5))=8.74184.$
+\item[] At time $t=1.9$ we have $\hat{HR}=\exp(-0.54836 +0.49864ln(1.9))=0.795881.$
+\item[] At time $t=4.5$ we have $\hat{HR}\exp(-0.54836 +0.49864ln(4.5))=1.22340.$
+\item[] At time $t=10$ we have $\hat{HR}\exp(-0.54836 +0.49864ln(10))=1.82176.$
 \end{enumerate}
-Notice that $\hat{HR}$ at time 1.9 and 4.5 are similar to ones provided by our Heaviside model (before time t=4 and after time t=4). 
+Notice that $\hat{HR}$ at time 1.9 and 4.5 are similar to ones provided by our Heaviside model (before time t=3.5 and after time t=3.5). 
