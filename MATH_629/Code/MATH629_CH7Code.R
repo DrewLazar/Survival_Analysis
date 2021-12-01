@@ -8,7 +8,56 @@ library(survival)
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 #load Remission data 
 load("Remission.rda")
+#7.1
 #Create a Survival object 
 Y<-Surv(Remission$survt,Remission$status)
-modpar1=survreg(Y~TR,data=Remission,dist="exponential")
+#1.i.  
+mod.exp1=survreg(Y~TR,data=Remission,dist="exponential")
+summary(mod.exp1)
+alpha0=as.vector(mod.exp1$coefficients[1]); alpha1=as.vector(mod.exp1$coefficients[2])
+#estimate AF
+AF=exp(alpha1)
+#95% CI for AF
+lb.af = exp(alpha1 - 1.96*.398)
+ub.af = exp(alpha1 + 1.96*.398)
+#1.ii. 
+beta0 = -alpha0; beta1 = -alpha1;
+#estimate HR
+HR=exp(beta1)
+#95% CI for HR
+lb.hr = 1/ub.af; ub.hr = 1/lb.af
+#2.i 
+mod.exp2=survreg(Y~TR+logWBC,data=Remission,dist="exponential")
+summary(mod.exp2)
+alpha0=as.vector(mod.exp2$coefficients[1]); alpha1=as.vector(mod.exp2$coefficients[2])
+alpha2=as.vector(mod.exp2$coefficients[3])
+#estimate AF
+AF=exp(alpha1)
+#95% CI for AF
+lb.af = exp(alpha1 - 1.96*0.413)
+ub.af = exp(alpha1 + 1.96*0.413)
+#2.ii. 
+beta0 = -alpha0; beta1 = -alpha1; beta2=-alpha2 
+#estimate HR
+HR=exp(beta1)
+#95% CI for HR
+lb.hr = 1/ub.af; ub.hr = 1/lb.af
+#2.iii. 
+mod.int.exp2=survreg(Y~TR+logWBC+logWBC:TR,data=Remission,dist="exponential")
+summary(mod.int.exp2)
+#likelihood ratio test for significance of interaction
+CSstat = -2*(mod.exp2$loglik[2]-mod.int.exp2$loglik[2])
+CV = qchisq(.95,df=1)
+CSstat>CV
+pvalue=pchisq(CSstat,df = 1,lower.tail = FALSE)
+#2.iv. 
+alpha0=as.vector(mod.int.exp2$coefficients[1]); alpha1=as.vector(mod.int.exp2$coefficients[2])
+alpha2=as.vector(mod.int.exp2$coefficients[3]); alpha3=as.vector(mod.int.exp2$coefficients[4])
+Q1 = as.vector(quantile(Remission$logWBC)[2]); Q2 = as.vector(quantile(Remission$logWBC)[3]) 
+Q3 = as.vector(quantile(Remission$logWBC)[4])
+AF1 = exp(alpha1 + Q1*alpha3); AF2 = exp(alpha1 + Q2*alpha3); AF3 = exp(alpha1 + Q3*alpha3)
+HR1 = exp(-alpha1 - Q1*alpha3); HR2 = exp(-alpha1 - Q2*alpha3); HR3 = exp(-alpha1 - Q3*alpha3)
+
+
+
             
