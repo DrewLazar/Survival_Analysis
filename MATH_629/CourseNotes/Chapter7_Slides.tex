@@ -322,7 +322,7 @@ We have AF factor
  \end{frame}
 
  \begin{frame}{Modeling Remission Data w/Exponential Model}
-\begin{block}{Problem 7.1}
+\begin{block}{Problem 7.1 - Modeling the Remission Data with an exponential model}
 \begin{enumerate}
 \item Fit an AFT exponential model to the Remission data using only covariate TR.
 \begin{enumerate}[i.]
@@ -340,6 +340,91 @@ We have AF factor
  \end{block}
  \end{frame}
 
+\begin{frame} 
+\frametitle{Parametric Survival Models}\
+\begin{block}{Weibull Model} 
+\begin{itemize}
+\item Most widely used parametric model 
+\item It's hazard function is given
+\[ h(t) = \lambda p t^{p-1} \text{ with } p>0, \lambda >0 
+\]
+\item $p$ is known as the shape parameter. 
+\begin{itemize}
+\item If $p>1$ hazard increases over time
+\item If $p=1$ constant hazard (exponential model)
+\item If $p<1$ hazard decreases over time
+\end{itemize}
+\item Typically $\lambda$ is parameterized to account for covariates and $p$ is fixed.
+\item With $p$ fixed Weibull accommodates both PH and AFT models. 
+\end{itemize} 
+\end{block}
+\end{frame} 
+ 
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Weibull Model (cont'd)}
+\begin{itemize}
+\item The $\ln(-\ln(S(t))$ curve is linear function of $\ln(t)$ with slope $p$. 
+\[ S(t)  = \exp(-\lambda t^p) \implies \ln[-ln(S(t)] = \ln(\lambda) + p \ln(t) 
+\]
+\item Thus, you can check if a Weibull model (with constant $p$) is appropriate by plotting $ln(t)$ against KM survival curves for specifications of covariates of interest. The lines should be straight and parallel. 
+
+\end{itemize} 
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Weibull Model (cont'd)}
+Summary of results of $\ln[-ln(S(t)]$ plots
+\begin{enumerate}
+\item Parallel straight lines $\implies$ Weibull thus PH and AFT assumptions hold. 
+\item Parallel straight lines with slope 1 $\implies$ Exponential thus PH and AFT assumptions hold. 
+\item Parallel but not straight lines $\implies$ PH not Weibull, no AFT (can use Cox)
+\item Not parallel and not straight $\implies$ Not Weibull, PH violated
+\item Not parallel but straight lines $\implies$ Weibull holds with non-constant $p$, not PH nor AFT. 
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Weibull accommodates PH}
+Exponential accommodates PH. Why? Let
+\[
+\lambda=\exp(\beta_0 + \beta' X) \text{ so that }  h(t) = \exp[(\beta_0 + \beta' X) p t^{p-1}]
+\] where $\beta, X$ are both $p \times 1$.
+Then
+\[
+\text{HR}(X \text{ vs. } X^*)  = \dfrac{ \exp[(\beta_0 + \beta' X) p t^{p-1}]}{ \exp[(\beta_0 + \beta' X*) p t^{p-1}]} = \exp(\beta'(X - X^*))
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Weibull accommodates AFT.}
+Exponential accommodates AFT. Why? For any survival time $0 < q < 1$ solve
+\begin{align*}
+& q = S(t) =  \exp(-\lambda t^p) \implies \ln(q) = - \lambda t^p \implies \\
+& t = \left(\frac{1}{\lambda}\right)^{1/p} [- \ln(q))]^{1/p}.
+\end{align*}
+Let
+\[
+\left(\frac{1}{\lambda}\right)^{1/p} = \exp(\alpha_0 + \alpha'X)
+\]
+Then $\exp(\alpha_0 + \alpha_1'X)[- \ln(q)]^{1/p}$ is time to ``reach" $q$ for any $X$. Thus,
+\vspace{-10pt}
+\[
+\gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha'X)}{\exp(\alpha_0 + \alpha'X^*)} = \exp[\alpha'(X-X^*)].
+\]
+\end{block}
+\end{frame}
+
+
+
+ 
 
 
 \begin{frame}

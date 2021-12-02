@@ -57,7 +57,26 @@ Q1 = as.vector(quantile(Remission$logWBC)[2]); Q2 = as.vector(quantile(Remission
 Q3 = as.vector(quantile(Remission$logWBC)[4])
 AF1 = exp(alpha1 + Q1*alpha3); AF2 = exp(alpha1 + Q2*alpha3); AF3 = exp(alpha1 + Q3*alpha3)
 HR1 = exp(-alpha1 - Q1*alpha3); HR2 = exp(-alpha1 - Q2*alpha3); HR3 = exp(-alpha1 - Q3*alpha3)
-
+#Example 7.1 
+rm(list=ls())
+#load the necessary packages 
+library(dplyr); library(survival); library(crone)
+#load the R Survival package 
+#Remove any variables in your environment 
+#Set working directory 
+setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
+#load Remission data 
+load("Remission.rda")
+#Problem 4.1
+#Create a Survival Object 
+Y<-Surv(Remission$survt,Remission$status==1)
+#Fit KM curves against TR
+kmfitTR2<-survfit(Y~TR,data=Remission)
+#Plot log(-log) survival curves against survt - note this function
+#takes the log of the negative log (doesn't use another negative). Also the survt
+#is plotted on a log scale. 
+windows(width=10, height=8)
+plot(kmfitTR2,fun="cloglog",xlab="time in weeks on log scale",ylab="log-log survival", col=c('blue','green'), main="log-log curves by treatment")
 
 
             
