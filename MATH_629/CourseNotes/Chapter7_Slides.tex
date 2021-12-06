@@ -391,7 +391,7 @@ Summary of results of $\ln[-ln(S(t)]$ plots
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Weibull accommodates PH}
-Exponential accommodates PH. Why? Let
+Weibull accommodates PH. Why? Let
 \[
 \lambda=\exp(\beta_0 + \beta' X) \text{ so that }  h(t) = \exp[(\beta_0 + \beta' X) p t^{p-1}]
 \] where $\beta, X$ are both $p \times 1$.
@@ -414,7 +414,7 @@ Let
 \[
 \left(\frac{1}{\lambda}\right)^{1/p} = \exp(\alpha_0 + \alpha'X)
 \]
-Then $\exp(\alpha_0 + \alpha_1'X)[- \ln(q)]^{1/p}$ is time to ``reach" $q$ for any $X$. 
+Then $\exp(\alpha_0 + \alpha_1'X)[- \ln(q)]^{1/p}$ is time to ``reach" $q$ for any $X$.
 \vspace{-10pt}
 \[
 \gamma = \text{AF($X$ vs. $X^*$)} = \frac{\exp(\alpha_0 + \alpha'X)}{\exp(\alpha_0 + \alpha'X^*)} = \exp[\alpha'(X-X^*)].
@@ -434,36 +434,84 @@ Thus,
 Thus,
 \begin{align*}
 &\theta = \text{HR}(X \text{ vs. } X^*) = \exp(\beta'(X - X^*)) =\\
-&\exp(-p\alpha'(X - X^*)) = 1/[\text{AF}(X \text{ vs. } X^*)]^p = (1/\gamma)^p. 
+&\exp(-p\alpha'(X - X^*)) = 1/[\text{AF}(X \text{ vs. } X^*)]^p = (1/\gamma)^p.
 \end{align*}
 \end{block}
 \end{frame}
 
-\begin{frame} 
-\frametitle{Parametric Survival Models} 
-\begin{block}{Problem 7.2 - Fitting a Weibull Model to the Remission Data} 
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Problem 7.2 - Fitting a Weibull Model to the Remission Data}
 \begin{enumerate}
-\item Test the appropriateness of the Weibull Model for just TR using a log-log plot. 
-\item Fit a AFT Weibull Model with just TR and give the AF. Give $95\%$ CI for the AF. Is TR a significant predictor? 
+\item Test the appropriateness of the Weibull Model for just TR using a log-log plot.
+\item Fit a AFT Weibull Model with just TR and give the AF. Give $95\%$ CI for the AF. Is TR a significant predictor?
 \item Fit a PH  Weibull Model with just TR and give the HR. Give $95\%$ CI for the HR.
-\item Plot estimated survival curves for $TR=0$ and $TR=1$. 
-\item Estimate the first, second and third quartiles of the treatment ($TR=0$) and placebo ($TR=1$) groups. 
-\end{enumerate} 
-\end{block} 
-\end{frame} 
+\item Plot estimated survival curves for $TR=0$ and $TR=1$.
+\item Estimate the first, second and third quartiles of the treatment ($TR=0$) and placebo ($TR=1$) groups. What is the relationship between the estimated percentiles of the placebo group and of the treatment group? 
+\item Compare the HR of a Cox PH model to the HR of the Weibull model. 
+\end{enumerate}
+\end{block}
+\end{frame}
 
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Comparing Weibull and Cox PH models}
+\begin{itemize}
+\item Cox PH Model: only estimate $\beta$. Don't estimate baseline. 
+\[ 
+h(t,X) = h_0(t)\exp(\beta'X)
+\]
+\item Weibull Model: estimate $\beta_0, \beta', p$ and thus estimate baseline. 
+\begin{align*} 
+h(t,X) &= \lambda p  t^{p-1} \\
+&=\exp(\beta_0 + \beta'X)p t^{p-1} \\
+&=\exp(\beta_0)p t^{p-1} \exp(\beta'X) 
+\end{align*}   
+$h(t,0) = \exp(\beta_0)p t^{p-1}$ is the baseline. 
+\end{itemize} 
+\end{block}
+\end{frame}
 
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Proportional odds (PO) property}
+``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$.
+\[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
+\]
+Example: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Log-Logistic Model}
+\vspace{-20pt} 
+\begin{align*} 
+h(t)&=\frac{1}{1+\lambda t^p}  \\
+S(t)&= \frac{\lambda p t^{p-1}}{1+\lambda t^p}
+\end{align*} 
+The Log-Logistic model accommodates PO models and AFT models but not PH models.
+\end{block}
+\end{frame}
 
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
-\begin{block}{Proportional odds property}
-``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$.
-\vspace{10pt}
-
-Example: We might have: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+\begin{block}{Log-Logistic Model as a PO model}
+\begin{itemize}
+\item The PO for a Log-Logistic model is given as 
+\[
+\frac{1-S(t)}{S(t)} = \frac{\left(\frac{\lambda t^p}{1+\lambda t^p}\right)}{\left(\frac{1}{1+\lambda t^p}\right)} = \lambda t^p
+\]
+\item To accommodate covariates we set $\lambda=\exp{\beta_0 + \beta'X}$.
+Then for $X$ and $X^*$ we have failure odds ratio (FOR)
+\[
+FOR = \tau = \frac{\exp(\beta_0 + \beta'X)t^p}{\exp(\beta_0 + \beta'X^*)t^p} = \exp(\beta'(X-X^*)).
+\]
+\end{itemize} 
 \end{block}
 \end{frame}
+
 
 
 

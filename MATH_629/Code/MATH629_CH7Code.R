@@ -91,7 +91,7 @@ ub.hr = (1/lb.af)^p;
 #For TR=0
 pattern1=data.frame(TR=0)
 pct2=0:1000/1000
-days2=predict(modpar2,newdata=pattern1,
+days2=predict(mod.wbl1,newdata=pattern1,
               type="quantile",p=pct2)
 survival=1-pct2
 plot(days2,survival,xlab="survival time in days",ylab= "survival
