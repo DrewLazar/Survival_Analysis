@@ -447,8 +447,8 @@ Thus,
 \item Fit a AFT Weibull Model with just TR and give the AF. Give $95\%$ CI for the AF. Is TR a significant predictor?
 \item Fit a PH  Weibull Model with just TR and give the HR. Give $95\%$ CI for the HR.
 \item Plot estimated survival curves for $TR=0$ and $TR=1$.
-\item Estimate the first, second and third quartiles of the treatment ($TR=0$) and placebo ($TR=1$) groups. What is the relationship between the estimated percentiles of the placebo group and of the treatment group? 
-\item Compare the HR of a Cox PH model to the HR of the Weibull model. 
+\item Estimate the first, second and third quartiles of the treatment ($TR=0$) and placebo ($TR=1$) groups. What is the relationship between the estimated percentiles of the placebo group and of the treatment group?
+\item Compare HR of Cox PH model to HR of the Weibull model.
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -457,18 +457,18 @@ Thus,
 \frametitle{Parametric Survival Models}
 \begin{block}{Comparing Weibull and Cox PH models}
 \begin{itemize}
-\item Cox PH Model: only estimate $\beta$. Don't estimate baseline. 
-\[ 
+\item Cox PH Model: only estimate $\beta$. Don't estimate baseline.
+\[
 h(t,X) = h_0(t)\exp(\beta'X)
 \]
-\item Weibull Model: estimate $\beta_0, \beta', p$ and thus estimate baseline. 
-\begin{align*} 
+\item Weibull Model: estimate $\beta_0, \beta', p$ and thus estimate baseline.
+\begin{align*}
 h(t,X) &= \lambda p  t^{p-1} \\
 &=\exp(\beta_0 + \beta'X)p t^{p-1} \\
-&=\exp(\beta_0)p t^{p-1} \exp(\beta'X) 
-\end{align*}   
-$h(t,0) = \exp(\beta_0)p t^{p-1}$ is the baseline. 
-\end{itemize} 
+&=\exp(\beta_0)p t^{p-1} \exp(\beta'X)
+\end{align*}
+$h(t,0) = \exp(\beta_0)p t^{p-1}$ is the baseline.
+\end{itemize}
 \end{block}
 \end{frame}
 
@@ -485,11 +485,11 @@ Example: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Log-Logistic Model}
-\vspace{-20pt} 
-\begin{align*} 
+\vspace{-20pt}
+\begin{align*}
 h(t)&=\frac{1}{1+\lambda t^p}  \\
 S(t)&= \frac{\lambda p t^{p-1}}{1+\lambda t^p}
-\end{align*} 
+\end{align*}
 The Log-Logistic model accommodates PO models and AFT models but not PH models.
 \end{block}
 \end{frame}
@@ -499,7 +499,7 @@ The Log-Logistic model accommodates PO models and AFT models but not PH models.
 \frametitle{Parametric Survival Models}
 \begin{block}{Log-Logistic Model as a PO model}
 \begin{itemize}
-\item The PO for a Log-Logistic model is given as 
+\item The PO (odds of failure) for a Log-Logistic model is given as
 \[
 \frac{1-S(t)}{S(t)} = \frac{\left(\frac{\lambda t^p}{1+\lambda t^p}\right)}{\left(\frac{1}{1+\lambda t^p}\right)} = \lambda t^p
 \]
@@ -508,7 +508,104 @@ Then for $X$ and $X^*$ we have failure odds ratio (FOR)
 \[
 FOR = \tau = \frac{\exp(\beta_0 + \beta'X)t^p}{\exp(\beta_0 + \beta'X^*)t^p} = \exp(\beta'(X-X^*)).
 \]
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Log-Logistic Model as a PO model}
+\begin{itemize}
+\item The PO (odds of success) for a Log-Logistic model is given as
+\[
+\frac{S(t)}{1 -S(t)} = \frac{\left(\frac{1}{1+\lambda t^p}\right)}{\left(\frac{\lambda t^p}{1+\lambda t^p}\right)} = \frac{1}{\lambda t^p}
+\]
+\item To accommodate covariates we set $\frac{1}{\lambda}=\exp{\tilde{\beta}_0 + \tilde{\beta}'X}$.
+Then for $X$ and $X^*$ we have success odds ratio (SOR)
+\[
+SOR = \frac{1}{\tau} = \frac{\exp(\tilde{\beta}_0 + \tilde{\beta}'X)\frac{1}{t^p}}{\exp(\beta_0 + \beta'X^*)\frac{1}{t^p}} = \exp(\tilde{\beta}'(X-X^*)).
+\]
+\item With $\beta_0$ and $\beta$ as in previous slide, we have $\beta_0 = -\tilde{\beta}_0$ and $\beta = -\tilde{\beta}$.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Log-Logistic Model as a PO model: testing log-logistic model}
+We can test the appropriateness of the log-logistic model by making the following observation:
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=4cm]{loglogistic1.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=4cm]{loglogistic2.JPG}
+    \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+%
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Log-Logistic Model as a PO model: testing log-logistic model (cont'd)}
+Consider the plot of $\ln(t)$ against the estimated failure odds. From the previous slide we have:
+\begin{enumerate}
+\item Straight lines support the log-logistic assumption
+\item Parallel curves support the PO assumption, and
+\item If the log-logistic and PO assumption hold, then the AFT assumption holds
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Log-Logistic Model as a AFT model}
+We have
+\[
+S(t) = \frac{1}{1 + \lambda t^p} = \frac{1}{1 + \left(\lambda^{1/p}t\right)p}
+\]
+Solving for $t$ we have
+\[
+t = \left[\frac{1}{S(t)} - 1 \right]^{1/p} \times \frac{1}{\lambda^{1/p}}
+\]
+If we allow for the effect of covariates by parameterization 
+\[
+\frac{1}{\lambda^{1/p}} = \exp(\alpha_0 + \alpha_1' X)
+\]
+we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifications of covariates $X$ and $X^*$.  
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Relationship between PO and AFT log-logistic models}
+\begin{itemize}
+\item For the log-logistic PO(success) model we have $\lambda = \exp(\beta_0 + \beta'X)$ and for log-logistic AFT model we have $\frac{1}{\lambda^p} = \exp(\alpha_0 + \alpha'X)$.
+\item As in the Weibull model (with PH and AFT models) we get  $\beta_0 = -p \alpha_0$ and $\beta' = -p \alpha_0$. 
+\item Also, we have 
+\begin{align*}
+& \tau = \text{FOR}(X \text{ vs. } X^*) = \exp(\beta'(X - X^*)) =\\
+&\exp(-p\alpha'(X - X^*)) = 1/[\text{AF}(X \text{ vs. } X^*)]^p = (1/\gamma)^p.
+\end{align*}
 \end{itemize} 
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Different parametric hazard functions}
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \includegraphics[width =\textwidth, height=4cm]{hazardsplots1.JPG}
+    \end{column}
+    \hspace{-10pt}
+    \begin{column}{0.48\textwidth}
+         \includegraphics[width =\textwidth, height=4cm]{hazardplots2.JPG}
+    \end{column}
+\end{columns}
 \end{block}
 \end{frame}
 

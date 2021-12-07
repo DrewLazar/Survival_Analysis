@@ -118,5 +118,11 @@ days=predict(mod.wbl1,newdata=pattern1,type="quantile",p=pct)
 cbind(pct,days)
 
 
+#7.3
+#Fit a log-logistic AFT model 
+modpar3=survreg(Surv(addicts$survt,addicts$status) + prison + dose + clinic,data=addicts,dist="loglogistic")
+#test PO assumption
+kmfit2=survfit(Surv(addicts$survt,addicts$status)~addicts$clinic)
+plot(log(kmfit2$time),log(kmfit2$surv/(1-kmfit2$surv)))
 
             
