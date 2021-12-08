@@ -89,22 +89,23 @@ lb.hr = (1/ub.af)^p;
 ub.hr = (1/lb.af)^p; 
 #7.2.4
 #For TR=0
+windows(width=10, height=8)
 pattern1=data.frame(TR=0)
 pct2=0:1000/1000
 days2=predict(mod.wbl1,newdata=pattern1,
               type="quantile",p=pct2)
 survival=1-pct2
 plot(days2,survival,xlab="survival time in days",ylab= "survival
-     probabilities",main="Weibull survival estimates for TR=0",xlim=c(0,70))
-
+     probabilities",main="Weibull survival estimates for TR=0 vs. TR=1",xlim=c(0,70))
+par(new=TRUE)
 #For TR=1
-pattern1=data.frame(TR=1)
+pattern2=data.frame(TR=1)
 pct2=0:1000/1000
-days2=predict(modpar2,newdata=pattern1,
+days2=predict(mod.wbl1,newdata=pattern2,
               type="quantile",p=pct2)
 survival=1-pct2
 plot(days2,survival,xlab="survival time in days",ylab= "survival
-     probabilities",main="Weibull survival estimates for TR=0",xlim=c(0,70))
+     probabilities",xlim=c(0,70))
 
 #7.2.5
 #For TR=0
@@ -114,15 +115,78 @@ cbind(pct,days)
 #For TR=1 
 
 pct=c(.25,.50,.75)
-days=predict(mod.wbl1,newdata=pattern1,type="quantile",p=pct)
+days=predict(mod.wbl1,newdata=pattern2,type="quantile",p=pct)
 cbind(pct,days)
 
+#7.2.6
+Coxph.TR=coxph(Y~TR,data=Remission)
+summary(Coxph.TR)
 
-#7.3
-#Fit a log-logistic AFT model 
-modpar3=survreg(Surv(addicts$survt,addicts$status) + prison + dose + clinic,data=addicts,dist="loglogistic")
-#test PO assumption
-kmfit2=survfit(Surv(addicts$survt,addicts$status)~addicts$clinic)
+mod.lgl=survreg(Y ~ logWBC,data=Remission,dist="loglogistic")
+kmfit2=survfit(Y~Remission$logWBC.group)
+summary(kmfit2)
 plot(log(kmfit2$time),log(kmfit2$surv/(1-kmfit2$surv)))
 
-            
+
+#7.3 
+load("bears.rda")
+B<-Surv(bears$time,bears$event)
+kmfit2=survfit(B~bears$x1.group)
+#7.3.1
+plot(kmfit2)
+#7.3.2. 
+plot(log(kmfit2$time),log(kmfit2$surv/(1-kmfit2$surv)))
+#7.3.3
+mod.bears.lgl=survreg(B ~ x_1,data=bears,dist="loglogistic")
+summary(mod.bears.lgl)
+alpha0=as.vector(mod.bears.lgl$coefficients[1]); alpha1=as.vector(mod.bears.lgl$coefficients[2]);
+AF=exp(alpha1)
+#95% CI for AF 
+lb.af = exp(alpha1 - 1.96*0.00425)
+ub.af = exp(alpha1 + 1.96*0.00425)
+#7.2.3
+#shape parameter
+p=1/mod.bears.lgl$scale
+#PO Model 
+beta0=-p*alpha0; beta1 = -p*alpha1
+FOR=exp(beta1);
+#checking our formula for the HR
+(1/AF)^p
+#95% CI for FOR
+lb.for = (1/ub.af)^p 
+ub.for = (1/lb.af)^p
+
+bears %>%
+  group_by(x1.group) %>%
+  summarise(mean_x1 = mean(x_1),
+            number_obs = n())
+#for x_1=114
+windows(width=10, height=8)
+pattern1=data.frame(x_1=114)
+pct2=0:1000/1000
+days2=predict(mod.bears.lgl,newdata=pattern1,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days2,survival,xlab="survival time in days",ylab= "survival
+     probabilities",main="Weibull survival estimates for TR=0 vs. TR=1",xlim=c(0,170))
+par(new=TRUE)
+#for x_1=124
+pattern2=data.frame(x_1=124)
+pct2=0:1000/1000
+days2=predict(mod.bears.lgl,newdata=pattern2,
+              type="quantile",p=pct2)
+plot(days2,survival,xlab="survival time in days",ylab= "survival
+     probabilities",xlim=c(0,170))
+par(new=TRUE)
+#for x_1=131
+pattern2=data.frame(x_1=131)
+pct2=0:1000/1000
+days2=predict(mod.bears.lgl,newdata=pattern2,
+              type="quantile",p=pct2)
+plot(days2,survival,xlab="survival time in days",ylab= "survival
+     probabilities",xlim=c(0,170))
+
+
+
+
+

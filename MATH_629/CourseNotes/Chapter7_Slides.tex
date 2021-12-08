@@ -487,8 +487,8 @@ Example: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>
 \begin{block}{Log-Logistic Model}
 \vspace{-20pt}
 \begin{align*}
-h(t)&=\frac{1}{1+\lambda t^p}  \\
-S(t)&= \frac{\lambda p t^{p-1}}{1+\lambda t^p}
+S(t)&=\frac{1}{1+\lambda t^p}  \\
+h(t)&= \frac{\lambda p t^{p-1}}{1+\lambda t^p}
 \end{align*}
 The Log-Logistic model accommodates PO models and AFT models but not PH models.
 \end{block}
@@ -570,11 +570,11 @@ Solving for $t$ we have
 \[
 t = \left[\frac{1}{S(t)} - 1 \right]^{1/p} \times \frac{1}{\lambda^{1/p}}
 \]
-If we allow for the effect of covariates by parameterization 
+If we allow for the effect of covariates by parameterization
 \[
 \frac{1}{\lambda^{1/p}} = \exp(\alpha_0 + \alpha_1' X)
 \]
-we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifications of covariates $X$ and $X^*$.  
+we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifications of covariates $X$ and $X^*$.
 \end{block}
 \end{frame}
 
@@ -582,14 +582,14 @@ we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifica
 \frametitle{Parametric Survival Models}
 \begin{block}{Relationship between PO and AFT log-logistic models}
 \begin{itemize}
-\item For the log-logistic PO(success) model we have $\lambda = \exp(\beta_0 + \beta'X)$ and for log-logistic AFT model we have $\frac{1}{\lambda^p} = \exp(\alpha_0 + \alpha'X)$.
-\item As in the Weibull model (with PH and AFT models) we get  $\beta_0 = -p \alpha_0$ and $\beta' = -p \alpha_0$. 
-\item Also, we have 
+\item For the log-logistic PO (failure) model we have $\lambda = \exp(\beta_0 + \beta'X)$ and for log-logistic AFT model we have $\frac{1}{\lambda^p} = \exp(\alpha_0 + \alpha'X)$.
+\item As in the Weibull model (with PH and AFT models) we get  $\beta_0 = -p \alpha_0$ and $\beta' = -p \alpha_0$.
+\item Also, we have
 \begin{align*}
 & \tau = \text{FOR}(X \text{ vs. } X^*) = \exp(\beta'(X - X^*)) =\\
 &\exp(-p\alpha'(X - X^*)) = 1/[\text{AF}(X \text{ vs. } X^*)]^p = (1/\gamma)^p.
 \end{align*}
-\end{itemize} 
+\end{itemize}
 \end{block}
 \end{frame}
 
@@ -608,6 +608,19 @@ we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifica
 \end{columns}
 \end{block}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Parametric Survival Models}
+\begin{block}{Problem 7.3 - Fitting a Log-Logistic Distribution}
+The bears data set was collected in the Northwest Maine. Blood sample were taken from the bears. The covariate Iron in the data set is the amount micrograms of iron in the bears blood per deciliter. Iron.group groups the Iron data set into three groups, low (Iron.group=1), medium (Iron.group=2) and high (Iron.group=3). The response is the number of year of survival after 10 years of life.
+\begin{enumerate}
+\item Plot KM curves of Iron.group.
+\item Test the appropriateness of the log-logistic model with fixed $p$ for just Iron.group in the model.
+\item Fit an AFT log-logistic model with just Iron and give the AF. Give the $95\%$ CI for the AF. Is Iron a significant predictor?
+\item Fit a PO log-logistic model with just Iron and the FOR. Give the $95\%$ CI for the FOR.
+\item Plot estimated survival curves for Iron. Use the means of Iron.group for each of your curves.   
+\end{enumerate} 
 
 
 
