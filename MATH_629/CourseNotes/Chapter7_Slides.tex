@@ -59,8 +59,6 @@
 \item We explain the accelerated failure time assumption (AFT), the proportional odds assumption (PO) and compare to proportional hazard assumption (PH).
 \item We present examples of several parametric models, including the exponential model, the Weibull model, and the
 log-logistic model.
-\item We discuss interval censored data modeled by parametric models.
-\item We introduce frailty models which allow for flexibility in individual subjects in parametric models.
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -226,7 +224,7 @@ Note we have $S((3/2)t;0) = S(t;1)$ and $T_1=(2/3)T_0$.
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Accelerated Failure Time property}
-In general, if we have the AT property for some $\gamma$ so that
+In general, if we have the AFT property for some $\gamma$ so that
 \[ S(t;X) =  S(\gamma t;X^*)  \text{ for all } t>0, \text{ constant } \gamma > 0
 \]
 then
@@ -333,7 +331,7 @@ We have AF factor
 \begin{enumerate}[i.]
 \item Give fitted model and the AF for TR. Give $95\%$ CI for AF.
 \item Give fitted PH model and the HR for TR. Give $95\%$ CI for the AF.
-\item Add an interaction term to your AFT model. Is this interaction significant?
+\item Add an interaction term to your AFT model. Is this interaction significant? Use a Wald test and likelihood ratio test.
 \item Under interaction give the HR and AF for TR at quartiles of logWBC.
 \end{enumerate}
 \end{enumerate}
@@ -367,7 +365,7 @@ We have AF factor
 \item The $\ln(-\ln(S(t))$ curve is linear function of $\ln(t)$ with slope $p$.
 \[ S(t)  = \exp(-\lambda t^p) \implies \ln[-ln(S(t)] = \ln(\lambda) + p \ln(t)
 \]
-\item Thus, you can check if a Weibull model (with constant $p$) is appropriate by plotting $ln(t)$ against KM survival curves for specifications of covariates of interest. The lines should be straight and parallel.
+\item Thus, you can check if a Weibull model (with constant $p$) is appropriate by plotting $ln(t)$ against ln-ln KM survival curves for specifications of covariates of interest. The lines should be straight and parallel.
 
 \end{itemize}
 \end{block}
@@ -377,10 +375,10 @@ We have AF factor
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Weibull Model (cont'd)}
-Summary of results of $\ln[-ln(S(t)]$ plots
+Summary of results of $\ln[-ln(S(t))]$ plots
 \begin{enumerate}
-\item Parallel straight lines $\implies$ Weibull thus PH and AFT assumptions hold.
-\item Parallel straight lines with slope 1 $\implies$ Exponential thus PH and AFT assumptions hold.
+\item Parallel straight lines $\implies$ Weibull, thus PH and AFT assumptions hold.
+\item Parallel straight lines with slope 1 $\implies$ Exponential, thus PH and AFT assumptions hold.
 \item Parallel but not straight lines $\implies$ PH not Weibull, no AFT (can use Cox)
 \item Not parallel and not straight $\implies$ Not Weibull, PH violated
 \item Not parallel but straight lines $\implies$ Weibull holds with non-constant $p$, not PH nor AFT.
@@ -478,7 +476,7 @@ $h(t,0) = \exp(\beta_0)p t^{p-1}$ is the baseline.
 ``Failure'' odds are odds of event (failure) before time $t$ to event (failure) after time $t$. PO says failure odds for $X$ and $X^*$ are constant multiples of each other for all $t$.
 \[ \frac{1- S(t;X)}{S(t;X)} = \tau \left(\frac{1- S(t;X^*)}{S(t;X^*)}\right)  \text{ for all } t>0, \text{ constant } \tau > 0
 \]
-Example: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have survival odds for smokers = (1/2) survival odds for non-smokers for all $t>0$.
+Example: Failure odds for smokers = 2 * failure odds for non-smokers for all $t>0$. Thus, we have failure odds for smokers = (1/2) failure odds for non-smokers for all $t>0$.
 \end{block}
 \end{frame}
 
@@ -597,30 +595,26 @@ we have an AFT model with an AF of $\gamma=exp(\alpha'(X-X*))$ for two specifica
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Different parametric hazard functions}
-\begin{columns}
-    \begin{column}{0.48\textwidth}
-        \includegraphics[width =\textwidth, height=4cm]{hazardsplots1.JPG}
-    \end{column}
-    \hspace{-10pt}
-    \begin{column}{0.48\textwidth}
-         \includegraphics[width =\textwidth, height=4cm]{hazardplots2.JPG}
-    \end{column}
-\end{columns}
-\end{block}
+\begin{center}
+\includegraphics[width =\textwidth, height=4cm]{hazards.png}
+\end{center}
+ \end{block}
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Parametric Survival Models}
 \begin{block}{Problem 7.3 - Fitting a Log-Logistic Distribution}
-The bears data set was collected in the Northwest Maine. Blood sample were taken from the bears. The covariate Iron in the data set is the amount micrograms of iron in the bears blood per deciliter. Iron.group groups the Iron data set into three groups, low (Iron.group=1), medium (Iron.group=2) and high (Iron.group=3). The response is the number of year of survival after 10 years of life.
+The bears data set has 974 observations from blood samples of Canadian brown bears. The covariate Iron is the micrograms of iron in the bears blood per deciliter. Iron.group groups the Iron variable data into low (Iron.group=1), medium (Iron.group=2) and high (Iron.group=3). The response is the number of years of survival after 10 years of life.
 \begin{enumerate}
-\item Plot KM curves of Iron.group.
-\item Test the appropriateness of the log-logistic model with fixed $p$ for just Iron.group in the model.
-\item Fit an AFT log-logistic model with just Iron and give the AF. Give the $95\%$ CI for the AF. Is Iron a significant predictor?
+\item Plot KM curves of Iron.group and conduct a log-rank test. 
+\item Use a log-log plot to test appropriateness of the log-logistic model with fixed $p$ for just Iron.group in the model.
+\item Fit an AFT log-logistic model with just Iron. Is Iron a significant predictor? Give AF and $95\%$ CI for the AF.
 \item Fit a PO log-logistic model with just Iron and the FOR. Give the $95\%$ CI for the FOR.
-\item Plot estimated survival curves for Iron. Use the means of Iron.group for each of your curves.   
-\end{enumerate} 
+\item Plot estimated survival curves for Iron. Use the means of Iron.group for each of your curves.
+\end{enumerate}
+\end{block} 
+\end{frame} 
 
 
 
