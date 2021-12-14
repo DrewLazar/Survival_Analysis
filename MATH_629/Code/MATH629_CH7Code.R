@@ -138,7 +138,7 @@ legend("topright",c("Iron (low)","Iron (med)", "Iron (high)"),lty=c("solid"),
        col=c('blue','red','green'))
 survdiff(B~bears$iron.group)
 #7.3.2. 
-windows(width=10, height=8)
+  windows(width=10, height=8)
 plot(log(kmfit2$time),log(kmfit2$surv/(1-kmfit2$surv)),xlab="ln(time)",
      ylab="ln[(1-S(t))/S(t))]",main="ln(t) vs Failure Odds by Iron.group")
 #7.3.3

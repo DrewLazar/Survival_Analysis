@@ -1,0 +1,289 @@
+---
+title: "MATH 629 HW 5 Solutions"
+author: "Drew Lazar"
+output:
+  pdf_document:
+    keep_tex: yes
+  html_document:
+    df_print: paged
+---
+```{r results='hide', include=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
+```
+
+## Cleaning up and loading necessary packages 
+```{r}
+rm(list=ls())
+library(survival)
+library(dplyr)
+```
+## 1. loading the data 
+```{r}
+Ven.reset <-read.csv("VenresetMft.csv", header = TRUE)
+```
+## 2i. Test appropriateness of the Weibull model with a fixed shape parameter p.
+#Create a survival object
+```{r}
+Y<-Surv(Ven.reset$eventtime,Ven.reset$status==1)
+```
+```{r}
+#Partition LO2 into four strata and create KM estimators for each strata  
+quantile(Ven.reset$LO2)
+Ven.reset$LO2.group<-cut(Ven.reset$LO2,c(-2.58,1.0075,2.0350,3.0825,6.2300),labels=c('1','2','3','4'))
+kmfitO24=survfit(Y~Ven.reset$LO2.group)
+```
+```{r}
+#Plot log-log curves against ln(t) for LO2.group
+plot(kmfitO24,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by LO2group",col=c("red","green","blue","black"))
+legend("topleft",cex=.7,c("LO2=high","LO2=medhigh","LO2=medlow","LO2=low"),lty=c("solid"),col=c("red","green","blue","black"))
+```
+```{r}
+kmfitST3=survfit(Y~Ven.reset$Setting)
+plot(kmfitST3,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting",col=c('red','green','blue'))
+legend("topleft",c("Setting=0","Setting=1","Setting=2"),lty=c("solid"),col=c("red","green","blue"))
+```
+**Comment:** The log-log plot for LO2.group against ln(t) and the log-log plot for Setting against ln(t) are both roughly straight and parallel which suggests they both individually satisfy the Weibull model with fixed $p$. 
+
+## 2ii. 
+```{r}
+#Stratify Lo2 and Setting into six strata 
+Ven.reset$LO2.group2<-cut(Ven.reset$LO2,c(-2.58,1.9,6.23),labels=c('1','2'))
+Ven.reset$LO2.Set.Strata<-rep(0,nrow(Ven.reset))
+for (i in 1:nrow(Ven.reset))
+{
+  if (Ven.reset$LO2.group2[i]==1 & Ven.reset$Setting[i] ==0){
+    Ven.reset$LO2.Set.Strata[i]=1
+  } else if (Ven.reset$LO2.group2[i]==2 & Ven.reset$Setting[i] ==0){
+    Ven.reset$LO2.Set.Strata[i]=2
+  }  else if (Ven.reset$LO2.group2[i]==1 & Ven.reset$Setting[i] ==1){
+    Ven.reset$LO2.Set.Strata[i]=3
+  }  else if (Ven.reset$LO2.group2[i]==2 & Ven.reset$Setting[i] ==1){
+    Ven.reset$LO2.Set.Strata[i]=4
+  }  else if (Ven.reset$LO2.group2[i]==1 & Ven.reset$Setting[i] ==2){
+    Ven.reset$LO2.Set.Strata[i]=5  
+  }    else if (Ven.reset$LO2.group2[i]==2 & Ven.reset$Setting[i] ==2){
+    Ven.reset$LO2.Set.Strata[i]=6}
+}
+```
+```{r}
+kmfitlST=survfit(Y~Ven.reset$LO2.Set.Strata)
+plot(kmfitlST,fun="cloglog",xlab="time in days on log scale",ylab="log-log survival", main="log-log curves by Setting and LO2 ",col=c('red','green','blue','cyan','blueviolet','brown'))
+legend("topleft",cex=.7,c("Set=0 and lo2=low","Set=0 and lo2 =high","Set=1 and lo2=low","Set=1 and lo2=high","Set=2 and lo2 = low", "Set=2 and lo2=hight"),lty=c("solid"),col=c('red','green','blue','cyan','blueviolet','brown'))
+```
+**Comment:**The curves stratified by LO2.group2 and Setting are fairly parallel and straight. There are some deviations but there are 6 strata and the data is somewhat "thinned out" making the results less reliable. 
+
+## 3. Fit a Weibull model with LO2 and Setting in the model
+```{r}
+mod.wbl1=survreg(Y~Setting+LO2,data=Ven.reset,dist="weibull")
+```
+## 3i. 
+```{r}
+summary(mod.wbl1)
+```
+**Comment:** Both setting and LO2 are significant at $\alpha=0.05$ with p-values $\approx0$.  
+
+## 3ii. 
+```{r}
+#Coefficients of Weibull model and 95% CI for AF for Setting 
+alpha0=as.vector(mod.wbl1$coefficients[1]) 
+alpha1=as.vector(mod.wbl1$coefficients[2])
+alpha2=as.vector(mod.wbl1$coefficients[3])
+#Approximate AF for Setting 
+AF=exp(alpha1)
+#CI for AF for Setting 
+lb.af = exp(alpha1 - 1.96*0.0627)
+ub.af = exp(alpha1 + 1.96*0.0627)
+print(paste("the estimated AF for setting is:",round(AF,4)))
+print(paste("the lower bound for the 95% CI for the AF of setting is:",round(lb.af,4)))
+print(paste("the upper bound for the 95% CI for the AF of setting is:",round(ub.af,4)))
+```
+
+## 3iii. 
+```{r}
+#Shape parameter 
+p=1/mod.wbl1$scale
+#Coefficients of PH model and 95% CI for HR for Setting 
+beta0=-p*alpha0; beta1 = -p*alpha1; beta2= -p*alpha2
+#Approximate Hazard Ratio for Setting 
+HR=exp(beta1);
+#Confidence Interval for HR for Setting 
+lb.hr = 1/(ub.af)^p
+ub.hr = 1/(lb.af)^p
+print(paste("the estimated HR for setting is:",round(HR,4)))
+print(paste("the lower bound for the 95% CI for the HR of setting is:",round(lb.hr,4)))
+print(paste("the upper bound for the 95% CI for the HR of setting is:",round(ub.hr,4)))
+```
+
+## 4. Fit a Weibull model with LO2 and Setting in the model and interaction terms between LO2 and Setting 
+```{r}
+mod.wbl1.int=survreg(Y~Setting+LO2+Setting:LO2,data=Ven.reset,dist="weibull")
+alpha0=as.vector(mod.wbl1.int$coefficients[1]) 
+alpha1=as.vector(mod.wbl1.int$coefficients[2])
+alpha2=as.vector(mod.wbl1.int$coefficients[3])
+alpha3=as.vector(mod.wbl1.int$coefficients[4])
+```
+
+## 4i. 
+```{r}
+summary(mod.wbl1.int)
+#Likelihood ratio test for interaction 
+CSstat = -2*(mod.wbl1$loglik[2]-mod.wbl1.int$loglik[2])
+print(paste("The value of our test statistic is", round(CSstat,2)))
+CV = qchisq(.95,df=1)
+print(paste("Our critical value is:",round(CV,4)))
+CSstat>CV
+pvalue1=pchisq(CSstat,df = 1,lower.tail = FALSE)
+print(paste("Our p value is:",round(pvalue1,4)))
+```   
+**Comment:** The p-value for our Wald test is 0.036 and the p-value for our likelihood ratio test is 0.039. In both cases, we reject $H_0: \alpha_3=0$ at significance level $\alpha=0.05$ and interaction is significant. 
+
+## 4ii. 
+```{r}
+Q1 = as.vector(quantile(Ven.reset$LO2)[2]); Q2 = as.vector(quantile(Ven.reset$LO2)[3]) 
+Q3 = as.vector(quantile(Ven.reset$LO2)[4])
+AF1 = exp(alpha1 + Q1*alpha3); AF2 = exp(alpha1 + Q2*alpha3); AF3 = exp(alpha1 + Q3*alpha3)
+HR1 = exp(-alpha1 - Q1*alpha3); HR2 = exp(-alpha1 - Q2*alpha3); HR3 = exp(-alpha1 - Q3*alpha3)
+```
+**Comment:** The AFs for Setting at LO2 Q1, Q2 and Q3, respectively, are: 0.4824747, 0.5260169 and 0.5744542. The HRs for Setting at LO2 Q1, Q2, and Q3, respectively, 2.072648, 1.901079 and 1.740783. 
+
+## 4iii. 
+```{r}
+#For Setting=0
+LO2mean=mean(Ven.reset$LO2)
+pattern1=data.frame(Setting=0,LO2=LO2mean)
+pct2=0:1000/1000
+days1=predict(mod.wbl1.int,newdata=pattern1,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days1,survival,xlab="survival time in days",ylab= "survival
+     probabilities",xlim=c(0,15),col=c('blue'))
+par(new=TRUE)
+#For Setting=1
+pattern2=data.frame(Setting=1,LO2=LO2mean)
+pct2=0:1000/1000
+days2=predict(mod.wbl1.int,newdata=pattern2,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days2,survival,xlab="survival time in days",ylab= "survival
+     probabilities",col=c('red'),xlim=c(0,15))
+par(new=TRUE)
+#For Setting=2
+pattern2=data.frame(Setting=2,LO2=LO2mean)
+pct2=0:1000/1000
+days3=predict(mod.wbl1.int,newdata=pattern2,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days3,survival,xlab="survival time in days",ylab= "survival
+     probabilities",col=c('green'),xlim=c(0,15))
+legend("topright",c("Setting=0", "Setting=1", "Setting=2"), 
+col=c('blue','red','green'), lty=c("solid")) 
+```  
+
+## 4iv. 
+**Comment:** As setting increases (from 0 to 1 to 2) the survival experience "accelerates" and the ventilator is more likely to need to be reset sooner. This effect decreases with higher LO2. 
+
+## 5i.
+```{r}
+plot(kmfitO24,xlab="time in days on log scale",ylab="log-log survival", main="KM curves by LO2group",col=c("red","green","blue","black"))
+legend("topright",cex=.9,c("LO2=low","LO2=medlow","LO2=medhigh","LO2=high"),lty=c("solid"),col=c("red","green","blue","black"))
+```
+```{r}
+#log-rank test
+survdiff(Y~Ven.reset$LO2.group)
+```
+**Comment:** With p-value $\approx0$ we reject $H_0:$ that the survival experience of the four LO2 groups is the same at significance level $\alpha=0.05$. 
+
+## 5ii. 
+```{r}
+plot(log(kmfitST3$time),log(kmfitST3$surv/(1-kmfitST3$surv)),xlab="ln(time)",ylab="ln[(1-S(t))/S(t))]",main="ln(t) vs Failure Odds by Setting")
+```
+**Comment:** The plot of ln(t) against estimated failure odds for Setting don't look approximately parallel and straight suggesting a log-logistic model for LO2.group alone is not appropriate.
+
+## 5iii. 
+```{r}
+plot(log(kmfitO24$time),log(kmfitO24$surv/(1-kmfitO24$surv)),xlab="ln(time)",ylab="ln[(1-S(t))/S(t))]",main="ln(t) vs Failure Odds by LO2.group")
+```
+**Comment:** The plot of ln(t) against estimated failure odds for LO2.group look approximately parallel and straight suggesting a log-logistic model for LO2.group alone is appropriate.
+
+## 5iv. 
+```{r}
+mod.LO2.lgl=survreg(Y ~ LO2,data=Ven.reset,dist="loglogistic")
+summary(mod.LO2.lgl)
+alpha0=as.vector(mod.LO2.lgl$coefficients[1]); alpha1=as.vector(mod.LO2.lgl$coefficients[2]);
+AF=exp(alpha1)
+#95% CI for AF 
+lb.af = exp(alpha1 - 1.96*0.00425)
+ub.af = exp(alpha1 + 1.96*0.00425)
+print(paste("The approximate AF for LO2 is: ",AF))
+print(paste("The lower bound for the AF for LO2 is: ",lb.af))
+print(paste("The upper bound for the AF for LO2 is: ",ub.af))
+```
+**Comment:** L02 is significant by Wald test with p-value $\approx 0$.
+
+## 5v. 
+```{r}
+#shape parameter
+p=1/mod.LO2.lgl$scale
+#PO Model 
+beta0=-p*alpha0; beta1 = -p*alpha1
+FOR=exp(beta1);
+#95% CI for FOR
+lb.for = (1/ub.af)^p 
+ub.for = (1/lb.af)^p
+print(paste("The approximate FOR for LO2 is: ",round(FOR,4)))
+print(paste("The lower bound for the AF for LO2 is: ",round(lb.for,4)))
+print(paste("The upper bound for the AF for LO2 is: ",round(ub.for,4)))
+```
+
+## 5vi. 
+```{r}
+#find means by LO2.group 
+Ven.reset %>%
+  group_by(LO2.group) %>%
+  summarise(mean_iron = mean(LO2),
+            number_obs = n())
+```
+```{r}
+#for LO2=-0.421
+pattern1=data.frame(LO2=-0.421)
+pct2=0:1000/1000
+days1=predict(mod.LO2.lgl,newdata=pattern1,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days1,survival,xlab="survival time in days",ylab="survival
+     probabilities",main="log-logistic survival estimates for LO2=-0.421,1.45, 2.44,4.01",xlim=c(0,25),col=c('blue'))
+par(new=TRUE)
+#for LO2=1.45
+pattern1=data.frame(LO2=1.45)
+pct2=0:1000/1000
+days2=predict(mod.LO2.lgl,newdata=pattern1,
+              type="quantile",p=pct2)
+survival=1-pct2
+plot(days2,survival,xlim=c(0,25),xlab="survival time in days",ylab= "survival probabilities",col=c('red'))
+par(new=TRUE)
+#for LO2=2.44
+pattern3=data.frame(LO2=2.44)
+pct2=0:1000/1000
+days3=predict(mod.LO2.lgl,newdata=pattern3,
+              type="quantile",p=pct2)
+plot(days3,survival,xlab="survival time in days",ylab="survival
+     probabilities",col=c('green'),xlim=c(0,25))
+par(new=TRUE)
+#for LO2=4.01
+pattern3=data.frame(LO2=4.01)
+pct2=0:1000/1000
+days4=predict(mod.LO2.lgl,newdata=pattern3,
+              type="quantile",p=pct2)
+plot(days4,survival,xlab="survival time in days",ylab="survival
+     probabilities",xlim=c(0,25),col=c('cyan'))
+legend("topright",c("LO2=-0.421", "LO2=1.45", "LO2=2.44","LO2=4.01"), 
+col=c('blue','red','green','cyan'), lty=c("solid"))
+
+```
+**Comment:** The fitted survival curves from LO2 look similar to non-parametetic survival curves for LO2.group from 5.i. 

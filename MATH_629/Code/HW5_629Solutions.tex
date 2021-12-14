@@ -1,0 +1,792 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={MATH 629 HW 5 Solutions},
+  pdfauthor={Drew Lazar},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{MATH 629 HW 5 Solutions}
+\author{Drew Lazar}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{cleaning-up-and-loading-necessary-packages}{%
+\subsection{Cleaning up and loading necessary
+packages}\label{cleaning-up-and-loading-necessary-packages}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{())}
+\FunctionTok{library}\NormalTok{(survival)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\hypertarget{loading-the-data}{%
+\subsection{1. loading the data}\label{loading-the-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Ven.reset }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"VenresetMft.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{i.-test-appropriateness-of-the-weibull-model-with-a-fixed-shape-parameter-p.}{%
+\subsection{2i. Test appropriateness of the Weibull model with a fixed
+shape parameter
+p.}\label{i.-test-appropriateness-of-the-weibull-model-with-a-fixed-shape-parameter-p.}}
+
+\#Create a survival object
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime, Ven.reset}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Partition LO2 into four strata and create KM estimators for each strata}
+\FunctionTok{quantile}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      0%     25%     50%     75%    100% 
+## -2.5600  1.0075  2.0350  3.0825  6.2300
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2, }\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{2.58}\NormalTok{, }\FloatTok{1.0075}\NormalTok{, }\FloatTok{2.035}\NormalTok{, }\FloatTok{3.0825}\NormalTok{, }\FloatTok{6.23}\NormalTok{),}
+    \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{, }\StringTok{"4"}\NormalTok{))}
+\NormalTok{kmfitO24 }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot log{-}log curves against ln(t) for LO2.group}
+\FunctionTok{plot}\NormalTok{(kmfitO24, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
+    \AttributeTok{main =} \StringTok{"log{-}log curves by LO2group"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.7}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"LO2=high"}\NormalTok{, }\StringTok{"LO2=medhigh"}\NormalTok{, }\StringTok{"LO2=medlow"}\NormalTok{, }\StringTok{"LO2=low"}\NormalTok{),}
+    \AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kmfitST3 }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting)}
+\FunctionTok{plot}\NormalTok{(kmfitST3, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
+    \AttributeTok{main =} \StringTok{"log{-}log curves by Setting"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Setting=0"}\NormalTok{, }\StringTok{"Setting=1"}\NormalTok{, }\StringTok{"Setting=2"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{,}
+    \StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-7-1.pdf}
+\textbf{Comment:} The log-log plot for LO2.group against ln(t) and the
+log-log plot for Setting against ln(t) are both roughly straight and
+parallel which suggests they both individually satisfy the Weibull model
+with fixed \(p\).
+
+\hypertarget{ii.}{%
+\subsection{2ii.}\label{ii.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Stratify Lo2 and Setting into six strata}
+\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2 }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2, }\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{2.58}\NormalTok{, }\FloatTok{1.9}\NormalTok{, }\FloatTok{6.23}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{))}
+\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(Ven.reset))}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(Ven.reset)) \{}
+    \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{1}
+\NormalTok{    \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{2}
+\NormalTok{    \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{3}
+\NormalTok{    \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{4}
+\NormalTok{    \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{2}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{5}
+\NormalTok{    \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group2[i] }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Setting[i] }\SpecialCharTok{==} \DecValTok{2}\NormalTok{) \{}
+\NormalTok{        Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata[i] }\OtherTok{=} \DecValTok{6}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kmfitlST }\OtherTok{=} \FunctionTok{survfit}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.Set.Strata)}
+\FunctionTok{plot}\NormalTok{(kmfitlST, }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{,}
+    \AttributeTok{main =} \StringTok{"log{-}log curves by Setting and LO2 "}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{,}
+        \StringTok{"cyan"}\NormalTok{, }\StringTok{"blueviolet"}\NormalTok{, }\StringTok{"brown"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.7}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Set=0 and lo2=low"}\NormalTok{, }\StringTok{"Set=0 and lo2 =high"}\NormalTok{, }\StringTok{"Set=1 and lo2=low"}\NormalTok{,}
+    \StringTok{"Set=1 and lo2=high"}\NormalTok{, }\StringTok{"Set=2 and lo2 = low"}\NormalTok{, }\StringTok{"Set=2 and lo2=hight"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{),}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"cyan"}\NormalTok{, }\StringTok{"blueviolet"}\NormalTok{, }\StringTok{"brown"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-9-1.pdf}
+\textbf{Comment:}The curves stratified by LO2.group2 and Setting are
+fairly parallel and straight. There are some deviations but there are 6
+strata and the data is somewhat ``thinned out'' making the results less
+reliable.
+
+\hypertarget{fit-a-weibull-model-with-lo2-and-setting-in-the-model}{%
+\subsection{3. Fit a Weibull model with LO2 and Setting in the
+model}\label{fit-a-weibull-model-with-lo2-and-setting-in-the-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.wbl1 }\OtherTok{=} \FunctionTok{survreg}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2, }\AttributeTok{data =}\NormalTok{ Ven.reset, }\AttributeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{i.}{%
+\subsection{3i.}\label{i.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(mod.wbl1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## survreg(formula = Y ~ Setting + LO2, data = Ven.reset, dist = "weibull")
+##               Value Std. Error      z       p
+## (Intercept)  2.6647     0.1032  25.81 < 2e-16
+## Setting     -0.6501     0.0627 -10.37 < 2e-16
+## LO2         -0.5903     0.0326 -18.09 < 2e-16
+## Log(scale)  -0.4690     0.0641  -7.31 2.6e-13
+## 
+## Scale= 0.626 
+## 
+## Weibull distribution
+## Loglik(model)= -229.6   Loglik(intercept only)= -335
+##  Chisq= 210.85 on 2 degrees of freedom, p= 1.6e-46 
+## Number of Newton-Raphson Iterations: 6 
+## n= 150
+\end{verbatim}
+
+\textbf{Comment:} Both setting and LO2 are significant at
+\(\alpha=0.05\) with p-values \(\approx0\).
+
+\hypertarget{ii.-1}{%
+\subsection{3ii.}\label{ii.-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Coefficients of Weibull model and 95\% CI for AF for Setting}
+\NormalTok{alpha0 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{])}
+\NormalTok{alpha1 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{])}
+\NormalTok{alpha2 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{3}\NormalTok{])}
+\CommentTok{\# Approximate AF for Setting}
+\NormalTok{AF }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1)}
+\CommentTok{\# CI for AF for Setting}
+\NormalTok{lb.af }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.0627}\NormalTok{)}
+\NormalTok{ub.af }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.0627}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the estimated AF for setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(AF, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the estimated AF for setting is: 0.522"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the lower bound for the 95\% CI for the AF of setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(lb.af,}
+    \DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the lower bound for the 95% CI for the AF of setting is: 0.4616"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the upper bound for the 95\% CI for the AF of setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(ub.af,}
+    \DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the upper bound for the 95% CI for the AF of setting is: 0.5903"
+\end{verbatim}
+
+\hypertarget{iii.}{%
+\subsection{3iii.}\label{iii.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Shape parameter}
+\NormalTok{p }\OtherTok{=} \DecValTok{1}\SpecialCharTok{/}\NormalTok{mod.wbl1}\SpecialCharTok{$}\NormalTok{scale}
+\CommentTok{\# Coefficients of PH model and 95\% CI for HR for Setting}
+\NormalTok{beta0 }\OtherTok{=} \SpecialCharTok{{-}}\NormalTok{p }\SpecialCharTok{*}\NormalTok{ alpha0}
+\NormalTok{beta1 }\OtherTok{=} \SpecialCharTok{{-}}\NormalTok{p }\SpecialCharTok{*}\NormalTok{ alpha1}
+\NormalTok{beta2 }\OtherTok{=} \SpecialCharTok{{-}}\NormalTok{p }\SpecialCharTok{*}\NormalTok{ alpha2}
+\CommentTok{\# Approximate Hazard Ratio for Setting}
+\NormalTok{HR }\OtherTok{=} \FunctionTok{exp}\NormalTok{(beta1)}
+\CommentTok{\# Confidence Interval for HR for Setting}
+\NormalTok{lb.hr }\OtherTok{=} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(ub.af)}\SpecialCharTok{\^{}}\NormalTok{p}
+\NormalTok{ub.hr }\OtherTok{=} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(lb.af)}\SpecialCharTok{\^{}}\NormalTok{p}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the estimated HR for setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(HR, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the estimated HR for setting is: 2.8266"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the lower bound for the 95\% CI for the HR of setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(lb.hr,}
+    \DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the lower bound for the 95% CI for the HR of setting is: 2.3225"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"the upper bound for the 95\% CI for the HR of setting is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(ub.hr,}
+    \DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "the upper bound for the 95% CI for the HR of setting is: 3.4401"
+\end{verbatim}
+
+\hypertarget{fit-a-weibull-model-with-lo2-and-setting-in-the-model-and-interaction-terms-between-lo2-and-setting}{%
+\subsection{4. Fit a Weibull model with LO2 and Setting in the model and
+interaction terms between LO2 and
+Setting}\label{fit-a-weibull-model-with-lo2-and-setting-in-the-model-and-interaction-terms-between-lo2-and-setting}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.wbl1.int }\OtherTok{=} \FunctionTok{survreg}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Setting}\SpecialCharTok{:}\NormalTok{LO2, }\AttributeTok{data =}\NormalTok{ Ven.reset, }\AttributeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
+\NormalTok{alpha0 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1.int}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{])}
+\NormalTok{alpha1 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1.int}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{])}
+\NormalTok{alpha2 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1.int}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{3}\NormalTok{])}
+\NormalTok{alpha3 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.wbl1.int}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{4}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{i.-1}{%
+\subsection{4i.}\label{i.-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(mod.wbl1.int)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## survreg(formula = Y ~ Setting + LO2 + Setting:LO2, data = Ven.reset, 
+##     dist = "weibull")
+##               Value Std. Error      z       p
+## (Intercept)  2.8599     0.1455  19.66 < 2e-16
+## Setting     -0.8136     0.1006  -8.09 6.1e-16
+## LO2         -0.6864     0.0563 -12.19 < 2e-16
+## Setting:LO2  0.0841     0.0401   2.10   0.036
+## Log(scale)  -0.4832     0.0646  -7.48 7.2e-14
+## 
+## Scale= 0.617 
+## 
+## Weibull distribution
+## Loglik(model)= -227.4   Loglik(intercept only)= -335
+##  Chisq= 215.12 on 3 degrees of freedom, p= 2.3e-46 
+## Number of Newton-Raphson Iterations: 6 
+## n= 150
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Likelihood ratio test for interaction}
+\NormalTok{CSstat }\OtherTok{=} \SpecialCharTok{{-}}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ (mod.wbl1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ mod.wbl1.int}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{])}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The value of our test statistic is"}\NormalTok{, }\FunctionTok{round}\NormalTok{(CSstat, }\DecValTok{2}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The value of our test statistic is 4.26"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CV }\OtherTok{=} \FunctionTok{qchisq}\NormalTok{(}\FloatTok{0.95}\NormalTok{, }\AttributeTok{df =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our critical value is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(CV, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Our critical value is: 3.8415"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CSstat }\SpecialCharTok{\textgreater{}}\NormalTok{ CV}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pvalue1 }\OtherTok{=} \FunctionTok{pchisq}\NormalTok{(CSstat, }\AttributeTok{df =} \DecValTok{1}\NormalTok{, }\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our p value is:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(pvalue1, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Our p value is: 0.039"
+\end{verbatim}
+
+\textbf{Comment:} The p-value for our Wald test is 0.036 and the p-value
+for our likelihood ratio test is 0.039. In both cases, we reject
+\(H_0: \alpha_3=0\) at significance level \(\alpha=0.05\) and
+interaction is significant.
+
+\hypertarget{ii.-2}{%
+\subsection{4ii.}\label{ii.-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Q1 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)[}\DecValTok{2}\NormalTok{])}
+\NormalTok{Q2 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)[}\DecValTok{3}\NormalTok{])}
+\NormalTok{Q3 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)[}\DecValTok{4}\NormalTok{])}
+\NormalTok{AF1 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{+}\NormalTok{ Q1 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\NormalTok{AF2 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{+}\NormalTok{ Q2 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\NormalTok{AF3 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{+}\NormalTok{ Q3 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\NormalTok{HR1 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{alpha1 }\SpecialCharTok{{-}}\NormalTok{ Q1 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\NormalTok{HR2 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{alpha1 }\SpecialCharTok{{-}}\NormalTok{ Q2 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\NormalTok{HR3 }\OtherTok{=} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{alpha1 }\SpecialCharTok{{-}}\NormalTok{ Q3 }\SpecialCharTok{*}\NormalTok{ alpha3)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Comment:} The AFs for Setting at LO2 Q1, Q2 and Q3,
+respectively, are: 0.4824747, 0.5260169 and 0.5744542. The HRs for
+Setting at LO2 Q1, Q2, and Q3, respectively, 2.072648, 1.901079 and
+1.740783.
+
+\hypertarget{iii.-1}{%
+\subsection{4iii.}\label{iii.-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# For Setting=0}
+\NormalTok{LO2mean }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
+\NormalTok{pattern1 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{0}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ LO2mean)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days1 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.wbl1.int, }\AttributeTok{newdata =}\NormalTok{ pattern1, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\NormalTok{survival }\OtherTok{=} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ pct2}
+\FunctionTok{plot}\NormalTok{(days1, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{15}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# For Setting=1}
+\NormalTok{pattern2 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{1}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ LO2mean)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days2 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.wbl1.int, }\AttributeTok{newdata =}\NormalTok{ pattern2, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\NormalTok{survival }\OtherTok{=} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ pct2}
+\FunctionTok{plot}\NormalTok{(days2, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{), }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{15}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# For Setting=2}
+\NormalTok{pattern2 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{2}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ LO2mean)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days3 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.wbl1.int, }\AttributeTok{newdata =}\NormalTok{ pattern2, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\NormalTok{survival }\OtherTok{=} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ pct2}
+\FunctionTok{plot}\NormalTok{(days3, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{), }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{15}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Setting=0"}\NormalTok{, }\StringTok{"Setting=1"}\NormalTok{, }\StringTok{"Setting=2"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{,}
+    \StringTok{"green"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\hypertarget{iv.}{%
+\subsection{4iv.}\label{iv.}}
+
+\textbf{Comment:} As setting increases (from 0 to 1 to 2) the survival
+experience ``accelerates'' and the ventilator is more likely to need to
+be reset sooner. This effect decreases with higher LO2.
+
+\hypertarget{i.-2}{%
+\subsection{5i.}\label{i.-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(kmfitO24, }\AttributeTok{xlab =} \StringTok{"time in days on log scale"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"log{-}log survival"}\NormalTok{, }\AttributeTok{main =} \StringTok{"KM curves by LO2group"}\NormalTok{,}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.9}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"LO2=low"}\NormalTok{, }\StringTok{"LO2=medlow"}\NormalTok{, }\StringTok{"LO2=medhigh"}\NormalTok{, }\StringTok{"LO2=high"}\NormalTok{),}
+    \AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# log{-}rank test}
+\FunctionTok{survdiff}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{LO2.group)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call:
+## survdiff(formula = Y ~ Ven.reset$LO2.group)
+## 
+##                        N Observed Expected (O-E)^2/E (O-E)^2/V
+## Ven.reset$LO2.group=1 38       33     71.8   20.9346    48.128
+## Ven.reset$LO2.group=2 37       37     38.9    0.0962     0.133
+## Ven.reset$LO2.group=3 37       37     22.6    9.2358    11.674
+## Ven.reset$LO2.group=4 38       38     11.7   58.7228    69.692
+## 
+##  Chisq= 108  on 3 degrees of freedom, p= <2e-16
+\end{verbatim}
+
+\textbf{Comment:} With p-value \(\approx0\) we reject \(H_0:\) that the
+survival experience of the four LO2 groups is the same at significance
+level \(\alpha=0.05\).
+
+\hypertarget{ii.-3}{%
+\subsection{5ii.}\label{ii.-3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{log}\NormalTok{(kmfitST3}\SpecialCharTok{$}\NormalTok{time), }\FunctionTok{log}\NormalTok{(kmfitST3}\SpecialCharTok{$}\NormalTok{surv}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ kmfitST3}\SpecialCharTok{$}\NormalTok{surv)), }\AttributeTok{xlab =} \StringTok{"ln(time)"}\NormalTok{,}
+    \AttributeTok{ylab =} \StringTok{"ln[(1{-}S(t))/S(t))]"}\NormalTok{, }\AttributeTok{main =} \StringTok{"ln(t) vs Failure Odds by Setting"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-20-1.pdf}
+\textbf{Comment:} The plot of ln(t) against estimated failure odds for
+Setting don't look approximately parallel and straight suggesting a
+log-logistic model for LO2.group alone is not appropriate.
+
+\hypertarget{iii.-2}{%
+\subsection{5iii.}\label{iii.-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{log}\NormalTok{(kmfitO24}\SpecialCharTok{$}\NormalTok{time), }\FunctionTok{log}\NormalTok{(kmfitO24}\SpecialCharTok{$}\NormalTok{surv}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ kmfitO24}\SpecialCharTok{$}\NormalTok{surv)), }\AttributeTok{xlab =} \StringTok{"ln(time)"}\NormalTok{,}
+    \AttributeTok{ylab =} \StringTok{"ln[(1{-}S(t))/S(t))]"}\NormalTok{, }\AttributeTok{main =} \StringTok{"ln(t) vs Failure Odds by LO2.group"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-21-1.pdf}
+\textbf{Comment:} The plot of ln(t) against estimated failure odds for
+LO2.group look approximately parallel and straight suggesting a
+log-logistic model for LO2.group alone is appropriate.
+
+\hypertarget{iv.-1}{%
+\subsection{5iv.}\label{iv.-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.LO2.lgl }\OtherTok{=} \FunctionTok{survreg}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LO2, }\AttributeTok{data =}\NormalTok{ Ven.reset, }\AttributeTok{dist =} \StringTok{"loglogistic"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(mod.LO2.lgl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## survreg(formula = Y ~ LO2, data = Ven.reset, dist = "loglogistic")
+##               Value Std. Error      z      p
+## (Intercept)  1.7193     0.1154  14.90 <2e-16
+## LO2         -0.6044     0.0452 -13.37 <2e-16
+## Log(scale)  -0.6046     0.0682  -8.87 <2e-16
+## 
+## Scale= 0.546 
+## 
+## Log logistic distribution
+## Loglik(model)= -270.2   Loglik(intercept only)= -331
+##  Chisq= 121.62 on 1 degrees of freedom, p= 2.8e-28 
+## Number of Newton-Raphson Iterations: 5 
+## n= 150
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{alpha0 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.LO2.lgl}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{])}
+\NormalTok{alpha1 }\OtherTok{=} \FunctionTok{as.vector}\NormalTok{(mod.LO2.lgl}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{])}
+\NormalTok{AF }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1)}
+\CommentTok{\# 95\% CI for AF}
+\NormalTok{lb.af }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.00425}\NormalTok{)}
+\NormalTok{ub.af }\OtherTok{=} \FunctionTok{exp}\NormalTok{(alpha1 }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.00425}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The approximate AF for LO2 is: "}\NormalTok{, AF))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The approximate AF for LO2 is:  0.546428183734623"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The lower bound for the AF for LO2 is: "}\NormalTok{, lb.af))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The lower bound for the AF for LO2 is:  0.541895342458737"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The upper bound for the AF for LO2 is: "}\NormalTok{, ub.af))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The upper bound for the AF for LO2 is:  0.550998941280354"
+\end{verbatim}
+
+\textbf{Comment:} L02 is significant by Wald test with p-value
+\(\approx 0\).
+
+\hypertarget{v.}{%
+\subsection{5v.}\label{v.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# shape parameter}
+\NormalTok{p }\OtherTok{=} \DecValTok{1}\SpecialCharTok{/}\NormalTok{mod.LO2.lgl}\SpecialCharTok{$}\NormalTok{scale}
+\CommentTok{\# PO Model}
+\NormalTok{beta0 }\OtherTok{=} \SpecialCharTok{{-}}\NormalTok{p }\SpecialCharTok{*}\NormalTok{ alpha0}
+\NormalTok{beta1 }\OtherTok{=} \SpecialCharTok{{-}}\NormalTok{p }\SpecialCharTok{*}\NormalTok{ alpha1}
+\NormalTok{FOR }\OtherTok{=} \FunctionTok{exp}\NormalTok{(beta1)}
+\CommentTok{\# 95\% CI for FOR}
+\NormalTok{lb.for }\OtherTok{=}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{/}\NormalTok{ub.af)}\SpecialCharTok{\^{}}\NormalTok{p}
+\NormalTok{ub.for }\OtherTok{=}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{/}\NormalTok{lb.af)}\SpecialCharTok{\^{}}\NormalTok{p}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The approximate FOR for LO2 is: "}\NormalTok{, }\FunctionTok{round}\NormalTok{(FOR, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The approximate FOR for LO2 is:  3.023"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The lower bound for the AF for LO2 is: "}\NormalTok{, }\FunctionTok{round}\NormalTok{(lb.for, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The lower bound for the AF for LO2 is:  2.9772"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The upper bound for the AF for LO2 is: "}\NormalTok{, }\FunctionTok{round}\NormalTok{(ub.for, }\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The upper bound for the AF for LO2 is:  3.0694"
+\end{verbatim}
+
+\hypertarget{vi.}{%
+\subsection{5vi.}\label{vi.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# find means by LO2.group}
+\NormalTok{Ven.reset }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(LO2.group) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{mean\_iron =} \FunctionTok{mean}\NormalTok{(LO2), }\AttributeTok{number\_obs =} \FunctionTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 3
+##   LO2.group mean_iron number_obs
+##   <fct>         <dbl>      <int>
+## 1 1            -0.421         38
+## 2 2             1.45          37
+## 3 3             2.44          37
+## 4 4             4.01          38
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for LO2={-}0.421}
+\NormalTok{pattern1 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2 =} \SpecialCharTok{{-}}\FloatTok{0.421}\NormalTok{)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days1 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.LO2.lgl, }\AttributeTok{newdata =}\NormalTok{ pattern1, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\NormalTok{survival }\OtherTok{=} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ pct2}
+\FunctionTok{plot}\NormalTok{(days1, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{main =} \StringTok{"log{-}logistic survival estimates for LO2={-}0.421,1.45, 2.44,4.01"}\NormalTok{, }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}
+        \DecValTok{25}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# for LO2=1.45}
+\NormalTok{pattern1 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2 =} \FloatTok{1.45}\NormalTok{)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days2 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.LO2.lgl, }\AttributeTok{newdata =}\NormalTok{ pattern1, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\NormalTok{survival }\OtherTok{=} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ pct2}
+\FunctionTok{plot}\NormalTok{(days2, survival, }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{25}\NormalTok{), }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival probabilities"}\NormalTok{,}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# for LO2=2.44}
+\NormalTok{pattern3 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2 =} \FloatTok{2.44}\NormalTok{)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days3 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.LO2.lgl, }\AttributeTok{newdata =}\NormalTok{ pattern3, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\FunctionTok{plot}\NormalTok{(days3, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{), }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{25}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# for LO2=4.01}
+\NormalTok{pattern3 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2 =} \FloatTok{4.01}\NormalTok{)}
+\NormalTok{pct2 }\OtherTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1000}\SpecialCharTok{/}\DecValTok{1000}
+\NormalTok{days4 }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod.LO2.lgl, }\AttributeTok{newdata =}\NormalTok{ pattern3, }\AttributeTok{type =} \StringTok{"quantile"}\NormalTok{, }\AttributeTok{p =}\NormalTok{ pct2)}
+\FunctionTok{plot}\NormalTok{(days4, survival, }\AttributeTok{xlab =} \StringTok{"survival time in days"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"survival}
+\StringTok{     probabilities"}\NormalTok{,}
+    \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{25}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"cyan"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"LO2={-}0.421"}\NormalTok{, }\StringTok{"LO2=1.45"}\NormalTok{, }\StringTok{"LO2=2.44"}\NormalTok{, }\StringTok{"LO2=4.01"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}
+    \StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"cyan"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW5_629Solutions_files/figure-latex/unnamed-chunk-25-1.pdf}
+\textbf{Comment:} The fitted survival curves from LO2 look similar to
+non-parametetic survival curves for LO2.group from 5.i.
+
+\end{document}
