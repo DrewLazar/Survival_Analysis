@@ -85,3 +85,4 @@ RXTrial=data.frame(status,time,Dose)
 S<-Surv(RXTrial$time,RXTrial$status==1)
 coxph(S~Dose,data=RXTrial)
 
+(76-63)^2/63 + (83-64)^2/74

@@ -145,12 +145,14 @@ print(paste("Our p value is:",round(pvalue1,4)))
 
 ## 4ii. 
 ```{r}
+#shape parameter
+p=1/mod.wbl1.int$scale
 Q1 = as.vector(quantile(Ven.reset$LO2)[2]); Q2 = as.vector(quantile(Ven.reset$LO2)[3]) 
 Q3 = as.vector(quantile(Ven.reset$LO2)[4])
 AF1 = exp(alpha1 + Q1*alpha3); AF2 = exp(alpha1 + Q2*alpha3); AF3 = exp(alpha1 + Q3*alpha3)
-HR1 = exp(-alpha1 - Q1*alpha3); HR2 = exp(-alpha1 - Q2*alpha3); HR3 = exp(-alpha1 - Q3*alpha3)
+HR1 = exp(-p*alpha1 - Q1*p*alpha3); HR2 = exp(-p*alpha1 - p*Q2*alpha3); HR3 = exp(-alpha1 - p*Q3*alpha3)
 ```
-**Comment:** The AFs for Setting at LO2 Q1, Q2 and Q3, respectively, are: 0.4824747, 0.5260169 and 0.5744542. The HRs for Setting at LO2 Q1, Q2, and Q3, respectively, 2.072648, 1.901079 and 1.740783. 
+**Comment:** The AFs for Setting at LO2 Q1, Q2 and Q3, respectively, are: 0.4824747, 0.5260169 and 0.5744542. The HRs for Setting at LO2 Q1, Q2, and Q3, respectively, 3.259815,  and 2.833689 and 1.481828.
 
 ## 4iii. 
 ```{r}
@@ -218,8 +220,8 @@ summary(mod.LO2.lgl)
 alpha0=as.vector(mod.LO2.lgl$coefficients[1]); alpha1=as.vector(mod.LO2.lgl$coefficients[2]);
 AF=exp(alpha1)
 #95% CI for AF 
-lb.af = exp(alpha1 - 1.96*0.00425)
-ub.af = exp(alpha1 + 1.96*0.00425)
+lb.af = exp(alpha1 - 1.96*0.0425)
+ub.af = exp(alpha1 + 1.96*0.0425)
 print(paste("The approximate AF for LO2 is: ",AF))
 print(paste("The lower bound for the AF for LO2 is: ",lb.af))
 print(paste("The upper bound for the AF for LO2 is: ",ub.af))

@@ -59,7 +59,6 @@ b3=coxph.Rem.int.m1$coefficients[3]
 exp(b1+b3)
 #Trick to find HR and CI for HR of TR with Sex=1 
 Remission$Sex2=Remission$Sex-1
-coxph.Rem.int.m2<-coxph(Y~TR+logWBC+Sex2:TR+Sex2:logWBC+strata(Sex2),data=Remission)
 summary(coxph.Rem.int.m2)
 #CI of HR of TR with Sex=1
 #HR is 7.227 which agrees with exp(b1+b2) above 
