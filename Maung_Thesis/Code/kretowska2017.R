@@ -21,13 +21,13 @@ pom = function(xi, xj, lowerQ, upperQ) {
   
   # Direct implementation of Kretowska's conditions:
   if (
-    (xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) < lowerQ)
+    (xicensor == 1) && (xjcensor == 1) && (abs(xitime - xjtime) < lowerQ)
   ) {
     return("pure")
   } else if (
-    ((xistat == 1) && (xjstat == 1) && (abs(xitime - xjtime) > upperQ)) ||
-    ((xistat == 0) && (xjstat == 1) && ((xitime - xjtime) > upperQ)) ||
-    ((xistat == 1) && (xjstat == 0) && ((xjtime - xitime) > upperQ))
+    ((xicensor == 1) && (xjcensor == 1) && (abs(xitime - xjtime) > upperQ)) ||
+    ((xicensor == 0) && (xjcensor == 1) && ((xitime - xjtime) > upperQ)) ||
+    ((xicensor == 1) && (xjcensor == 0) && ((xjtime - xitime) > upperQ))
   ) {
     return("mixed")
   } else {
@@ -68,3 +68,4 @@ poms_and_X = function(data,
 # Test data Remission:
 load(file = "../Data/Remission.rda")
 
+data = poms_and_X(Remission, covariates = c("TR", "logWBC"))
