@@ -1,7 +1,7 @@
 library(data.tree)
 library(survival)
 rm(list=ls())
-#setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
+setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 #load Remission data 
 load("Remission.rda") 
 
