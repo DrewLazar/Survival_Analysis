@@ -39,12 +39,18 @@ summary(kmfit1)
 #Plot your KM estimates
 plot(kmfit1,xlab="survival time in weeks",ylab="survival probabilities")
 #Ways to get particular estimate at time or times
+```
+
+```{r}
 summary(kmfit1,times=11)
 summary(kmfit1,times=c(11,12,15))
 #statify on treatment and get the KM estimates 
 kmfit2=survfit(Y~Remission$TR)
 #See your KM estimates by TR
 summary(kmfit2)
+```
+
+```{r}
 #Plot the KM Estimates 
 plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'),
      xlab="survival time in weeks",ylab="survival probabilities")
