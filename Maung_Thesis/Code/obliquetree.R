@@ -196,14 +196,19 @@ phipmcount = function(Z, vorient, poms){
       ninfol=paste(ninfo,'l'); ninfor=paste(ninfo,'r')
       mylist<-list(v,XL,ninfol,XR,ninfor)
       sizeflag=FALSE
-      return(list(mylist,sizeflag))
+      #logrankstat
+       dataflr=data[subsetX,]
+       Y<-Surv(dataflr[time][[1]],dataflr[censor][[1]]==1)
+       lrstat=survdiff(Y~splits<0)[[5]]
+       return(list(mylist,sizeflag,lrstat))
     } else {
       v=rep(0,3)
       XL=X;XR=X 
       ninfol=paste(ninfo,'x'); ninfor=paste(ninfo,'x')
       mylist<-list(v,XL,ninfol,XR,ninfor)
       sizeflag=TRUE
-      return(list(mylist,sizeflag))
+      lrstat=0
+      return(list(mylist,sizeflag,lrstat))
     }
   }
   #firstsplit 
@@ -212,6 +217,9 @@ phipmcount = function(Z, vorient, poms){
   vlist <- vector(mode = "list", length = 2) 
   vlist[[1]]<-nlist[[1]]
   vlist[[2]]<-'0'
+  #store the log-rank stat
+  lrstat<-c()
+  lrstat[1]=splittingf(X,'0')[[3]]
   #produce input for next iteration 
   nolist <- nlist[-1]
   #splits 2 to splitlevel 
@@ -229,6 +237,8 @@ phipmcount = function(Z, vorient, poms){
       #store the split information 
       vlist[[a]]<-splitlist[[1]][[1]]; vlist[[a+1]]<-nolist[[2*k]] 
       nlist[[k]]<-splitlist[[1]]
+      #store the log-rank stat
+      lrstat[2^i-1+k]=splitlist[[3]]
       #size check 
       nsizecheck[k]=splitlist[[2]]
     }
@@ -246,7 +256,11 @@ phipmcount = function(Z, vorient, poms){
   }
   vwithx=nodesx-1; remvlist =c(rbind(vwithx,nodesx))
   vlistf<-vlist[-remvlist]
-  return(vlistf)
+  lrstat<-lrstat[-(nodesx)/2]
+  outlist <- vector(mode = "list", length = 2) 
+  outlist[[1]]<-vlistf
+  outlist[[2]]<-lrstat
+  return(outlist)
 }
 #test out function - split by the mean into levels until each node
 #has less than nsize members. Odd elements are v and even elements

@@ -116,7 +116,7 @@ packages}\label{cleaning-up-and-loading-necessary-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{())}
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list=}\FunctionTok{ls}\NormalTok{())}
 \FunctionTok{library}\NormalTok{(survival)}
 \FunctionTok{library}\NormalTok{(dplyr)}
 \end{Highlighting}
@@ -144,7 +144,7 @@ packages}\label{cleaning-up-and-loading-necessary-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{Ven.reset }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"VenresetMft.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{Ven.reset }\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"VenresetMft.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -157,8 +157,8 @@ Residuals}\label{i.-gof-using-schoenfeld-residuals}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime, Ven.reset}\SpecialCharTok{$}\NormalTok{status)}
-\NormalTok{Coxph.addicts }\OtherTok{=} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft, }\AttributeTok{data =}\NormalTok{ Ven.reset)}
+\NormalTok{Y}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset}\SpecialCharTok{$}\NormalTok{status)}
+\NormalTok{Coxph.addicts}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting}\SpecialCharTok{+}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft,}\AttributeTok{data=}\NormalTok{Ven.reset)}
 \FunctionTok{summary}\NormalTok{(Coxph.addicts)}
 \end{Highlighting}
 \end{Shaded}
@@ -189,7 +189,7 @@ Residuals}\label{i.-gof-using-schoenfeld-residuals}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cox.zph}\NormalTok{(Coxph.addicts, }\AttributeTok{transform =}\NormalTok{ rank)}
+\FunctionTok{cox.zph}\NormalTok{(Coxph.addicts,}\AttributeTok{transform=}\NormalTok{rank)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -207,27 +207,24 @@ model}\label{ii.-testing-mft-with-setting-and-lo2-in-the-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Stratify Ventilator Data set by TR}
-\NormalTok{Ven.reset0 }\OtherTok{\textless{}{-}}\NormalTok{ Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft }\SpecialCharTok{==} \DecValTok{0}\NormalTok{, ]}
-\NormalTok{Ven.reset1 }\OtherTok{\textless{}{-}}\NormalTok{ Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft }\SpecialCharTok{==} \DecValTok{1}\NormalTok{, ]}
-\CommentTok{\# Create Survival Objects for both strata}
-\NormalTok{Y0 }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Ven.reset0}\SpecialCharTok{$}\NormalTok{eventtime, Ven.reset0}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
-\NormalTok{Y1 }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Ven.reset1}\SpecialCharTok{$}\NormalTok{eventtime, Ven.reset1}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
-\CommentTok{\# Fit Cox PH models to both strata}
-\NormalTok{Coxph.Ven.m0 }\OtherTok{=} \FunctionTok{coxph}\NormalTok{(Y0 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Setting, }\AttributeTok{data =}\NormalTok{ Ven.reset0)}
-\NormalTok{Coxph.Ven.m1 }\OtherTok{=} \FunctionTok{coxph}\NormalTok{(Y1 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Setting, }\AttributeTok{data =}\NormalTok{ Ven.reset1)}
-\CommentTok{\# get the overall mean of LO2 and Setting}
-\NormalTok{meanLO2 }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
-\NormalTok{meanSetting }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{Setting)}
-\CommentTok{\# plot our adjusted survival curves}
-\NormalTok{pattern }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2 =}\NormalTok{ meanLO2, }\AttributeTok{Setting =}\NormalTok{ meanSetting)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m0, }\AttributeTok{newdata =}\NormalTok{ pattern), }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{conf.int =}\NormalTok{ F, }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}
-    \DecValTok{23}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{, }\FloatTok{2.3}\NormalTok{), }\AttributeTok{main =} \StringTok{"Adjusted log{-}log for Mft=0 vs Mft=1"}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{))}
-\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m1, }\AttributeTok{newdata =}\NormalTok{ pattern), }\AttributeTok{fun =} \StringTok{"cloglog"}\NormalTok{, }\AttributeTok{conf.int =}\NormalTok{ F, }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}
-    \DecValTok{23}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{, }\FloatTok{2.3}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{))}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{, }\AttributeTok{cex =} \FloatTok{1.5}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Mft=0"}\NormalTok{, }\StringTok{"Mft=1"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}
-    \StringTok{"red"}\NormalTok{))}
+\CommentTok{\#Stratify Ventilator Data set by TR}
+\NormalTok{Ven.reset0}\OtherTok{\textless{}{-}}\NormalTok{Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{==}\DecValTok{0}\NormalTok{, ]}
+\NormalTok{Ven.reset1}\OtherTok{\textless{}{-}}\NormalTok{Ven.reset[Ven.reset}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{==}\DecValTok{1}\NormalTok{, ]}
+\CommentTok{\#Create Survival Objects for both strata }
+\NormalTok{Y0}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset0}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset0}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\NormalTok{Y1}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset1}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset1}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\CommentTok{\#Fit Cox PH models to both strata}
+\NormalTok{Coxph.Ven.m0}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y0}\SpecialCharTok{\textasciitilde{}}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Setting,}\AttributeTok{data=}\NormalTok{Ven.reset0)}
+\NormalTok{Coxph.Ven.m1}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y1}\SpecialCharTok{\textasciitilde{}}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Setting,}\AttributeTok{data=}\NormalTok{Ven.reset1)}
+\CommentTok{\#get the overall mean of LO2 and Setting }
+\NormalTok{meanLO2}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
+\NormalTok{meanSetting}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{Setting)}
+\CommentTok{\#plot our adjusted survival curves }
+\NormalTok{pattern}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{LO2=}\NormalTok{meanLO2,}\AttributeTok{Setting=}\NormalTok{meanSetting)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m0,}\AttributeTok{newdata=}\NormalTok{pattern),}\AttributeTok{fun=}\StringTok{"cloglog"}\NormalTok{,}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{23}\NormalTok{),}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{,}\FloatTok{2.3}\NormalTok{),}\AttributeTok{main=}\StringTok{"Adjusted log{-}log for Mft=0 vs Mft=1"}\NormalTok{,}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.Ven.m1,}\AttributeTok{newdata=}\NormalTok{pattern),}\AttributeTok{fun=}\StringTok{"cloglog"}\NormalTok{,}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{23}\NormalTok{),}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.9}\NormalTok{,}\FloatTok{2.3}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{,}\AttributeTok{cex=}\FloatTok{1.5}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{"Mft=0"}\NormalTok{,}\StringTok{"Mft=1"}\NormalTok{),}\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -247,9 +244,9 @@ interaction.}\label{i.-fit-a-stratified-model-without-interaction.}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# i Fit a stratified model}
-\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime, Ven.reset}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
-\NormalTok{coxph.Ven.m1 }\OtherTok{\textless{}{-}} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Mft), }\AttributeTok{data =}\NormalTok{ Ven.reset)}
+\CommentTok{\#i Fit a stratified model }
+\NormalTok{Y}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime,Ven.reset}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\NormalTok{coxph.Ven.m1}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Mft),}\AttributeTok{data=}\NormalTok{Ven.reset)}
 \FunctionTok{summary}\NormalTok{(coxph.Ven.m1)}
 \end{Highlighting}
 \end{Shaded}
@@ -305,7 +302,7 @@ LO2.}\label{iii.-likelihood-ratio-test-to-test-for-overall-significance-of-setti
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CSstat }\OtherTok{=} \SpecialCharTok{{-}}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ (coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{])}
+\NormalTok{CSstat }\OtherTok{=} \SpecialCharTok{{-}}\DecValTok{2}\SpecialCharTok{*}\NormalTok{(coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\NormalTok{coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{])}
 \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The value of our test statistic is"}\NormalTok{, CSstat))}
 \end{Highlighting}
 \end{Shaded}
@@ -316,8 +313,8 @@ LO2.}\label{iii.-likelihood-ratio-test-to-test-for-overall-significance-of-setti
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CV }\OtherTok{=} \FunctionTok{qchisq}\NormalTok{(}\FloatTok{0.95}\NormalTok{, }\AttributeTok{df =} \DecValTok{2}\NormalTok{)}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our critical value is:"}\NormalTok{, CV))}
+\NormalTok{CV }\OtherTok{=} \FunctionTok{qchisq}\NormalTok{(.}\DecValTok{95}\NormalTok{,}\AttributeTok{df=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our critical value is:"}\NormalTok{,CV))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -327,7 +324,7 @@ LO2.}\label{iii.-likelihood-ratio-test-to-test-for-overall-significance-of-setti
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CSstat }\SpecialCharTok{\textgreater{}}\NormalTok{ CV}
+\NormalTok{CSstat}\SpecialCharTok{\textgreater{}}\NormalTok{CV}
 \end{Highlighting}
 \end{Shaded}
 
@@ -337,8 +334,8 @@ LO2.}\label{iii.-likelihood-ratio-test-to-test-for-overall-significance-of-setti
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pvalue1 }\OtherTok{=} \FunctionTok{pchisq}\NormalTok{(CSstat, }\AttributeTok{df =} \DecValTok{2}\NormalTok{, }\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our p value is:"}\NormalTok{, pvalue1))}
+\NormalTok{pvalue1}\OtherTok{=}\FunctionTok{pchisq}\NormalTok{(CSstat,}\AttributeTok{df =} \DecValTok{2}\NormalTok{,}\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Our p value is:"}\NormalTok{,pvalue1))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -365,21 +362,16 @@ Curves}\label{v.-plotting-adjusted-survival-curves}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{meanLO2 }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
-\NormalTok{pattern1 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{0}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ meanLO2)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1, }\AttributeTok{newdata =}\NormalTok{ pattern1), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\AttributeTok{conf.int =}\NormalTok{ F,}
-    \AttributeTok{main =} \StringTok{"Adjusted survival for Setting=0, 1 and 2, mean(LO2) from stratified Cox PH model"}\NormalTok{)}
-\NormalTok{pattern2 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{1}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ meanLO2)}
-\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1, }\AttributeTok{newdata =}\NormalTok{ pattern2), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"dashed"}\NormalTok{),}
-    \AttributeTok{conf.int =}\NormalTok{ F)}
-\NormalTok{pattern3 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =} \DecValTok{2}\NormalTok{, }\AttributeTok{LO2 =}\NormalTok{ meanLO2)}
-\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1, }\AttributeTok{newdata =}\NormalTok{ pattern3), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"dotted"}\NormalTok{),}
-    \AttributeTok{conf.int =}\NormalTok{ F)}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.75}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Setting=0, Mft=0"}\NormalTok{, }\StringTok{"Setting=0, Mft=1"}\NormalTok{, }\StringTok{"Setting=1, Mft=0"}\NormalTok{,}
-    \StringTok{"Setting=1,Mft=1"}\NormalTok{, }\StringTok{"Setting=2, Mft=0"}\NormalTok{, }\StringTok{"Setting=2, Mft=1"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{,}
-    \StringTok{"solid"}\NormalTok{, }\StringTok{"dashed"}\NormalTok{, }\StringTok{"dashed"}\NormalTok{, }\StringTok{"dotted"}\NormalTok{, }\StringTok{"dotted"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{))}
+\NormalTok{meanLO2}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
+\NormalTok{pattern1}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting=}\DecValTok{0}\NormalTok{,}\AttributeTok{LO2=}\NormalTok{meanLO2)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1,}\AttributeTok{newdata=}\NormalTok{pattern1),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{),}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{main=}\StringTok{"Adjusted survival for Setting=0, 1 and 2, mean(LO2) from stratified Cox PH model"}\NormalTok{)}
+\NormalTok{pattern2}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting=}\DecValTok{1}\NormalTok{,}\AttributeTok{LO2=}\NormalTok{meanLO2)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1,}\AttributeTok{newdata=}\NormalTok{pattern2),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{), }\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}dashed\textquotesingle{}}\NormalTok{),}\AttributeTok{conf.int=}\NormalTok{F)}
+\NormalTok{pattern3}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting=}\DecValTok{2}\NormalTok{,}\AttributeTok{LO2=}\NormalTok{meanLO2)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(coxph.Ven.m1,}\AttributeTok{newdata=}\NormalTok{pattern3),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{), }\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}dotted\textquotesingle{}}\NormalTok{),}\AttributeTok{conf.int=}\NormalTok{F)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{,}\AttributeTok{cex=}\NormalTok{.}\DecValTok{75}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{"Setting=0, Mft=0"}\NormalTok{,}\StringTok{"Setting=0, Mft=1"}\NormalTok{,}\StringTok{"Setting=1, Mft=0"}\NormalTok{,}\StringTok{"Setting=1,Mft=1"}\NormalTok{,}\StringTok{"Setting=2, Mft=0"}\NormalTok{,}\StringTok{"Setting=2, Mft=1"}\NormalTok{),}\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{,}\StringTok{"solid"}\NormalTok{,}\StringTok{"dashed"}\NormalTok{,}\StringTok{"dashed"}\NormalTok{,}\StringTok{"dotted"}\NormalTok{,}\StringTok{"dotted"}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -398,8 +390,7 @@ interaction}\label{fitting-and-examining-a-stratified-cox-ph-model-with-interact
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{coxph.Ven.int.m1 }\OtherTok{\textless{}{-}} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft}\SpecialCharTok{:}\NormalTok{LO2 }\SpecialCharTok{+}\NormalTok{ Mft}\SpecialCharTok{:}\NormalTok{Setting }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Mft),}
-    \AttributeTok{data =}\NormalTok{ Ven.reset)}
+\NormalTok{coxph.Ven.int.m1}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting}\SpecialCharTok{+}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft}\SpecialCharTok{:}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft}\SpecialCharTok{:}\NormalTok{Setting}\SpecialCharTok{+}\FunctionTok{strata}\NormalTok{(Mft),}\AttributeTok{data=}\NormalTok{Ven.reset)}
 \FunctionTok{summary}\NormalTok{(coxph.Ven.int.m1)}
 \end{Highlighting}
 \end{Shaded}
@@ -441,8 +432,8 @@ h_g(X,t)=h_{g0}(t)\exp(0.85827X_1+0.80253X_2 + 0.11042X_1*X_3 +0.16728X_2*X_3)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CSstat }\OtherTok{=} \SpecialCharTok{{-}}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ (coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ coxph.Ven.int.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{])}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The value of the test statistic is:"}\NormalTok{, CSstat))}
+\NormalTok{CSstat }\OtherTok{=} \SpecialCharTok{{-}}\DecValTok{2}\SpecialCharTok{*}\NormalTok{(coxph.Ven.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\NormalTok{coxph.Ven.int.m1}\SpecialCharTok{$}\NormalTok{loglik[}\DecValTok{2}\NormalTok{])}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The value of the test statistic is:"}\NormalTok{,CSstat))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -452,8 +443,8 @@ h_g(X,t)=h_{g0}(t)\exp(0.85827X_1+0.80253X_2 + 0.11042X_1*X_3 +0.16728X_2*X_3)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CV }\OtherTok{=} \FunctionTok{qchisq}\NormalTok{(}\FloatTok{0.95}\NormalTok{, }\AttributeTok{df =} \DecValTok{2}\NormalTok{)}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The critical value is:"}\NormalTok{, CV))}
+\NormalTok{CV }\OtherTok{=} \FunctionTok{qchisq}\NormalTok{(.}\DecValTok{95}\NormalTok{,}\AttributeTok{df=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The critical value is:"}\NormalTok{,CV))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -463,7 +454,7 @@ h_g(X,t)=h_{g0}(t)\exp(0.85827X_1+0.80253X_2 + 0.11042X_1*X_3 +0.16728X_2*X_3)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CSstat }\SpecialCharTok{\textgreater{}}\NormalTok{ CV}
+\NormalTok{CSstat}\SpecialCharTok{\textgreater{}}\NormalTok{CV}
 \end{Highlighting}
 \end{Shaded}
 
@@ -473,8 +464,8 @@ h_g(X,t)=h_{g0}(t)\exp(0.85827X_1+0.80253X_2 + 0.11042X_1*X_3 +0.16728X_2*X_3)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pvalue2 }\OtherTok{=} \FunctionTok{pchisq}\NormalTok{(CSstat, }\DecValTok{2}\NormalTok{, }\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The p value is:"}\NormalTok{, pvalue2))}
+\NormalTok{pvalue2}\OtherTok{=}\FunctionTok{pchisq}\NormalTok{(CSstat, }\DecValTok{2}\NormalTok{, }\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The p value is:"}\NormalTok{,pvalue2))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -493,8 +484,8 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# HR for Setting and 95\% CI for HR for Setting with MFt=0.}
-\NormalTok{b1 }\OtherTok{=}\NormalTok{ coxph.Ven.int.m1}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#HR for Setting and 95\% CI for HR for Setting with MFt=0. }
+\NormalTok{b1}\OtherTok{=}\NormalTok{coxph.Ven.int.m1}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{]}
 \FunctionTok{exp}\NormalTok{(b1)}
 \end{Highlighting}
 \end{Shaded}
@@ -506,7 +497,7 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{exp}\NormalTok{(b1 }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.17398}\NormalTok{)}
+\FunctionTok{exp}\NormalTok{(b1}\FloatTok{{-}1.96}\SpecialCharTok{*}\FloatTok{0.17398}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -517,7 +508,7 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{exp}\NormalTok{(b1 }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.17398}\NormalTok{)}
+\FunctionTok{exp}\NormalTok{(b1}\FloatTok{+1.96}\SpecialCharTok{*}\FloatTok{0.17398}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -528,11 +519,9 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# We use a trick here and recode Mft=0 as Mft2={-}1 and Mft=1 as Mft2=0 and refit}
-\CommentTok{\# the model with Mft2 rather than Mft.}
-\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{Mft2 }\OtherTok{=}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{Mft }\SpecialCharTok{{-}} \DecValTok{1}
-\NormalTok{coxph.Ven.int.m2 }\OtherTok{\textless{}{-}} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft2}\SpecialCharTok{:}\NormalTok{LO2 }\SpecialCharTok{+}\NormalTok{ Mft2}\SpecialCharTok{:}\NormalTok{Setting }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Mft2),}
-    \AttributeTok{data =}\NormalTok{ Ven.reset)}
+\CommentTok{\#We use a trick here and recode Mft=0 as Mft2={-}1 and Mft=1 as Mft2=0 and refit the model with Mft2 rather than Mft. }
+\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{Mft2}\OtherTok{=}\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{Mft}\DecValTok{{-}1}
+\NormalTok{coxph.Ven.int.m2}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting}\SpecialCharTok{+}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft2}\SpecialCharTok{:}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft2}\SpecialCharTok{:}\NormalTok{Setting}\SpecialCharTok{+}\FunctionTok{strata}\NormalTok{(Mft2),}\AttributeTok{data=}\NormalTok{Ven.reset)}
 \FunctionTok{summary}\NormalTok{(coxph.Ven.int.m2)}
 \end{Highlighting}
 \end{Shaded}
@@ -566,8 +555,8 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# HR for Setting and 95\% CI for HR for Setting with MFt=1.}
-\NormalTok{b1 }\OtherTok{=}\NormalTok{ coxph.Ven.int.m2}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#HR for Setting and 95\% CI for HR for Setting with MFt=1. }
+\NormalTok{b1}\OtherTok{=}\NormalTok{coxph.Ven.int.m2}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{]}
 \FunctionTok{exp}\NormalTok{(b1)}
 \end{Highlighting}
 \end{Shaded}
@@ -579,7 +568,7 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{exp}\NormalTok{(b1 }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.1779}\NormalTok{)}
+\FunctionTok{exp}\NormalTok{(b1}\FloatTok{{-}1.96}\SpecialCharTok{*}\FloatTok{0.1779}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -590,7 +579,7 @@ h_g(X,t)=h_{g0}(t)\exp(\beta_1 X_1+ \beta_2 X_2 + \delta_1 X_1*X_3 + \delta_2 X_
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{exp}\NormalTok{(b1 }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*} \FloatTok{0.1779}\NormalTok{)}
+\FunctionTok{exp}\NormalTok{(b1}\FloatTok{+1.96}\SpecialCharTok{*}\FloatTok{0.1779}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -645,13 +634,13 @@ and \(X6\) are included in the model.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Create and plot our partial likelihood.}
-\NormalTok{f1}\FloatTok{.1} \OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b) }\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(b }\SpecialCharTok{*} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\FloatTok{1.5} \SpecialCharTok{*}\NormalTok{ b) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
-\NormalTok{f1}\FloatTok{.2} \OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{exp}\NormalTok{(}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ b)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ b) }\SpecialCharTok{+} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\FloatTok{1.5} \SpecialCharTok{*}\NormalTok{ b))}
-\NormalTok{f2}\FloatTok{.1} \OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{exp}\NormalTok{(b)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(b) }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ b))}
-\NormalTok{f }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{f1.1}\NormalTok{(b) }\SpecialCharTok{*} \FunctionTok{f1.2}\NormalTok{(b) }\SpecialCharTok{*} \FunctionTok{f2.1}\NormalTok{(b)}
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{, }\FloatTok{0.01}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(x, }\FunctionTok{f}\NormalTok{(x))}
+\CommentTok{\#Create and plot our partial likelihood. }
+\NormalTok{f1}\FloatTok{.1}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(b) }\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(b}\SpecialCharTok{*}\DecValTok{2}\NormalTok{)}\SpecialCharTok{+}\DecValTok{2}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(}\FloatTok{1.5}\SpecialCharTok{*}\NormalTok{b)}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}
+\NormalTok{f1}\FloatTok{.2}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{exp}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{b)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{b)}\SpecialCharTok{+}\DecValTok{2}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(}\FloatTok{1.5}\SpecialCharTok{*}\NormalTok{b))}
+\NormalTok{f2}\FloatTok{.1}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{exp}\NormalTok{(b)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{exp}\NormalTok{(b)}\SpecialCharTok{+}\FunctionTok{exp}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{b))}
+\NormalTok{f}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(b) }\FunctionTok{f1.1}\NormalTok{(b)}\SpecialCharTok{*}\FunctionTok{f1.2}\NormalTok{(b)}\SpecialCharTok{*}\FunctionTok{f2.1}\NormalTok{(b)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{20}\NormalTok{,}\DecValTok{10}\NormalTok{,}\FloatTok{0.01}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(x, }\FunctionTok{f}\NormalTok{(x))   }
 \end{Highlighting}
 \end{Shaded}
 
@@ -659,9 +648,8 @@ and \(X6\) are included in the model.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# optimize our function to get an estimate. We minizimize the negative of f (g)}
-\CommentTok{\# to maximize f.}
-\NormalTok{g }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(b) }\SpecialCharTok{{-}}\FunctionTok{f}\NormalTok{(b)}
+\CommentTok{\#optimize our function to get an estimate. We minizimize the negative of f (g) to maximize f. }
+\NormalTok{g}\OtherTok{=}\ControlFlowTok{function}\NormalTok{(b) }\SpecialCharTok{{-}}\FunctionTok{f}\NormalTok{(b) }
 \FunctionTok{optimize}\NormalTok{(g, }\AttributeTok{lower =} \SpecialCharTok{{-}}\DecValTok{5}\NormalTok{, }\AttributeTok{upper =} \DecValTok{0}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -676,13 +664,11 @@ and \(X6\) are included in the model.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{8}\NormalTok{)}
-\NormalTok{status }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
-\NormalTok{Dose }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\FloatTok{1.5}\NormalTok{)}
-\NormalTok{Type }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
-\NormalTok{Alcohol }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(time, status, Dose, Type)}
-\NormalTok{S }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Alcohol}\SpecialCharTok{$}\NormalTok{time, Alcohol}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
-\FunctionTok{coxph}\NormalTok{(S }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Dose }\SpecialCharTok{+} \FunctionTok{strata}\NormalTok{(Type), }\AttributeTok{data =}\NormalTok{ Alcohol)}
+\NormalTok{time}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{);status}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{);Dose}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\FloatTok{1.5}\NormalTok{,}\DecValTok{2}\NormalTok{,}\FloatTok{1.5}\NormalTok{);}
+\NormalTok{Type}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{)}
+\NormalTok{Alcohol}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(time,status,Dose,Type)}
+\NormalTok{S}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Alcohol}\SpecialCharTok{$}\NormalTok{time,Alcohol}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+\FunctionTok{coxph}\NormalTok{(S}\SpecialCharTok{\textasciitilde{}}\NormalTok{Dose}\SpecialCharTok{+}\FunctionTok{strata}\NormalTok{(Type),}\AttributeTok{data=}\NormalTok{Alcohol)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -715,17 +701,15 @@ regardless of type (as there is no interaction).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Our adjusted survival Curves.}
-\NormalTok{Coxph.ven3 }\OtherTok{=} \FunctionTok{coxph}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft, }\AttributeTok{data =}\NormalTok{ Ven.reset)}
-\NormalTok{settingmean }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{Setting)}
-\NormalTok{LO2mean }\OtherTok{=} \FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2)}
-\NormalTok{pattern1 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =}\NormalTok{ settingmean, }\AttributeTok{LO2 =}\NormalTok{ LO2mean, }\AttributeTok{Mft =} \DecValTok{0}\NormalTok{)}
-\NormalTok{pattern2 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting =}\NormalTok{ settingmean, }\AttributeTok{LO2 =}\NormalTok{ LO2mean, }\AttributeTok{Mft =} \DecValTok{1}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.ven3, }\AttributeTok{newdata =}\NormalTok{ pattern1), }\AttributeTok{conf.int =}\NormalTok{ F, }\AttributeTok{main =} \StringTok{"Adjusted survival for Mft=0 vs Mft=1, mean(Setting), mean(LO2)"}\NormalTok{,}
-    \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{))}
-\FunctionTok{par}\NormalTok{(}\AttributeTok{new =} \ConstantTok{TRUE}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.ven3, }\AttributeTok{newdata =}\NormalTok{ pattern2), }\AttributeTok{conf.int =}\NormalTok{ F, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{))}
-\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"Mft=0"}\NormalTok{, }\StringTok{"Mft=1"}\NormalTok{), }\AttributeTok{lty =} \FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{), }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{))}
+\CommentTok{\#Our adjusted survival Curves. }
+\NormalTok{Coxph.ven3}\OtherTok{=}\FunctionTok{coxph}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{Setting}\SpecialCharTok{+}\NormalTok{LO2}\SpecialCharTok{+}\NormalTok{Mft,}\AttributeTok{data=}\NormalTok{Ven.reset)}
+\NormalTok{settingmean}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{Setting); LO2mean}\OtherTok{=}\FunctionTok{mean}\NormalTok{(Ven.reset}\SpecialCharTok{$}\NormalTok{LO2); }
+\NormalTok{pattern1}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting=}\NormalTok{settingmean,}\AttributeTok{LO2=}\NormalTok{LO2mean,}\AttributeTok{Mft=}\DecValTok{0}\NormalTok{);}
+\NormalTok{pattern2}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Setting=}\NormalTok{settingmean,}\AttributeTok{LO2=}\NormalTok{LO2mean,}\AttributeTok{Mft=}\DecValTok{1}\NormalTok{);}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.ven3,}\AttributeTok{newdata=}\NormalTok{pattern1),}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{main=}\StringTok{"Adjusted survival for Mft=0 vs Mft=1, mean(Setting), mean(LO2)"}\NormalTok{,}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{new=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{survfit}\NormalTok{(Coxph.ven3,}\AttributeTok{newdata=}\NormalTok{pattern2),}\AttributeTok{conf.int=}\NormalTok{F,}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{"Mft=0"}\NormalTok{,}\StringTok{"Mft=1"}\NormalTok{), }\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\StringTok{"solid"}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -735,13 +719,11 @@ regardless of type (as there is no interaction).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Based on the adjusted survival curve we choose t=3.5 as a split (or cut)}
-\CommentTok{\# point.}
-\NormalTok{Venreset.cp3}\FloatTok{.5} \OtherTok{=} \FunctionTok{survSplit}\NormalTok{(Ven.reset, }\AttributeTok{cut =} \FloatTok{3.5}\NormalTok{, }\AttributeTok{end =} \StringTok{"eventtime"}\NormalTok{, }\AttributeTok{event =} \StringTok{"status"}\NormalTok{,}
-    \AttributeTok{start =} \StringTok{"start"}\NormalTok{, }\AttributeTok{id =} \StringTok{"id"}\NormalTok{)}
-\NormalTok{Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{hv2 }\OtherTok{=}\NormalTok{ Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{Mft }\SpecialCharTok{*}\NormalTok{ (Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{start }\SpecialCharTok{\textgreater{}=} \FloatTok{3.5}\NormalTok{)}
-\NormalTok{Y4 }\OtherTok{=} \FunctionTok{Surv}\NormalTok{(Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{start, Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{eventtime, Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{status)}
-\NormalTok{coxph.Venreset.hs2 }\OtherTok{\textless{}{-}} \FunctionTok{coxph}\NormalTok{(Y4 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft }\SpecialCharTok{+}\NormalTok{ hv2 }\SpecialCharTok{+} \FunctionTok{cluster}\NormalTok{(id), }\AttributeTok{data =}\NormalTok{ Venreset.cp3}\FloatTok{.5}\NormalTok{)}
+\CommentTok{\#Based on the adjusted survival curve we choose t=3.5 as a split (or cut) point. }
+\NormalTok{Venreset.cp3}\FloatTok{.5}\OtherTok{=}\FunctionTok{survSplit}\NormalTok{(Ven.reset,}\AttributeTok{cut=}\DecValTok{3}\NormalTok{,}\AttributeTok{end=}\StringTok{"eventtime"}\NormalTok{,}\AttributeTok{event=}\StringTok{"status"}\NormalTok{,}\AttributeTok{start=}\StringTok{"start"}\NormalTok{,}\AttributeTok{id=}\StringTok{"id"}\NormalTok{)}
+\NormalTok{Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{hv2}\OtherTok{=}\NormalTok{Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{*}\NormalTok{(Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{start}\SpecialCharTok{\textgreater{}=}\DecValTok{3}\NormalTok{)}
+\NormalTok{Y4}\OtherTok{=}\FunctionTok{Surv}\NormalTok{(Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{start,Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{eventtime,Venreset.cp3}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{status)}
+\NormalTok{coxph.Venreset.hs2}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(Y4 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Mft }\SpecialCharTok{+}\NormalTok{ hv2 }\SpecialCharTok{+} \FunctionTok{cluster}\NormalTok{(id),}\AttributeTok{data=}\NormalTok{Venreset.cp3}\FloatTok{.5}\NormalTok{)}
 \FunctionTok{summary}\NormalTok{(coxph.Venreset.hs2)}
 \end{Highlighting}
 \end{Shaded}
@@ -751,26 +733,26 @@ regardless of type (as there is no interaction).
 ## coxph(formula = Y4 ~ Setting + LO2 + Mft + hv2, data = Venreset.cp3.5, 
 ##     cluster = id)
 ## 
-##   n= 199, number of events= 145 
+##   n= 203, number of events= 145 
 ## 
 ##             coef exp(coef) se(coef) robust se      z Pr(>|z|)    
-## Setting  1.01926   2.77113  0.12282   0.13064  7.802  6.1e-15 ***
-## LO2      0.92024   2.50990  0.07710   0.07359 12.506  < 2e-16 ***
-## Mft     -0.51445   0.59783  0.21262   0.21107 -2.437   0.0148 *  
-## hv2      0.84088   2.31841  0.37995   0.34907  2.409   0.0160 *  
+## Setting  1.01497   2.75929  0.12257   0.13131  7.730 1.08e-14 ***
+## LO2      0.91619   2.49974  0.07692   0.07418 12.351  < 2e-16 ***
+## Mft     -0.59911   0.54930  0.21795   0.22015 -2.721  0.00650 ** 
+## hv2      1.01983   2.77273  0.37311   0.34165  2.985  0.00284 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##         exp(coef) exp(-coef) lower .95 upper .95
-## Setting    2.7711     0.3609    2.1451    3.5798
-## LO2        2.5099     0.3984    2.1728    2.8993
-## Mft        0.5978     1.6727    0.3953    0.9041
-## hv2        2.3184     0.4313    1.1697    4.5954
+## Setting    2.7593     0.3624    2.1332    3.5692
+## LO2        2.4997     0.4000    2.1615    2.8909
+## Mft        0.5493     1.8205    0.3568    0.8457
+## hv2        2.7727     0.3607    1.4194    5.4165
 ## 
-## Concordance= 0.836  (se = 0.013 )
-## Likelihood ratio test= 198.5  on 4 df,   p=<2e-16
-## Wald test            = 159.3  on 4 df,   p=<2e-16
-## Score (logrank) test = 183.6  on 4 df,   p=<2e-16,   Robust = 96.05  p=<2e-16
+## Concordance= 0.837  (se = 0.013 )
+## Likelihood ratio test= 201.1  on 4 df,   p=<2e-16
+## Wald test            = 157.7  on 4 df,   p=<2e-16
+## Score (logrank) test = 187.5  on 4 df,   p=<2e-16,   Robust = 97.58  p=<2e-16
 ## 
 ##   (Note: the likelihood ratio and score tests assume independence of
 ##      observations within a cluster, the Wald and robust score tests do not).
@@ -797,14 +779,13 @@ significant at level \(\alpha=0.05\). The estimated HR is \[
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# We fit an extended model with h(t)=ln(t)}
-\NormalTok{Venreset.cp }\OtherTok{=} \FunctionTok{survSplit}\NormalTok{(Ven.reset, }\AttributeTok{cut =}\NormalTok{ Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime[Ven.reset}\SpecialCharTok{$}\NormalTok{status }\SpecialCharTok{==}
-    \DecValTok{1}\NormalTok{], }\AttributeTok{end =} \StringTok{"eventtime"}\NormalTok{, }\AttributeTok{event =} \StringTok{"status"}\NormalTok{, }\AttributeTok{start =} \StringTok{"start"}\NormalTok{, }\AttributeTok{id =} \StringTok{"id"}\NormalTok{)}
-\NormalTok{Venreset.cp}\SpecialCharTok{$}\NormalTok{t.Mft }\OtherTok{=}\NormalTok{ Venreset.cp}\SpecialCharTok{$}\NormalTok{Mft }\SpecialCharTok{*} \FunctionTok{log}\NormalTok{(Venreset.cp}\SpecialCharTok{$}\NormalTok{eventtime)}
-\CommentTok{\# Create an extended survival object}
-\NormalTok{YE }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(Venreset.cp}\SpecialCharTok{$}\NormalTok{start, Venreset.cp}\SpecialCharTok{$}\NormalTok{eventtime, Venreset.cp}\SpecialCharTok{$}\NormalTok{status)}
-\CommentTok{\# Test for clinic}
-\NormalTok{coxph.venreset.ct }\OtherTok{\textless{}{-}} \FunctionTok{coxph}\NormalTok{(YE }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ Mft }\SpecialCharTok{+}\NormalTok{ t.Mft }\SpecialCharTok{+} \FunctionTok{cluster}\NormalTok{(id), }\AttributeTok{data =}\NormalTok{ Venreset.cp)}
+\CommentTok{\#We fit an extended model with h(t)=ln(t)}
+\NormalTok{Venreset.cp}\OtherTok{=}\FunctionTok{survSplit}\NormalTok{(Ven.reset,}\AttributeTok{cut=}\NormalTok{Ven.reset}\SpecialCharTok{$}\NormalTok{eventtime[Ven.reset}\SpecialCharTok{$}\NormalTok{status}\SpecialCharTok{==}\DecValTok{1}\NormalTok{],}\AttributeTok{end=}\StringTok{"eventtime"}\NormalTok{,}\AttributeTok{event=}\StringTok{"status"}\NormalTok{,}\AttributeTok{start=}\StringTok{"start"}\NormalTok{,}\AttributeTok{id=}\StringTok{"id"}\NormalTok{)}
+\NormalTok{Venreset.cp}\SpecialCharTok{$}\NormalTok{t.Mft}\OtherTok{=}\NormalTok{Venreset.cp}\SpecialCharTok{$}\NormalTok{Mft}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(Venreset.cp}\SpecialCharTok{$}\NormalTok{eventtime)}
+\CommentTok{\#Create an extended survival object}
+\NormalTok{YE}\OtherTok{\textless{}{-}}\FunctionTok{Surv}\NormalTok{(Venreset.cp}\SpecialCharTok{$}\NormalTok{start,Venreset.cp}\SpecialCharTok{$}\NormalTok{eventtime,Venreset.cp}\SpecialCharTok{$}\NormalTok{status)}
+\CommentTok{\#Test for clinic}
+\NormalTok{coxph.venreset.ct}\OtherTok{\textless{}{-}}\FunctionTok{coxph}\NormalTok{(YE }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LO2 }\SpecialCharTok{+}\NormalTok{ Setting }\SpecialCharTok{+}\NormalTok{ Mft }\SpecialCharTok{+}\NormalTok{ t.Mft }\SpecialCharTok{+} \FunctionTok{cluster}\NormalTok{(id),}\AttributeTok{data=}\NormalTok{Venreset.cp)}
 \FunctionTok{summary}\NormalTok{(coxph.venreset.ct)}
 \end{Highlighting}
 \end{Shaded}
