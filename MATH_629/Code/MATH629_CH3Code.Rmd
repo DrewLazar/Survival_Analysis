@@ -1,0 +1,167 @@
+---
+title: "MATH629_CH3Code"
+author: "Drew Lazar"
+date: "11/5/2021"
+output: pdf_document
+---
+
+```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
+```
+
+## Chapter 3
+
+```{r}
+#Remove any variables in your environment 
+rm(list=ls())
+#load the R Survival package 
+library(survival)
+library(tidyverse)
+```
+
+## Problem 3.1 
+```{r}
+#load Remission data 
+load("Remission.rda")
+#Create a Survival Object 
+Y<-Surv(Remission$survt,Remission$status==1)
+#model 1 - just TR
+Coxph.Rem.m1=coxph(Y~TR,data=Remission)
+summary(Coxph.Rem.m1)
+Coxph.Rem.m1$loglik
+#pvalue
+2*(1-pnorm(3.812))  
+```
+
+```{r}
+#model 2 - TR and logWBC
+Coxph.Rem.m2=coxph(Y~TR+logWBC,data=Remission)
+summary(Coxph.Rem.m2)
+Coxph.Rem.m2$loglik
+```
+
+```{r}
+#model 3 - TR, logWBC and interaction 
+Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
+summary(Coxph.Rem.m3)
+Coxph.Rem.m3$loglik
+```
+
+```{r}
+#95% Confidence Interval for HR in model 3 (assuming interaction) 
+#setting logWBC = 2.930238
+mean(Remission$logWBC)
+exp(2.3749-2.930238*0.3175)
+```
+
+```{r}
+#estimate of HR(TR=0 vs TR=1)
+vcov(Coxph.Rem.m3)
+exp(2.3749-0.3175*2.930238+1.96*sqrt((2.9086116+2*(2.930238)*(-0.8687027)+2.930238^2*0.2764537)))
+exp(2.3749-0.3175*2.930238- 1.96*sqrt((2.9086116+2*2.930238*(-0.8687027)+2.930238^2*0.2764537)))
+```
+
+## Problem 3.2 
+```{r}
+pattern1=data.frame(TR=0,logWBC=2.930238)
+summary(survfit(Coxph.Rem.m2,newdata=pattern1))
+```
+
+```{r}
+pattern2=data.frame(TR=1,logWBC=2.930238)
+summary(survfit(Coxph.Rem.m2,newdata=pattern2))
+```
+
+```{r}
+plot(survfit(Coxph.Rem.m2,newdata=pattern1),conf.int=F,main="Adjusted survival for TR=0 vs TR=1, mean(logWBC)")
+par(new=TRUE)
+plot(survfit(Coxph.Rem.m2,newdata=pattern2),conf.int=F,lty='dashed')
+legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
+       col=c('black','grey'))
+```
+## Example 3.2 
+```{r}
+f1<-function(b) exp(b)/(3*exp(b)+1)
+f2<-function(b) 1/(1+exp(b))
+f <- function(b) -f1(b)*f2(b)
+#f <- function(b) -exp(b)/(3*exp(2*b)+4*exp(b)+1)
+x <- seq(-1,10,0.01)
+```
+
+```{r}
+plot(x, f(x)) 
+```
+
+```{r}
+optimize(f, lower = -1, upper = 0)
+```
+
+```{r}
+time<-c(2,3,5,8);status<-c(1,0,1,1);Coupon<-c(1,1,0,1)
+Sales=data.frame(Coupon,status,time)
+S<-Surv(Sales$time,Sales$status==1)
+coxph(S~Coupon,data=Sales)
+```
+
+
+## Problem 3.3
+```{r}
+#From problem 3.1 
+#model 1 - just TR
+Coxph.Rem.m1=coxph(Y~TR,data=Remission)
+summary(Coxph.Rem.m1)
+Coxph.Rem.m1$loglik
+#model 2 - TR and logWBC
+Coxph.Rem.m2=coxph(Y~TR+logWBC,data=Remission)
+summary(Coxph.Rem.m2)
+Coxph.Rem.m2$loglik
+#model 3 - TR, logWBC and interaction 
+Coxph.Rem.m3=coxph(Y~TR+logWBC+logWBC*TR,data=Remission)
+summary(Coxph.Rem.m3)
+Coxph.Rem.m3$loglik
+```
+
+```{r}
+#constant main effect model
+Coxph.Rem.me=coxph(Y~1,data=Remission)
+summary(Coxph.Rem.me)
+Coxph.Rem.me$loglik
+```
+
+```{r}
+#Test for just beta1=0
+#Chi-squared statistic, critical value, and p-value
+CSstat=-2*(-93.18427-(-85.00842))
+CSstat
+CV=qchisq(.95,df=1)
+pvalue1=pchisq(CSstat,df = 1,lower.tail = FALSE)
+pvalue1
+```
+
+```{r}
+#Test for beta2=0 with TR in the model
+CSstat=-2*(-85.00842-(-69.82810))
+CSstat
+CV=qchisq(.95,df=1)
+pvalue2=pchisq(CSstat,df = 1,lower.tail = FALSE)
+pvalue2
+```
+
+```{r}
+#Test for beta3=0 (interaction) with TR and logWBC in the model
+CSstat=-2*(-69.82810-(-69.64839))
+CSstat
+CV=qchisq(.95,df=1)
+pvalue3=pchisq(CSstat,df = 1,lower.tail = FALSE)
+pvalue3
+```
+
+```{r}
+#Test for beta2=beta3=0 with TR in the model
+CSstat=-2*(-85.00842-(-69.64839))
+CSstat
+CV=qchisq(.95,df=2)
+pvalue4=pchisq(CSstat,df = 2,lower.tail = FALSE)
+pvalue4
+```

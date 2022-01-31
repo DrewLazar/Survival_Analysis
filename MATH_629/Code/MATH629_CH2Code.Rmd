@@ -2,26 +2,25 @@
 title: "MATH629_CH2Code"
 author: "Drew Lazar"
 date: "11/5/2021"
-output: word_document
+output: pdf_document
 ---
+
+```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
+```
+
+## Chapter 2
 
 ```{r}
 #Remove any variables in your environment 
 rm(list=ls())
 #load the R Survival package 
 library(survival)
+library(tidyverse)
 ```
 
 
-```{r setup,results='hide',include=FALSE,message=FALSE,warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "C:/GitStuff/Survival_Analysis/MATH_629/Data")
-```
-## R Markdown
-
-
-
-## Chapter 2
 ## Problem 2.2 
 ```{r}
 #load Remission data 
@@ -35,6 +34,7 @@ kmfit1=survfit(Y~1)
 summary(kmfit1)
 ```
 
+
 ```{r}
 #Plot your KM estimates
 plot(kmfit1,xlab="survival time in weeks",ylab="survival probabilities")
@@ -43,7 +43,13 @@ plot(kmfit1,xlab="survival time in weeks",ylab="survival probabilities")
 
 ```{r}
 summary(kmfit1,times=11)
+```
+
+```{r}
 summary(kmfit1,times=c(11,12,15))
+```
+
+```{r}
 #statify on treatment and get the KM estimates 
 kmfit2=survfit(Y~Remission$TR)
 #See your KM estimates by TR
@@ -56,4 +62,113 @@ plot(kmfit2,lty=c('solid','dashed'),col=c('black','grey'),
      xlab="survival time in weeks",ylab="survival probabilities")
 legend("topright",c("Treatment","Placebo"),lty=c("solid","dashed"),
        col=c('black','grey'))
+```
+
+## Problem 2.3
+```{r}
+#vets make
+vets<-read.fwf("vets.dat", widths = c(-1,1,1,1,1,1,-1,3,-1,2,-1,2,-1,2,-1,2,-1,1),header=FALSE)
+vets <-
+  rename(vets,
+    Treatment = V1,
+    Cell.Type.1 = V2,
+    Cell.Type.2 = V3,
+    Cell.Type.3 = V4,
+    Cell.Type.4 = V5,
+    Survival.time = V6,
+    Performance.status=V7,
+    Disease.duration=V8,
+    Age=V9,
+    Prior.Therapy=V10,
+    Status=V11
+    )
+vets$Performance.Category<-cut(vets$Performance.status,c(-1,59,74,100),labels=c('1','2','3'))
+
+```
+
+```{r}
+#set the vets data set as the default with the attach function 
+attach(vets)
+```
+
+```{r}
+#Create a survival object for vets
+W<-Surv(Survival.time,Status==1)
+#statify on Performance.category and get the KM estimates 
+kmvet.per=survfit(W~Performance.Category)
+#See your KM estimates by Performance.Category
+summary(kmvet.per)
+```
+
+```{r}
+#Plot the KM Estimates 
+plot(kmvet.per,lty=c('solid','dashed','dotted'),col=c('black','grey','blue'),
+     xlab="survival time in days",ylab="survival probabilities")
+legend("topright",c("1","2","3"),lty=c("solid","dashed",'dotted'),
+       col=c('black','grey','blue'))
+```
+
+```{r}
+survdiff(W~Performance.Category)
+```
+
+## Problem 2.4
+
+```{r}
+#Flemington-Harrington for p=0, 0.15, 0.5, 3
+for (p in c(0,.15,0.5,3)){
+  sd= survdiff(Y~Remission$TR,rho=p)
+  print(paste("The value of p is:",p)); print(sd)
+}
+```
+
+## Problem 2.5
+```{r}
+survdiff(Surv(survt,status) ~ TR + strata(logWBC.group),data=Remission)
+```
+## Problem 2.6
+```{r}
+#"plain is Greenwood" 
+kmfit2=survfit(Y~Remission$TR,conf.type="plain")
+summary(kmfit2)
+```
+```{r}
+par(mar = c(4,4,1,1))
+plot(kmfit2[1], conf.int=TRUE, col="green", xlab = "Time in Months", ylab = "Survival probability")
+lines(kmfit2[2], conf.int=TRUE, col="red")
+legend("topright",c("Treatment","Placebo"),lty=c("solid"),
+       col=c('green','red'))
+```
+
+## Problem 2.7
+```{r}
+kmfit2=survfit(Y~Remission$TR)
+summary(kmfit2)
+```
+
+```{r}
+#For TR=1 our inequality works for times 4,5 and 8.
+#For time t_3=3
+0.5-1.96*0.0929 <0.7619
+0.5+1.96*0.0929 >0.7619
+#For time t_4=4 
+0.5-1.96*0.1029<0.6667
+0.5+1.96*0.1029>0.6677
+#For time t_5=5
+0.5-1.96*0.1080<0.5714 
+0.5+1.96*0.1080>0.5714 
+#For time t_6=8
+0.5-1.96*0.1060<0.3810 
+0.5+1.96*0.1060>0.3810
+#For time t_7=11
+0.5-1.96*0.0986<0.2857
+0.5+1.96*0.0986>0.2857
+#For time t_8=12
+0.5-1.96*0.0857 <0.1905 
+0.5+1.96*0.0857 >0.1905 
+#We get CI (4,12) as our confidence interval. We use the code below
+#to get it directly in R
+survfit(Y ~ Remission$TR)
+#Simply comparing medians the survival experience for the treatment group
+#is better
 ```
