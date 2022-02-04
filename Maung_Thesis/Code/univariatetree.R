@@ -3,7 +3,7 @@ setwd("C:/GitStuff/Survival_Analysis/Maung_Thesis/Code")
 #load Remission data 
 load("C:/gitstuff/Survival_Analysis/Maung_Thesis/Data/Remission.rda")
 #load univariate splitting function
-source("univariatesplitfunction2.R")
+source("univariatesplitfunction.R")
 library(lpSolve)
 library(survival)
 library(dplyr)
