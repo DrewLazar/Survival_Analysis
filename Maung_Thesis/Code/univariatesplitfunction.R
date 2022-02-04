@@ -4,6 +4,11 @@ bestsplit <- function(data, covariates = c(),time,censor){
   ncovas=length(covariates)
   opt.split.bycov = data.frame(covariate=NA,bestsplitval=NA,lrstat=NA)
   for (i in 1:ncovas) {
+    if (length(unique(data[covariates[i]][[1]]))==1)
+    {opt.split.bycov[i,1]=covariates[i]
+    opt.split.bycov[i,2]=0
+    opt.split.bycov[i,3]=0}
+    else{
     data.sort<- data %>% arrange(data[covariates[i]])
     n = nrow(data)
     lrstat.old=0
@@ -27,6 +32,7 @@ bestsplit <- function(data, covariates = c(),time,censor){
     opt.split.bycov[i,1]=covariates[i]
     opt.split.bycov[i,2]=data.sort[covariates[i]][split.pos,1]
     opt.split.bycov[i,3]=lrstat.max
+    }
   }
   logr=max(opt.split.bycov[,3])
   max=which.max(opt.split.bycov[,3])
@@ -38,7 +44,7 @@ bestsplit <- function(data, covariates = c(),time,censor){
 }
 setwd("C:/GitStuff/Survival_Analysis/MATH_629/Data")
 load("Remission.rda")
-data=Remission 
+data=Remission
 covariates = c("TR", "logWBC");
 time="survt"
 censor="status"

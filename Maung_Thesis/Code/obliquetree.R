@@ -200,7 +200,9 @@ phipmcount = function(Z, vorient, poms){
        dataflr=data[subsetX,]
        Y<-Surv(dataflr[time][[1]],dataflr[censor][[1]]==1)
        lrstat=survdiff(Y~splits<0)[[5]]
-       return(list(mylist,sizeflag,lrstat))
+      #compute KM estimate
+      kmfit='notterminal'
+       return(list(mylist,sizeflag,lrstat,kmfit))
     } else {
       v=rep(0,3)
       XL=X;XR=X 
@@ -208,7 +210,13 @@ phipmcount = function(Z, vorient, poms){
       mylist<-list(v,XL,ninfol,XR,ninfor)
       sizeflag=TRUE
       lrstat=0
-      return(list(mylist,sizeflag,lrstat))
+      #Compute the KM estimate 
+      subsetnames=data.frame(rownames(X))
+      subsetX=strtoi(as.vector(subsetnames[[1]]))
+      datasubset = data[subsetX,]
+      Y<-Surv(datasubset[time][[1]],datasubset[censor][[1]]==1)
+      kmfit=survfit(Y~1)
+      return(list(mylist,sizeflag,lrstat,kmfit))
     }
   }
   #firstsplit 
@@ -220,6 +228,9 @@ phipmcount = function(Z, vorient, poms){
   #store the log-rank stat
   lrstat<-c()
   lrstat[1]=splittingf(X,'0')[[3]]
+  #store the KMestimate
+  KMest <-vector(mode = "list", length = 1) 
+  KMest[[1]]=splittingf(X,'0')[[4]]
   #produce input for next iteration 
   nolist <- nlist[-1]
   #splits 2 to splitlevel 
@@ -239,6 +250,8 @@ phipmcount = function(Z, vorient, poms){
       nlist[[k]]<-splitlist[[1]]
       #store the log-rank stat
       lrstat[2^i-1+k]=splitlist[[3]]
+      #store the KM estimate
+      KMest[[2^i-1+k]]=splitlist[[4]]
       #size check 
       nsizecheck[k]=splitlist[[2]]
     }
@@ -257,9 +270,11 @@ phipmcount = function(Z, vorient, poms){
   vwithx=nodesx-1; remvlist =c(rbind(vwithx,nodesx))
   vlistf<-vlist[-remvlist]
   lrstat<-lrstat[-(nodesx)/2]
+  KMest<-KMest[-(nodesx)/2]
   outlist <- vector(mode = "list", length = 2) 
   outlist[[1]]<-vlistf
   outlist[[2]]<-lrstat
+  outlist[[3]]<-KMest 
   return(outlist)
 }
 #test out function - split by the mean into levels until each node
