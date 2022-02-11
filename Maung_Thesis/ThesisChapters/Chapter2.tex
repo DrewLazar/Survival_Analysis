@@ -34,11 +34,15 @@
 \subsection{Survival Data}
 
 
-As per \textbf{kretowska}, we assume that the survival data is sampled from a random triple $(\mathbf{X}, T, \Delta)$. Here $\mathbf{X}$ is the $\ZZ \ni D \geq 1$ dimensional random variable indicating the feature vector. $T = \min(T_0, C)$, where $T_0$ is the random variable indicating the survival time and $C$ is random variable indicating the censoring time. $\Delta$ is the censoring indicator $\Delta = I(T_0 < C)$. To construct the tree, $\ZZ \ni N \geq 2$ observations $(\mathbf{x}_i, t_i, \delta_i)_{i = 1}^N$ are sampled.
+As per \cite{kretowska}, we assume that the survival data is sampled from a random triple $(\mathbf{X}, T, \Delta)$. $\mathbf{X}$ is a real, $D$-dimensional random feature vector, i.e., $\mathbf{X} \in \mathbb{R}^D$. $T = \min(T_0, C)$, where $T_0$ is the random variable indicating the survival time and $C$ is random variable indicating the right-censoring time. $\Delta$ is a censoring indicator, i.e, 
+\[
+\Delta = I(T_0 < C). 
+\] 
+To construct a survival tree, we sample $N$ observations $(\mathbf{x}_i, t_i, \delta_i)_{i = 1}^N$. 
 
 \subsection{Dipolar Criterion}
 
-Drawing on previous work from \textbf{bobrowskikretowski}, \textbf{kretowska} suggested a non-parametric method of separating the feature space using oblique hyperplanes. She considered pairs of feature vectors $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$), referred to as \emph{dipoles} in \textbf{bobrowskikretowski}. She tagged each such pair as either ``pure" or ``mixed": ``pure" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently close to one another; on the other hand, ``mixed" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently far from one another.\\
+In \cite{kretowska}, a non-parametric method of separating the feature space by oblique hyperplanes for prediction was proposed. She considered pairs of feature vectors $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$), referred to as \emph{dipoles} in \textbf{bobrowskikretowski}. She tagged each such pair as either ``pure" or ``mixed": ``pure" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently close to one another; on the other hand, ``mixed" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently far from one another.  Observations which are both censored and thus don't provide adequate survival information for dipolar classification are labeled as "neither". Also, observations with at least one uncensored observation but for which for which the difference in survival times is not sufficiently small or large according to the formulated criteria is also labeled as ``neither''. \\
 
 A non-parametric criterion to determine what constitutes ``sufficiently close" or ``sufficiently far" had already been suggested by \textbf{bobrowskikretowski} for dipoles drawn from non-survival data. \textbf{kretowska}'s main innovation was to extend this criterion to survival data using the time and censoring information $(t_i, \delta_i)_{i = 1}^N$. More concretely, she constructs a sequence of survival time differences $D$
 \begin{align*}
@@ -61,6 +65,9 @@ A non-parametric criterion to determine what constitutes ``sufficiently close" o
 	
 	$\delta_i = 1, \delta_j = 0, t_i < t_j$ and $t_j - t_i \geq D_{(\lfloor \zeta \cdot K \rfloor)}$
 \end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{refs}
 
 
 
