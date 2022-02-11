@@ -1,0 +1,68 @@
+\documentclass[12pt]{amsart}
+%prepared in AMSLaTeX, under LaTeX2e
+
+
+\usepackage{amssymb}
+
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{summ}{Summary}
+
+\theoremstyle{plain}
+\newtheorem*{lem}{Lemma}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{thm}{Theorem}
+
+\theoremstyle{remark}
+\newtheorem*{example}{Example}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\eps}{\epsilon}
+
+
+\begin{document}
+
+\section{Literature Review} % Main chapter title
+
+
+\subsection{Survival Data}
+
+
+As per \textbf{kretowska}, we assume that the survival data is sampled from a random triple $(\mathbf{X}, T, \Delta)$. Here $\mathbf{X}$ is the $\ZZ \ni D \geq 1$ dimensional random variable indicating the feature vector. $T = \min(T_0, C)$, where $T_0$ is the random variable indicating the survival time and $C$ is random variable indicating the censoring time. $\Delta$ is the censoring indicator $\Delta = I(T_0 < C)$. To construct the tree, $\ZZ \ni N \geq 2$ observations $(\mathbf{x}_i, t_i, \delta_i)_{i = 1}^N$ are sampled.
+
+\subsection{Dipolar Criterion}
+
+Drawing on previous work from \textbf{bobrowskikretowski}, \textbf{kretowska} suggested a non-parametric method of separating the feature space using oblique hyperplanes. She considered pairs of feature vectors $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$), referred to as \emph{dipoles} in \textbf{bobrowskikretowski}. She tagged each such pair as either ``pure" or ``mixed": ``pure" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently close to one another; on the other hand, ``mixed" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently far from one another.\\
+
+A non-parametric criterion to determine what constitutes ``sufficiently close" or ``sufficiently far" had already been suggested by \textbf{bobrowskikretowski} for dipoles drawn from non-survival data. \textbf{kretowska}'s main innovation was to extend this criterion to survival data using the time and censoring information $(t_i, \delta_i)_{i = 1}^N$. More concretely, she constructs a sequence of survival time differences $D$
+\begin{align*}
+&D \leftarrow () \quad \textit{\# start with the empty sequence} \\
+&\text{ for integers } 1 \leq i < j \leq M: \\
+&\quad \text{ if } (\delta_i = \delta_j = 1) \text{ then } D \leftarrow D.\text{append}(|t_i - t_j|) \\
+&\quad \text{ if } (\delta_i = 0, \delta_j = 1 \text{ and } t_i > t_j) \text{ then } D \leftarrow D.\text{append}(t_i - t_j) \\
+&\quad \text{ if } (\delta_i = 1, \delta_j = 0 \text{ and } t_j > t_i) \text{ then } D \leftarrow D.\text{append}(t_j - t_i)
+\end{align*} and considers its ordered statistics $D_{(1)}, \ldots, D_{(K)}$ where $\ZZ \ni K \geq 1$ is the length of $D$. Now:
+\begin{itemize}
+	\item[1.] A dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) is \emph{pure} if:
+	
+	$\delta_i = \delta_j = 1$ and $|t_i - t_j| < D_{(\lfloor \eta \cdot K \rfloor)}$
+	
+	\item[2.] A dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) is \emph{mixed} if:
+	
+	$\delta_i = \delta_j = 1$ and $|t_i - t_j| \geq D_{(\lfloor \zeta \cdot K \rfloor)}$
+	
+	$\delta_i = 0, \delta_j = 1, t_i > t_j$ and $t_i - t_j \geq D_{(\lfloor \zeta \cdot K \rfloor)}$
+	
+	$\delta_i = 1, \delta_j = 0, t_i < t_j$ and $t_j - t_i \geq D_{(\lfloor \zeta \cdot K \rfloor)}$
+\end{itemize}
+
+
+
+% EXCEPT LEAVE THIS:
+\end{document}
