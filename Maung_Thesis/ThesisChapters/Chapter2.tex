@@ -40,7 +40,7 @@ As per \cite{kretowska}, we assume that the survival data is sampled from a rand
 \subsection{The Survival Dipolar Criterion} \hfill \\
 
 
-In \cite{kretowska}, a non-parametric method of separating the feature space by oblique hyperplanes for prediction was proposed. She considered pairs of feature vectors $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$), referred to as \emph{dipoles} in \cite{bobrowskikretowski}. She tagged each such pair as ``pure", ``mixed" or ``neither": ``pure" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently close to one another; on the other hand, ``mixed" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently far from one another.  Observations with inadequate survival information for dipolar classification are labeled as ``neither". \\
+In \cite{kretowska}, a non-parametric method of separating the feature space by oblique hyperplanes for prediction was proposed. She considered pairs of feature vectors $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$), referred to as \emph{dipoles} in \cite{bobrowskikretowski}. She tagged each such pair as ``pure", ``mixed" or ``neither": ``pure" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently close to one another; on the other hand, ``mixed" dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ are those whose survival times $t_i, t_j$ are sufficiently far from one another.  Pairs of observations with inadequate survival information or with survival times that are neither too far apart to distinguish them nor too close together to group them together are labeled as ``neither". \\
 
 A non-parametric criterion to determine what constitutes ``sufficiently close" or ``sufficiently far" had already been suggested by \cite{bobrowskikretowski} for dipoles drawn from non-survival data. The main innovation in \cite{kretowska} was to extend this criterion to survival data using the time and censoring information $(t_i, \delta_i)_{i = 1}^N$. More concretely, she algorithmically constructs a sequence of survival time differences $\Delta T$ as follows:
 \begin{align*}
@@ -49,19 +49,19 @@ A non-parametric criterion to determine what constitutes ``sufficiently close" o
 &\quad \text{ if } (\delta_i = \delta_j = 1) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(|t_i - t_j|) \\
 &\quad \text{ if } (\delta_i = 0, \delta_j = 1 \text{ and } t_i > t_j) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(t_i - t_j) \\
 &\quad \text{ if } (\delta_i = 1, \delta_j = 0 \text{ and } t_j > t_i) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(t_j - t_i)
-\end{align*} Next, she considers the ordered statistics of $\Delta T$: $\Delta T_{(1)} \leq \cdots \leq \Delta T_{(L)}$ where the integer $L$ is the length of $\Delta T$. Then, \cite{kretowska} fixes real parameters $0 < \eta < \zeta < 1$ which will serve as the lower and upper percentile cutoffs for determining the ``pure" and ``mixed" dipoles. In other words, the floored products $\lfloor \eta \cdot K \rfloor$ and $\lfloor \zeta \cdot K \rfloor$ respectively approximate the $\eta$-th quantile and $\zeta$-th quantile of $\Delta T$. Using these, the dipolar criterion is defined as follows:
+\end{align*} Next, she considers the ordered statistics of $\Delta T$: $\Delta T_{(1)} \leq \cdots \leq \Delta T_{(L)}$. Then, \cite{kretowska} fixes real parameters $0 < \eta < \zeta < 1$ which will serve as the lower and upper percentile cutoffs for determining the ``pure" and ``mixed" dipoles. In other words, the floored products $\lfloor \eta \cdot L \rfloor$ and $\lfloor \zeta \cdot L \rfloor$, respectively, approximate the $\eta$-th quantile and $\zeta$-th quantile of $\Delta T$. Using these, the dipolar criterion is defined as follows:
 \begin{itemize}
 	\item[1.] A dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) is \emph{pure} if:
 	
-	$\delta_i = \delta_j = 1$ and $|t_i - t_j| < \Delta T_{(\lfloor \eta \cdot K \rfloor)}$
+	$\delta_i = \delta_j = 1$ and $|t_i - t_j| < \Delta T_{(\lfloor \eta \cdot L \rfloor)}$
 	
 	\item[2.] A dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) is \emph{mixed} if:
 	
 	$\delta_i = \delta_j = 1$ and $|t_i - t_j| \geq \Delta T_{(\lfloor \zeta \cdot K \rfloor)}$
 	
-	$\delta_i = 0, \delta_j = 1, t_i > t_j$ and $t_i - t_j \geq \Delta T_{(\lfloor \zeta \cdot K \rfloor)}$
+	$\delta_i = 0, \delta_j = 1, t_i > t_j$ and $t_i - t_j \geq \Delta T_{(\lfloor \zeta \cdot L \rfloor)}$
 	
-	$\delta_i = 1, \delta_j = 0, t_i < t_j$ and $t_j - t_i \geq \Delta T_{(\lfloor \zeta \cdot K \rfloor)}$
+	$\delta_i = 1, \delta_j = 0, t_i < t_j$ and $t_j - t_i \geq \Delta T_{(\lfloor \zeta \cdot L \rfloor)}$
 	
 	\item[3.] All other dipoles $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) are classified as ``neither" pure nor mixed.
 \end{itemize}
@@ -73,12 +73,12 @@ A non-parametric criterion to determine what constitutes ``sufficiently close" o
 \subsubsection{Piecewise Linear Dipolar Criterion Functions} \hfill \\
 
 
-Once the dipoles have been sorted into the aforementioned (disjoint) subsets, \cite{kretowska} considers the question of how to split the feature space $(\mathbf{x}_i)_{i = 1}^N$ using a hyperplane. Recall that a mixed dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) describes points $\mathbf{x}_i$ and $\mathbf{x}_j$ that have different enough survival experience. On the other hand, a pure dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) describes points $\mathbf{x}_i$ and $\mathbf{x}_j$ that have similar enough survival experience. Hence, the objective in \cite{kretowska} is find a hyperplane that splits as many mixed dipoles as possible without splitting too many pure dipoles. \\
+Once the dipoles have been sorted into the (disjoint) subsets: ``pure", ``mixed" and ``neither", \cite{kretowska} considers the question of how to split the feature space $(\mathbf{x}_i)_{i = 1}^N$, using successive hyperplanes, in order to extract predictive information about survival experience. Recall that a mixed dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) describes points $\mathbf{x}_i$ and $\mathbf{x}_j$ that have ``different enough" survival experiences. On the other hand, a pure dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) describes points $\mathbf{x}_i$ and $\mathbf{x}_j$ that have ``similar enough" survival experiences. Hence, the objective in \cite{kretowska}, at each step, is find a hyperplane that splits as many mixed dipoles as possible without splitting too many pure dipoles. \\
 
-\cite{kretowska} already suggested a way of achieving this using the following scheme.
+\cite{kretowska} suggested a way of achieving this using the following scheme.
 
 \begin{itemize}
-	\item First, note that any hyperplane in $\RR^D$ can be completely described by a $D + 1$-dimensional vector
+	\item First, note that any hyperplane in $\RR^D$ can be completely described by a $(D + 1)$-dimensional vector
 	$$
 	\mathbf{v} = \begin{pmatrix} -\theta \\ w_1 \\ \vdots \\ w_D \end{pmatrix}
 	$$ This describes the hyperplane
@@ -90,17 +90,17 @@ Once the dipoles have been sorted into the aforementioned (disjoint) subsets, \c
 	$ where 
 	$$
 	\mathbf{z} = \begin{pmatrix} 1 \\ x_1 \\ \vdots \\ x_D \end{pmatrix}
-	$$ is the augmented vector of some $[x_1, \ldots, x_D]^T$ in $\RR^D$. Using this notation, we can let
+	$$ Using this notation, we let
 	$
 	\mathbf{z}_j = \begin{pmatrix} 1 \\ \mathbf{x}_j \end{pmatrix} 
-	$ be the \emph{augmented vector} of each feature vector $\mathbf{x}_j$, and similarly we can let $
-	(\mathbf{z}_j, \mathbf{z}_k 
+	$ be the \emph{augmented vector} of each feature vector $\mathbf{x}_j$, and similarly we let $
+	(\mathbf{z}_j, \mathbf{z}_k) 
 	$ be the \emph{augmented dipole} of each dipole $(\mathbf{x}_j, \mathbf{x}_k)$ ($1 \leq j < k \leq N$).
 	\item Next, using the above terminology, \cite{bobrowskikretowski} defined the following piecewise linear functions $\varphi^+_j, \varphi^-_j : \RR^{D + 1} \to \RR$ for each integer $1 \leq j \leq N$:
 	\begin{align*}
-		\varphi^+_j(\mathbf{v}) &= \max\{0, \eps_j - \mathbf{v}^T \mathbf{z}_j\} \quad \mathbf{v} \in \RR^{D + 1} \\
-		\varphi^-_j(\mathbf{v}) &= \max\{0, \eps_j + \mathbf{v}^T \mathbf{z}_j\} \quad \mathbf{v} \in \RR^{D + 1}
-	\end{align*} where the $\eps_j > 0$ are preset parameters usually set to $1$.
+		\varphi^+_j(\mathbf{v}) &= \max\{0, \eps_j - \mathbf{v}^T \mathbf{z}_j\} \quad \text{for }\mathbf{v} \in \RR^{D + 1} \\
+		\varphi^-_j(\mathbf{v}) &= \max\{0, \eps_j + \mathbf{v}^T \mathbf{z}_j\} \quad \text{for }\mathbf{v} \in \RR^{D + 1}
+	\end{align*} where the $\eps_j > 0$ are preset margins usually set to $1$.
 \end{itemize}
 
 Now, we can use simple linear combinations of these functions to define penalty functions that split mixed dipoles when they are minimized. Indeed, given a mixed dipole $(\mathbf{x}_j, \mathbf{x}_k)$ ($1 \leq j < k \leq N$) note that either of the following combinations
@@ -131,19 +131,19 @@ As a first step towards this, \cite{kretowska} heuristically defines the \emph{o
 	\item A pure dipole $(\mathbf{z}_j, \mathbf{z}_k)$ ($1 \leq j < k \leq N$) is said to have a \emph{positive orientation} if we ``expect" \cite{kretowska} to have $(\mathbf{v}^\ast)^T \mathbf{z}_j \geq 0$ and $(\mathbf{v}^\ast)^T \mathbf{z}_k \geq 0$. Similarly it is said to have a \emph{negative orientation} if we ``expect" \cite{kretowska} to have $(\mathbf{v}^\ast)^T \mathbf{z}_j \leq 0$ and $(\mathbf{v}^\ast)^T \mathbf{z}_k \leq 0$. \\
 	
 	In the first case of a positive orientation, \cite{kretowska} chooses $\varphi^{p^+}_{jk}$ for the pure dipole $(\mathbf{z}_j, \mathbf{z}_k)$ whereas in the second case of a negative orientation  \cite{kretowska} chooses $\varphi^{p^-}_{jk}$ for the pure dipole $(\mathbf{z}_j, \mathbf{z}_k)$. \\
-\end{itemize} Notice that not all cases are covered above. For instance, it is entirely possible for a mixed dipole $(\mathbf{z}_j, \mathbf{z}_k)$ to end up in the case where both $\mathbf{z}_j$ and $\mathbf{z}_k$ fall on the same side the optimal hyperplane $\mathbf{v}^\ast$. And such cases are not defined by \cite{kretowska} above. \cite{kretowska} does not elaborate further on a more exhaustive definition of dipole orientation. Hence, in Chapter 3, an original exhaustive definition of dipole orientation is given.
+\end{itemize} Notice that not all cases are covered above. For instance, it is entirely possible for a mixed dipole $(\mathbf{z}_j, \mathbf{z}_k)$ to end up in the case where both $\mathbf{z}_j$ and $\mathbf{z}_k$ fall on the same side the optimal hyperplane $\mathbf{v}^\ast$. And such cases are not defined by \cite{kretowska} above. \cite{kretowska} does not elaborate further on a more precise definition of dipole orientation. Hence, in Chapter 3, a precise definition of dipole orientation is given.
 
 
 \subsubsection{The Dipolar Criterion Function} \hfill \\
 
 
-Assuming for now that some guess of an optimal hyperplane $\mathbf{v}^\ast \in \RR^{D + 1}$ is fixed and that we have successfully chosen among the pairs of penalty functions for each of the mixed and pure dipoles, \cite{kretowska} continues on to define the main dipolar criterion function. \\
+Assuming for now that a guess of an optimal hyperplane $\mathbf{v}^\ast \in \RR^{D + 1}$ is fixed and that we have successfully chosen among the pairs of penalty functions for each of the mixed and pure dipoles, \cite{kretowska} continues on to define the main dipolar criterion function. \\
 
 First, let $I^{p^+}(\mathbf{v}^\ast), I^{p^-}(\mathbf{v}^\ast), I^{m^+}(\mathbf{v}^\ast), I^{m^-}(\mathbf{v}^\ast)$ be the (disjoint) sets of pairs of indices of dipoles that are respectively: pure with positive orientation, pure with negative orientation, mixed with positive orientation and mixed with negative orientation. Then, the  \emph{dipolar criterion function} is defined as the linear combination:
 \begin{align*}
 	\Psi_{\mathbf{v}^\ast} = &\sum_{(j, k) \in I^{p^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^+}_{jk} + \sum_{(j, k) \in I^{p^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^-}_{jk} \\ 
 	+ &\sum_{(j, k) \in I^{m^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^+}_{jk} + \sum_{(j, k) \in I^{m^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^-}_{jk}
-\end{align*} Here, the coefficients $\alpha_{jk} \in \RR$ are preset ``prices" \cite{kretowska} of the dipoles $(\mathbf{z}_j, \mathbf{z}_k)$. In her case, she set the prices of mixed dipoles to $1000$, while she set prices of pure dipoles to $1$. During the minimization of $\Psi_{\mathbf{v}^\ast}$, this forces the function to preferentially choose hyperplanes that split as many mixed dipoles as possible even at the expense of also splitting many pure  dipoles.
+\end{align*} Here, the coefficients $\alpha_{jk} \in \RR$ are preset ``prices" \cite{kretowska} of the dipoles $(\mathbf{z}_j, \mathbf{z}_k)$. In her case, she sets the prices of mixed dipoles to $1000$, while she set prices of pure dipoles to $1$. During the minimization of $\Psi_{\mathbf{v}^\ast}$, this forces the function to preferentially choose hyperplanes that split as many mixed dipoles as possible even at the expense of also splitting many pure  dipoles.
 
 
 \bibliographystyle{unsrt}
