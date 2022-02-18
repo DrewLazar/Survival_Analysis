@@ -137,7 +137,13 @@ As a first step towards this, \cite{kretowska} heuristically defines the \emph{o
 \subsubsection{The Dipolar Criterion Function} \hfill \\
 
 
-Assuming for now that some guess of an optimal hyperplane $\mathbf{v}^\ast \in \RR^{D + 1}$ is fixed and that we have successfully chosen among the pairs of penalty functions for each of the mixed and pure dipoles, \cite{kretowska} continues on to define the \emph{dipolar criterion function}.
+Assuming for now that some guess of an optimal hyperplane $\mathbf{v}^\ast \in \RR^{D + 1}$ is fixed and that we have successfully chosen among the pairs of penalty functions for each of the mixed and pure dipoles, \cite{kretowska} continues on to define the main dipolar criterion function. \\
+
+First, let $I^{p^+}(\mathbf{v}^\ast), I^{p^-}(\mathbf{v}^\ast), I^{m^+}(\mathbf{v}^\ast), I^{m^-}(\mathbf{v}^\ast)$ be the (disjoint) sets of pairs of indices of dipoles that are respectively: pure with positive orientation, pure with negative orientation, mixed with positive orientation and mixed with negative orientation. Then, the  \emph{dipolar criterion function} is defined as the linear combination:
+\begin{align*}
+	\Psi_{\mathbf{v}^\ast} = &\sum_{(j, k) \in I^{p^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^+}_{jk} + \sum_{(j, k) \in I^{p^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^-}_{jk} \\ 
+	+ &\sum_{(j, k) \in I^{m^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^+}_{jk} + \sum_{(j, k) \in I^{m^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^-}_{jk}
+\end{align*} Here, the coefficients $\alpha_{jk} \in \RR$ are preset ``prices" \cite{kretowska} of the dipoles $(\mathbf{z}_j, \mathbf{z}_k)$. In her case, she set the prices of mixed dipoles to $1000$, while she set prices of pure dipoles to $1$. During the minimization of $\Psi_{\mathbf{v}^\ast}$, this forces the function to preferentially choose hyperplanes that split as many mixed dipoles as possible even at the expense of also splitting many pure  dipoles.
 
 
 \bibliographystyle{unsrt}
