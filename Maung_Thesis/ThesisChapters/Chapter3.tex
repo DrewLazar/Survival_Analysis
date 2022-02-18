@@ -1,0 +1,57 @@
+\documentclass[12pt]{amsart}
+%prepared in AMSLaTeX, under LaTeX2e
+
+
+\usepackage{amssymb}
+
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{summ}{Summary}
+
+\theoremstyle{plain}
+\newtheorem*{lem}{Lemma}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{thm}{Theorem}
+
+\theoremstyle{remark}
+\newtheorem*{example}{Example}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\eps}{\varepsilon}
+
+
+\begin{document}
+
+
+\section{Induction of Survival Trees using the Dipolar Criterion Function}
+
+
+\subsection{Exhaustive Criterion for Dipolar Orientation} % Main chapter title
+
+Recall that the criterion for dipolar orientation suggested by \cite{kretowska} was non-exhaustive. As such, we provide here a more exhaustive criterion for dipolar orientation as follows.
+
+A dipole (mixed or pure) $(\mathbf{z}_j, \mathbf{z}_k)$ ($1 \leq j < k \leq N$) is said to have a \emph{positive orientation} if we have $(\mathbf{v}^\ast)^T [\mathbf{z}_j - \mathbf{z}_k] \geq 0$. Similarly it is said to have a \emph{negative orientation} if we ``expect" \cite{kretowska} to have $(\mathbf{v}^\ast)^T [\mathbf{z}_j - \mathbf{z}_k \leq 0$.
+	
+\begin{itemize}
+
+	\item Now if $(\mathbf{z}_j, \mathbf{z}_k)$ ($1 \leq j < k \leq N$) is mixed with positive orientation, we choose $\varphi^{m^+}_{jk}$ for it whereas if it has negative orientation  we choose $\varphi^{m^-}_{jk}$ for it. \\
+	
+	\item And if $(\mathbf{z}_j, \mathbf{z}_k)$ ($1 \leq j < k \leq N$) is pure with positive orientation, we choose $\varphi^{p^+}_{jk}$ for it whereas if it has negative orientation  we choose $\varphi^{p^-}_{jk}$ for it. \\
+	
+\end{itemize}
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+
+
+% EXCEPT LEAVE THIS:
+\end{document}
