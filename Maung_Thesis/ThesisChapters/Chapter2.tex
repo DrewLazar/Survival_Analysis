@@ -45,10 +45,10 @@ In \cite{kretowska}, a non-parametric method of separating the feature space by 
 A non-parametric criterion to determine what constitutes ``sufficiently close" or ``sufficiently far" had already been suggested by \cite{bobrowskikretowski} for dipoles drawn from non-survival data. The main innovation in \cite{kretowska} was to extend this criterion to survival data using the time and censoring information $(t_i, \delta_i)_{i = 1}^N$. More concretely, she algorithmically constructs a sequence of survival time differences $\Delta T$ as follows:
 \begin{align*}
 &\Delta T \leftarrow () \quad \textit{\# start with the empty sequence} \\
-&\text{ for integers } 1 \leq i < j \leq M: \\
-&\quad \text{ if } (\delta_i = \delta_j = 1) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(|t_i - t_j|) \\
-&\quad \text{ if } (\delta_i = 0, \delta_j = 1 \text{ and } t_i > t_j) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(t_i - t_j) \\
-&\quad \text{ if } (\delta_i = 1, \delta_j = 0 \text{ and } t_j > t_i) \text{ then } \Delta T \leftarrow \Delta T.\text{append}(t_j - t_i)
+&\text{ FOR INTEGERS } 1 \leq i < j \leq M: \\
+&\quad \text{ IF } (\delta_i = \delta_j = 1) \text{ THEN } \Delta T \leftarrow \Delta T.\text{append}(|t_i - t_j|) \\
+&\quad \text{ IF } (\delta_i = 0, \delta_j = 1 \text{ AND } t_i > t_j) \text{ THEN } \Delta T \leftarrow \Delta T.\text{append}(t_i - t_j) \\
+&\quad \text{ IF } (\delta_i = 1, \delta_j = 0 \text{ AND } t_j > t_i) \text{ THEN } \Delta T \leftarrow \Delta T.\text{append}(t_j - t_i)
 \end{align*} Next, she considers the ordered statistics of $\Delta T$: $\Delta T_{(1)} \leq \cdots \leq \Delta T_{(L)}$. Then, \cite{kretowska} fixes real parameters $0 < \eta < \zeta < 1$ which will serve as the lower and upper percentile cutoffs for determining the ``pure" and ``mixed" dipoles. In other words, the floored products $\lfloor \eta \cdot L \rfloor$ and $\lfloor \zeta \cdot L \rfloor$, respectively, approximate the $\eta$-th quantile and $\zeta$-th quantile of $\Delta T$. Using these, the dipolar criterion is defined as follows:
 \begin{itemize}
 	\item[1.] A dipole $(\mathbf{x}_i, \mathbf{x}_j)$ (for integers $1 \leq i < j \leq N$) is \emph{pure} if:
@@ -143,7 +143,7 @@ First, let $I^{p^+}(\mathbf{v}^\ast), I^{p^-}(\mathbf{v}^\ast), I^{m^+}(\mathbf{
 \begin{align*}
 	\Psi_{\mathbf{v}^\ast} = &\sum_{(j, k) \in I^{p^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^+}_{jk} + \sum_{(j, k) \in I^{p^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{p^-}_{jk} \\ 
 	+ &\sum_{(j, k) \in I^{m^+}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^+}_{jk} + \sum_{(j, k) \in I^{m^-}(\mathbf{v}^\ast)} \alpha_{jk} \varphi^{m^-}_{jk}
-\end{align*} Here, the coefficients $\alpha_{jk} \in \RR$ are preset ``prices" \cite{kretowska} of the dipoles $(\mathbf{z}_j, \mathbf{z}_k)$. In her case, she sets the prices of mixed dipoles to $1000$, while she set prices of pure dipoles to $1$. During the minimization of $\Psi_{\mathbf{v}^\ast}$, this forces the function to preferentially choose hyperplanes that split as many mixed dipoles as possible even at the expense of also splitting many pure  dipoles.
+\end{align*} Here, the coefficients $\alpha_{jk} \geq 0$ are preset ``prices" \cite{kretowska} of the dipoles $(\mathbf{z}_j, \mathbf{z}_k)$. In her case, she sets the prices of mixed dipoles to $1000$, while she set prices of pure dipoles to $1$. During the minimization of $\Psi_{\mathbf{v}^\ast}$, this forces the function to preferentially choose hyperplanes that split as many mixed dipoles as possible even at the expense of also splitting many pure  dipoles.
 
 
 \bibliographystyle{unsrt}

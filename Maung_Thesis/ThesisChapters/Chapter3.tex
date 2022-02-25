@@ -47,6 +47,70 @@ A dipole (mixed or pure) $(\mathbf{z}_j, \mathbf{z}_k)$ ($1 \leq j < k \leq N$) 
 \end{itemize}
 
 
+\subsection{Simplex Optimization of the Dipolar Criterion Function} \hfill \\
+
+
+Thus a more precise definition of the dipolar criterion function also becomes possible. As before, assume an initial guess of an optimal hyperplane $\mathbf{v}_0^\ast \in \RR^{D + 1}$ and let $I^{p^+}(\mathbf{v}_0^\ast), I^{p^-}(\mathbf{v}_0^\ast), I^{m^+}(\mathbf{v}_0^\ast), I^{m^-}(\mathbf{v}_0^\ast)$ be the sets of pairs of indices of dipoles that are respectively: pure with positive orientation, pure with negative orientation, mixed with positive orientation and mixed with negative orientation. \\
+
+Then recall that the  dipolar criterion function is defined as the linear combination:
+\begin{align*}
+	\Psi_{\mathbf{v}_0^\ast} = &\sum_{(j, k) \in I^{p^+}(\mathbf{v}_0^\ast)} \alpha_{jk} \varphi^{p^+}_{jk} + \sum_{(j, k) \in I^{p^-}(\mathbf{v}_0^\ast)} \alpha_{jk} \varphi^{p^-}_{jk} \\ 
+	+ &\sum_{(j, k) \in I^{m^+}(\mathbf{v}_0^\ast)} \alpha_{jk} \varphi^{m^+}_{jk} + \sum_{(j, k) \in I^{m^-}(\mathbf{v}_0^\ast)} \alpha_{jk} \varphi^{m^-}_{jk}
+\end{align*} with preset parameters $\alpha_{jk} \geq 0$ that are usually set to $1$. \\
+
+After expanding each of the functions $\varphi^{p^+}_{jk}, \varphi^{p^-}_{jk}, \varphi^{m^+}_{jk}, \varphi^{m^-}_{jk}$ in terms of the functions $\varphi^+_j, \varphi^-_j$, the dipolar criterion function can written as
+\begin{align*}
+\Psi_{\mathbf{v}_0^\ast} = \sum_{j = 1}^N \big( &\beta^+_{j, \mathbf{v}_0^\ast}\varphi^+_j + \beta^-_{j, \mathbf{v}_0^\ast}\varphi^-_j\big) \\
+\text{or } \Psi_{\mathbf{v}_0^\ast}(\mathbf{v})	= \sum_{j = 1}^N \big( &\beta^+_{j, \mathbf{v}_0^\ast}\max\{0, \eps_j - \mathbf{v}^T \mathbf{z}_j\} \\
++ &\beta^-_{j, \mathbf{v}_0^\ast}\max\{0, \eps_j + \mathbf{v}^T \mathbf{z}_j\}\big) \quad \text{for }\mathbf{v} \in \RR^{D + 1}
+\end{align*} Here, the coefficients $\beta^+_{j, \mathbf{v}_0^\ast}, \beta^-_{j, \mathbf{v}_0^\ast} \geq 0$ can be found as
+\begin{align*}
+\beta^+_{j, \mathbf{v}_0^\ast} = &\sum_{k : (j, k) \in I^{p^+}(\mathbf{v}_0^\ast)} \alpha_{jk} + \sum_{i : (i, j) \in I^{p^+}(\mathbf{v}_0^\ast)} \alpha_{ij} \\
+	+ &\sum_{k : (j, k) \in I^{m^+}(\mathbf{v}_0^\ast)} \alpha_{jk} + \sum_{i : (i, j) \in I^{m^-}(\mathbf{v}_0^\ast)} \alpha_{ij}
+\end{align*} and similarly
+\begin{align*}
+\beta^-_{j, \mathbf{v}_0^\ast} = &\sum_{k : (j, k) \in I^{p^-}(\mathbf{v}_0^\ast)} \alpha_{jk} + \sum_{i : (i, j) \in I^{p^-}(\mathbf{v}_0^\ast)} \alpha_{ij} \\
+	+ &\sum_{k : (j, k) \in I^{m^-}(\mathbf{v}_0^\ast)} \alpha_{jk} + \sum_{i : (i, j) \in I^{m^+}(\mathbf{v}_0^\ast)} \alpha_{ij}
+\end{align*} In the above form, we see that the dipolar criterion function must be a convex function since it is the nonnegative linear combination of the convex functions $\varphi^+_j, \varphi^-_j$. Hence, it certainly achieves a minimum. \\
+
+The above form of the dipolar criterion function also suggests a way to minimize it using linear programming. Indeed, note that the minimization problem
+$$
+\min_{\mathbf{v} \in \RR^{D + 1}} \Psi_{\mathbf{v}_0^\ast}
+$$ is equivalent to the following linear program
+\begin{align*}
+\min_{u_j^+, u_j^- \in \RR, \mathbf{v} \in \RR^{D + 1}} \sum_{j = 1}^N u_j^+ + u_j^- \\
+\text{with constraints:} \\
+\text{for } j = 1, \ldots, N: \\
+\beta^+_{j, \mathbf{v}_0^\ast} (\eps_j - \mathbf{v}^T \mathbf{z}_j) &\leq u_j^+ \\
+\beta^-_{j, \mathbf{v}_0^\ast} (\eps_j + \mathbf{v}^T \mathbf{z}_j) &\leq u_j^- \\
+u_j^+ &\geq 0 \\
+u_j^- &\geq 0
+\end{align*} where the minimization is carried out with respect to the free variables 
+$$
+u_j^+, u_j^- \in \RR\ (j = 1, \ldots, N) \text{ and } \mathbf{v} \in \RR^{D + 1}
+$$ If we let
+$$
+\mathbf{Z}_{N \times (D + 1)} = \begin{bmatrix} \mathbf{z}_1^T \\ \vdots \\ \mathbf{z}_N^T \end{bmatrix}, \mathbf{B}^-_{\mathbf{v}_0^\ast} = \begin{bmatrix} \beta^+_{1, \mathbf{v}_0^\ast} \\ \vdots \\ \beta^+_{N, \mathbf{v}_0^\ast} \end{bmatrix}, \mathbf{E} = \begin{bmatrix} \eps_1 \\ \vdots \\ \eps_N \end{bmatrix}
+$$ we can rewrite this in matrix form as
+\begin{gather*}
+\min_{\mathbf{u}^+, \mathbf{u}^- \in \RR^N, \mathbf{v} \in \RR^{D + 1}}\ [\mathbf{0}_{1 \times (D + 1)} \ \ \mathbf{1}_{1 \times N} \ \ \mathbf{1}_{1 \times N}] \begin{bmatrix} \mathbf{v} \\ \mathbf{u}^+ \\ \mathbf{u}^- \end{bmatrix} \\
+\text{with constraints:} \\
+\begin{bmatrix} \mathbf{Z}_{N \times (D + 1)} &\mathbf{I}_{N \times N} &\mathbf{0}_{N \times N} \\ -\mathbf{Z}_{N \times (D + 1)} &\mathbf{0}_{N \times N} &\mathbf{I}_{N \times N} \\ \mathbf{0}_{N \times (D + 1)} &\mathbf{I}_{N \times N} &\mathbf{0}_{N \times N} \\ \mathbf{0}_{N \times (D + 1)} &\mathbf{0}_{N \times N} &\mathbf{I}_{N \times N} \end{bmatrix} \begin{bmatrix} \mathbf{v} \\ \mathbf{u}^+ \\ \mathbf{u}^- \end{bmatrix} \geq \begin{bmatrix} \mathbf{B}^+_{\mathbf{v}_0^\ast} \circ \mathbf{E} \\ \mathbf{B}^-_{\mathbf{v}_0^\ast} \circ \mathbf{E} \\ \mathbf{0}_{N \times 1} \\ \mathbf{0}_{N \times 1} \end{bmatrix}
+\end{gather*}
+In this form, $\min_{\mathbf{v} \in \RR^{D + 1}} \Psi_{\mathbf{v}_0^\ast}$ can be solved by the simplex algorithm. \\
+
+
+\subsection{Recursive Reorientation} \hfill \\
+
+Once we find a minimizer $\mathbf{v}_1^\ast \in \RR^{D + 1}$ for the problem $\min_{\mathbf{v} \in \RR^{D + 1}} \Psi_{\mathbf{v}_0^\ast}$, observe that we can construct a better dipolar criterion function by reorienting the dipoles with respect to $\mathbf{v}_1^\ast$. Indeed, $\mathbf{v}_0^\ast$ was just a starting guess for the optimal hyperplane. Since we now have a better guess $\mathbf{v}_1^\ast$, we can construct the better dipolar criterion function $\Psi_{\mathbf{v}_1^\ast}$. This suggests the following recursive algorithm to find the optimal hyperplane:
+\begin{align*}
+&\mathbf{v}_{\text{previous}}^\ast \leftarrow \mathbf{v}_0^\ast \in \RR^{D + 1} \quad \textit{\# initial guess for the hyperplane} \\
+&\text{tolerance} \leftarrow \eps > 0 \quad \textit{\# tolerance level to guage convergence} \\
+&\text{DO }: \\
+&\quad \mathbf{v}_{\text{current}}^\ast \leftarrow \min_{\mathbf{v} \in \RR^{D + 1}} \Psi_{\mathbf{v}_{previous}^\ast} \\
+&\text{WHILE}(\|\mathbf{v}_{\text{current}}^\ast - \mathbf{v}_{\text{previous}}^\ast\|_{\RR^{D + 1}} > \text{tolerance})
+\end{align*}
+
 
 \bibliographystyle{unsrt}
 \bibliography{refs}
